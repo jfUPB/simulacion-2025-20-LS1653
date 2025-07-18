@@ -13,5 +13,13 @@ Pero en si el como influye la aleatoridad en el arte generativo es en como podem
 ### ACTIVIDAD 02
 
 #### Luego de ver el trabajo de Sofía piensa y escribe en TUS PROPIAS palabras:
+
 ##### Cuál es el papel de la aleatoriedad en su obra?
+El papel de la aleatoridad en este trabajo es en resumidas cuentas generar la persepción de crecimiento, como si los elementos que se muestran frueran ramas de un árbol que estan creciendo, haciendo referencia a la misma canción que se escucha, en si lo que busca la aleatoridad es darle vida de manera visual al sonido que las personas escuchan, es como darle un rostro a lo que no vemos y un color a las emociones que nos transmite.
+
 ##### Según tu perfil profesional, cómo se aplica el concepto de aleatoriedad en el tipo de proyectos que desarrollas. Ilustra tu respuesta con ejemplos concretos.
+La aleatoridad en mi futuro profecional se aplicara en la construcción de mapas o niveles de maneara procedural, en dónde yo comensare generando cierto numero de elementos, colores y personajes, pero estos elementos, colores y personajes se podran convinar de maneras infinitas de forma que cada espacio en el mundo dentro del juego paresca nuevo o por lo menos diferente.
+
+Tambien la aleatoridad me puede ayudar de mejor manera en darle un movimiento más organico a los npc, puesto que lo normal es darle movimientos definidos, pero estos movimientos no solo son monotonos sino que tambien aburridos, al darle aleatoridad con algunos limitantes, se puede hacer que los npc puedan tener un desplazamiento más novedoso.
+
+Ya lo ultimo que se me ocurre en el uso de la aleatoridad, es en la generación de recompensas como en un rpg en donde, nunca hay un resultado concreto sino que todo depende de tu suerte en obtener ciertos items con estadisticas variables.
