@@ -23,3 +23,62 @@ La aleatoridad en mi futuro profecional se aplicara en la construcción de mapas
 Tambien la aleatoridad me puede ayudar de mejor manera en darle un movimiento más organico a los npc, puesto que lo normal es darle movimientos definidos, pero estos movimientos no solo son monotonos sino que tambien aburridos, al darle aleatoridad con algunos limitantes, se puede hacer que los npc puedan tener un desplazamiento más novedoso.
 
 Ya lo ultimo que se me ocurre en el uso de la aleatoridad, es en la generación de recompensas como en un rpg en donde, nunca hay un resultado concreto sino que todo depende de tu suerte en obtener ciertos items con estadisticas variables.
+
+### ACTIVIDAD 03
+
+#### Realiza el siguiente experimento y reporta los resultados en tu bitácora:
+
+##### Modifica el código del ejemplo Example 0.1: A Traditional Random Walk.
+
+##### Codigo original
+/*
+//Esteban
+
+let walker;
+
+function setup() {
+  createCanvas(640, 240);
+  walker = new Walker();
+  background(255);
+}
+
+function draw() {
+  walker.step();
+  walker.show();
+}
+
+class Walker {
+  constructor() {
+    this.x = width / 2;
+    this.y = height / 2;
+  }
+
+  show() {
+    stroke(0);
+    point(this.x, this.y);
+  }
+
+  step() {
+    const choice = floor(random(4));
+    if (choice == 0) {
+      this.x++;
+    } else if (choice == 1) {
+      this.x--;
+    } else if (choice == 2) {
+      this.y++;
+    } else {
+      this.y--;
+    }
+  }
+}
+*/
+
+##### Codigo cambiado
+
+/*
+
+*/
+
+Antes de ejecutar el código, escribe en tu bitácora qué esperas que suceda.
+Ejecuta el código y escribe en tu bitácora qué sucedió realmente.
+Ocurrió lo que esperabas? ¿Por qué crees que sí o por qué crees que no?
