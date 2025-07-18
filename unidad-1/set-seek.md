@@ -76,9 +76,115 @@ class Walker {
 ##### Codigo cambiado
 
 /*
+//Esteban
+
+let walker;
+let walker2;
+
+function setup() {
+  createCanvas(640, 240);
+  walker = new Walker("point");
+  walker2 = new Walker("circle");
+  background('red');
+}
+
+function draw() {  
+  //background('blue');
+  walker.step();
+  walker.show();  
+  
+  walker2.step();
+  walker2.show();  
+}
+
+class Walker {
+  constructor(_drawType) {
+    this.x = width / 2;
+    this.y = height / 2;
+    this.drawType = _drawType;
+  }
+
+  show() {
+    stroke('green');    
+    if(this.drawType === 'point'){
+       point(this.x, this.y);
+    }    
+    else if(this.drawType === 'circle'){
+      circle(this.x, this.y, 20);
+    }
+    
+  }
+
+  step() {
+    const choice = floor(random(7));
+    if (choice == 0) {
+      this.x++;
+    } else if (choice == 1) {
+      this.x--;
+    } else if (choice == 2) {
+      this.y++;
+    } else if (choice == 3){
+      this.y--;
+    } else if (choice == 4) {
+      this.y++; this.x++;
+    } else if (choice == 5) {
+      this.y++; this.x--;
+    } else if (choice == 6) {
+      this.y--; this.x--;
+    } else{
+      this.y--; this.x++;
+    }
+  }
+}
 
 */
 
-Antes de ejecutar el código, escribe en tu bitácora qué esperas que suceda.
-Ejecuta el código y escribe en tu bitácora qué sucedió realmente.
-Ocurrió lo que esperabas? ¿Por qué crees que sí o por qué crees que no?
+##### Antes de ejecutar el código, escribe en tu bitácora qué esperas que suceda.
+lo principal que yo cambie fue 
+
+/*
+  function setup() { 
+   background('red');
+ }
+
+ function draw() {  
+  background('blue');  
+}
+
+show() {
+    stroke('green');      
+  }
+
+ step() {
+    const choice = floor(random(7));
+    if (choice == 0) {
+      this.x++;
+    } else if (choice == 1) {
+      this.x--;
+    } else if (choice == 2) {
+      this.y++;
+    } else if (choice == 3){
+      this.y--;
+    } else if (choice == 4) {
+      this.y++; this.x++;
+    } else if (choice == 5) {
+      this.y++; this.x--;
+    } else if (choice == 6) {
+      this.y--; this.x--;
+    } else{
+      this.y--; this.x++;
+    }
+  }
+*/
+
+Esos cambios combinados con el codigo original, lo que haran según lo que creo es:
+
+El fondo de la pantalla primero se volvera rojo, el color de la linea que deja el punto y el circulo sera verde, pero esta no se podra ver debido a que puse en la función draw que background('blue');, lo que hace que no se vea el stroke('green'); pero si se vean tanto el punto, como el circulo.
+
+Ya por ultimo el mayor cambio es que en step(), genere más opciones de movimiento lo cual le permite al punto y el circulo moverse de más maneras en este caso de manera diagonal.
+
+##### Ejecuta el código y escribe en tu bitácora qué sucedió realmente.
+En si los cambios que yo hice dieron el resultado que mensione antes, sin embargo, esto es debido a que no me arriesgue tanto al modificar el codigo, si ubiera intentado modificar el codigo de manera más compleja seguramente ubiera fallado más rapido.
+
+##### Ocurrió lo que esperabas? ¿Por qué crees que sí o por qué crees que no?
+Si fue lo que espere, ya que como mencione no me arriesgue mucho a modificar el codigo de mil maneras solo hice cambios pequeños y calculados.
