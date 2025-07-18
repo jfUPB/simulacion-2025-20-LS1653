@@ -10,3 +10,8 @@ Al ver los diferentes videos y explicaciones, pude llegar a una conclusión que 
 
 Pero en si el como influye la aleatoridad en el arte generativo es en como podemos nostros ver en una imagen que siempre a sido inerte en el tiempo y estatica, ahora se puede ver con vida, cambiando infinitamente y que se mantenga interesante para el espectador. 
 
+### ACTIVIDAD 02
+
+#### Luego de ver el trabajo de Sofía piensa y escribe en TUS PROPIAS palabras:
+##### Cuál es el papel de la aleatoriedad en su obra?
+##### Según tu perfil profesional, cómo se aplica el concepto de aleatoriedad en el tipo de proyectos que desarrollas. Ilustra tu respuesta con ejemplos concretos.
