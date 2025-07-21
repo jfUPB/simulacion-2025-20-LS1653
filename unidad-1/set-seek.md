@@ -192,6 +192,153 @@ Si fue lo que espere, ya que como mencione no me arriesgue mucho a modificar el 
 ### Actividad 4
 
 #### En tus propias palabras cuál es la diferencia entre una distribución uniforme y una no uniforme de números aleatorios.
-
+La diferencia entre estas dos radica en que una distribución uniforme de un resultado es cuando todos los posibles resultados tienen la misma posibilidad de salir, como al tirar un dado que no este modificado, en si tiene un chande de 1/6 de que caiga cualquiera de sus 6 caras, en cambio una distribución no uniforme lo que hace es veneficiar un resultado, por lo que un resultado es más probable que otros, un ejemplo de esto es el dado cargado antes mencionado, este lo que hace es que al aumentar el peso de una cara del dado hace que sea más probable que salga una cara que otra.
 
 #### Modifica el código de la caminata aleatoria para que utilice una distribución no uniforme, favoreciendo el movimiento hacia la derecha.
+Logre hacer que el lado derecho se viera veneficiado, sin embargo lo hice de manera diferente, aqui lo muestro:
+
+/*
+// Esteban
+
+let walker;
+let counts = [0, 0, 0, 0]; // [x++, x--, y++, y--]
+let labels = ["x++", "x--", "y++", "y--"];
+
+function setup() {
+  createCanvas(640, 240);
+  walker = new Walker("point");
+  background('red');
+  textSize(20);
+  textAlign(CENTER, CENTER);
+  fill(255);
+}
+
+function draw() {
+  walker.step();
+  walker.show();
+
+  // Dibujar tabla
+  drawTable();
+}
+
+function drawTable() {
+  noStroke();
+  fill(0, 150); // fondo semitransparente
+  rect(440, 0, 200, height);
+
+  fill(255);
+  for (let i = 0; i < counts.length; i++) {
+    text(labels[i], 540, 30 + i * 50);
+    text(counts[i], 600, 30 + i * 50);
+  }
+}
+
+class Walker {
+  constructor(_drawType) {
+    this.x = width / 2;
+    this.y = height / 2;
+    this.drawType = _drawType;
+  }
+
+  show() {
+    stroke('green');
+    if (this.drawType === 'point') {
+      point(this.x, this.y);
+    }
+  }
+  
+  step() {
+    let choice;
+    let r = random(); // entre 0 y 1
+  if (r < 0.4) {
+    this.x++; // 40% de las veces: derecha
+    choice = 0;
+  } else if (r < 0.55) {
+    this.x--; // 15% de las veces: izquierda
+    choice = 1;
+  } else if (r < 0.75) {
+    this.y++; // 20%: abajo
+    choice = 2;
+  } else {
+    this.y--; // 25%: arriba
+    choice = 3;
+  }
+
+    counts[choice]++; // actualiza conteo
+  }
+}
+*/
+
+Luego de varios intentos logre hacer que funcionara con la funación randomGaussian().
+
+/*
+// Esteban
+
+let walker;
+let counts = [0, 0, 0, 0]; // [x++, x--, y++, y--]
+let labels = ["x++", "x--", "y++", "y--"];
+
+function setup() {
+  createCanvas(640, 240);
+  walker = new Walker();
+  background(255);
+  textSize(16);
+  textAlign(LEFT, CENTER);
+}
+
+function draw() {
+  walker.step();
+  walker.show();
+  drawTable();
+}
+
+class Walker {
+  constructor() {
+    this.x = width / 2;
+    this.y = height / 2;
+  }
+
+  show() {
+    stroke(0);
+    point(this.x, this.y);
+  }
+
+  step() {
+    let g = randomGaussian(0, 1); // valores centrados en 0
+    let choice;
+
+    if (g < -0.4) {
+    this.x++; 
+    choice = 0;
+  } else if (g < 0  && g >= -0.4) {
+    this.x--; 
+    choice = 1;
+  } else if (g < 0.5 && g >= 0) {
+    this.y++; 
+    choice = 2;
+  } else {
+    this.y--; 
+    choice = 3;
+  }
+    print(choice);
+
+    if (choice == 0) this.x++;
+    else if (choice == 1) this.x--;
+    else if (choice == 2) this.y++;
+    else if (choice == 3) this.y--;
+
+    counts[choice]++;
+  }
+}
+
+function drawTable() {
+  fill(255);
+  noStroke();
+  rect(450, 0, 190, height); // fondo para tabla
+
+  fill(0);
+  for (let i = 0; i < labels.length; i++) {
+    text(labels[i] + ": " + counts[i], 460, 40 + i * 30);
+  }
+}
+*/
