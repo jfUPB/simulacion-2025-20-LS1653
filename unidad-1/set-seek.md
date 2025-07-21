@@ -188,3 +188,10 @@ En si los cambios que yo hice dieron el resultado que mensione antes, sin embarg
 
 ##### Ocurrió lo que esperabas? ¿Por qué crees que sí o por qué crees que no?
 Si fue lo que espere, ya que como mencione no me arriesgue mucho a modificar el codigo de mil maneras solo hice cambios pequeños y calculados.
+
+### Actividad 4
+
+#### En tus propias palabras cuál es la diferencia entre una distribución uniforme y una no uniforme de números aleatorios.
+
+
+#### Modifica el código de la caminata aleatoria para que utilice una distribución no uniforme, favoreciendo el movimiento hacia la derecha.
