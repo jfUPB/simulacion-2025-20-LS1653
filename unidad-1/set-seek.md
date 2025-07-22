@@ -342,3 +342,66 @@ function drawTable() {
   }
 }
 */
+
+### ACTIVIDAD 05
+
+#### Una vez has entendido el concepto de distribución normal, vas a pensar en una nueva manera de visualizarlo.
+
+#### Crea un nuevo sketch en p5.js que represente una distribución normal.
+#### Copia el código en tu bitácora.
+/*
+let frequencies = [];
+
+function setup() {
+  createCanvas(1000, 100);
+  background(255);
+
+  for (let i = 0; i < width; i++) {
+    frequencies[i] = 0;
+  }
+}
+
+function draw() {
+  // Generar valor con distribución normal
+  let x = int(randomGaussian(width / 2, 60));
+
+  // Aumentar frecuencia si está en el canvas
+  if (x >= 0 && x < width) {
+    frequencies[x]++;
+  }
+
+  background(255);
+
+  // Encontrar la frecuencia máxima
+  let maxFreq = max(frequencies);
+
+  noStroke();
+
+  // Dibujar puntos con color según su frecuencia
+  for (let i = 0; i < width; i++) {
+    let freq = frequencies[i];
+
+    // Mapear frecuencia a color:
+    // 0 -> azul
+    // maxFreq/2 -> amarillo/naranja
+    // maxFreq -> rojo
+    let inter = map(freq, 0, maxFreq, 0, 1);
+    let col = color(0, 0, 255); // azul por defecto
+
+    if (inter < 0.5) {
+      // Interpolar entre azul y amarillo
+      col = lerpColor(color(0, 0, 255), color(255, 204, 0), inter * 2);
+    } else {
+      // Interpolar entre amarillo y rojo
+      col = lerpColor(color(255, 204, 0), color(255, 0, 0), (inter - 0.5) * 2);
+    }
+
+    fill(col);
+    ellipse(i, height - freq, 4, 4);
+  }
+}
+*/
+![imagen](<img width="712" height="210" alt="image" src="https://github.com/user-attachments/assets/80eb7d3e-7ecc-4372-b014-45a0166ce5fa" />
+)
+Coloca en enlace a tu sketch en p5.js en tu bitácora.
+Selecciona una captura de pantalla de tu sketch y colócala en tu bitácora.
