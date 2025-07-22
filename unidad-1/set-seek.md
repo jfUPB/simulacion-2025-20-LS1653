@@ -406,9 +406,12 @@ function draw() {
 */
 
 
-<img width="712" height="210" alt="image" src="https://github.com/user-attachments/assets/3cbc79fe-b5f9-4586-bb55-a6cc2f8e76e5" />
 
-Coloca en enlace a tu sketch en p5.js en tu bitácora.
+
+#### Coloca en enlace a tu sketch en p5.js en tu bitácora.
+
 https://editor.p5js.org/estebanpuerta2006/sketches/9-_8j3-NJ
 
-Selecciona una captura de pantalla de tu sketch y colócala en tu bitácora.
+#### Selecciona una captura de pantalla de tu sketch y colócala en tu bitácora.
+
+<img width="712" height="210" alt="image" src="https://github.com/user-attachments/assets/3cbc79fe-b5f9-4586-bb55-a6cc2f8e76e5" />
