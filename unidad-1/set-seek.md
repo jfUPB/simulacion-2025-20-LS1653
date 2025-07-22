@@ -401,7 +401,7 @@ function draw() {
   }
 }
 */
-![imagen](<img width="712" height="210" alt="image" src="https://github.com/user-attachments/assets/80eb7d3e-7ecc-4372-b014-45a0166ce5fa" />
-)
+<img width="712" height="210" alt="image" src="https://github.com/user-attachments/assets/3cbc79fe-b5f9-4586-bb55-a6cc2f8e76e5" />
+
 Coloca en enlace a tu sketch en p5.js en tu bitácora.
 Selecciona una captura de pantalla de tu sketch y colócala en tu bitácora.
