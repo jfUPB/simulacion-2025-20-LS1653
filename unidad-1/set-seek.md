@@ -401,6 +401,8 @@ function draw() {
   }
 }
 */
+
+
 <img width="712" height="210" alt="image" src="https://github.com/user-attachments/assets/3cbc79fe-b5f9-4586-bb55-a6cc2f8e76e5" />
 
 Coloca en enlace a tu sketch en p5.js en tu bitácora.
