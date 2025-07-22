@@ -341,6 +341,7 @@ function drawTable() {
     text(labels[i] + ": " + counts[i], 460, 40 + i * 30);
   }
 }
+
 */
 
 ### ACTIVIDAD 05
@@ -350,6 +351,7 @@ function drawTable() {
 #### Crea un nuevo sketch en p5.js que represente una distribución normal.
 #### Copia el código en tu bitácora.
 /*
+
 let frequencies = [];
 
 function setup() {
@@ -400,10 +402,13 @@ function draw() {
     ellipse(i, height - freq, 4, 4);
   }
 }
+
 */
 
 
 <img width="712" height="210" alt="image" src="https://github.com/user-attachments/assets/3cbc79fe-b5f9-4586-bb55-a6cc2f8e76e5" />
 
 Coloca en enlace a tu sketch en p5.js en tu bitácora.
+https://editor.p5js.org/estebanpuerta2006/sketches/9-_8j3-NJ
+
 Selecciona una captura de pantalla de tu sketch y colócala en tu bitácora.
