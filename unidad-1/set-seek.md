@@ -31,7 +31,9 @@ Ya lo ultimo que se me ocurre en el uso de la aleatoridad, es en la generación 
 ##### Modifica el código del ejemplo Example 0.1: A Traditional Random Walk.
 
 ##### Codigo original
-/*
+
+``` js
+
 //Esteban
 
 let walker;
@@ -71,11 +73,13 @@ class Walker {
     }
   }
 }
-*/
+
+```
 
 ##### Codigo cambiado
 
-/*
+``` js
+
 //Esteban
 
 let walker;
@@ -137,12 +141,14 @@ class Walker {
   }
 }
 
-*/
+
+```
 
 ##### Antes de ejecutar el código, escribe en tu bitácora qué esperas que suceda.
 lo principal que yo cambie fue 
 
-/*
+``` js
+
   function setup() { 
    background('red');
  }
@@ -175,7 +181,8 @@ show() {
       this.y--; this.x++;
     }
   }
-*/
+
+```
 
 Esos cambios combinados con el codigo original, lo que haran según lo que creo es:
 
@@ -197,7 +204,8 @@ La diferencia entre estas dos radica en que una distribución uniforme de un res
 #### Modifica el código de la caminata aleatoria para que utilice una distribución no uniforme, favoreciendo el movimiento hacia la derecha.
 Logre hacer que el lado derecho se viera veneficiado, sin embargo lo hice de manera diferente, aqui lo muestro:
 
-/*
+``` js
+
 // Esteban
 
 let walker;
@@ -267,11 +275,12 @@ class Walker {
     counts[choice]++; // actualiza conteo
   }
 }
-*/
+
+```
 
 Luego de varios intentos logre hacer que funcionara con la funación randomGaussian().
 
-/*
+``` js
 // Esteban
 
 let walker;
@@ -341,8 +350,7 @@ function drawTable() {
     text(labels[i] + ": " + counts[i], 460, 40 + i * 30);
   }
 }
-
-*/
+```
 
 ### ACTIVIDAD 05
 
@@ -350,7 +358,9 @@ function drawTable() {
 
 #### Crea un nuevo sketch en p5.js que represente una distribución normal.
 #### Copia el código en tu bitácora.
-/*
+
+
+``` js
 
 let frequencies = [];
 
@@ -403,7 +413,7 @@ function draw() {
   }
 }
 
-*/
+```
 
 
 
@@ -424,7 +434,8 @@ https://editor.p5js.org/estebanpuerta2006/sketches/9-_8j3-NJ
 Modifiqué la caminata aleatoria para incorporar la técnica de Lévy flight, para permitir saltos largos con baja probabilidad y pasos cortos con alta probabilidad. Con esto trato de simular un comportamiento más "realista". Además, añadí una representación visual donde los puntos se colorean según su altura: rojo para las zonas altas, azul para las bajas y naranja para la media. Esperaba ver una distribución más dispersa y menos uniforme, y efectivamente, los saltos largos de Lévy hacen que los puntos exploren zonas más alejadas del centro.
 
 #### Copia el código en tu bitácora.
-/*
+
+``` js
 // Esteban - Lévy flight + colores por altura
 
 let walker;
@@ -509,11 +520,11 @@ class Walker {
     }
   }
 }
-*/
+```
 
 #### Coloca en enlace a tu sketch en p5.js en tu bitácora.
 
-https://editor.p5js.org/estebanpuerta2006/sketches/arTsBCFgW
+[Mi proyecto en p5.js](https://editor.p5js.org/estebanpuerta2006/sketches/arTsBCFgW)
 
 #### Selecciona una captura de pantalla de tu sketch y colócala en tu bitácora.
 
@@ -528,7 +539,8 @@ El ruido Perlin es un tipo de número aleatorio que varía de forma suave y cont
 En el programa que realicé, el uso del ruido Perlin afectó el movimiento del objeto haciendo que no se desplazara al azar, sino con cierta coherencia entre pasos. Esto generó como resultado un trazo más suave, como si el objeto se moviera con intención o como si fuera "dibujando" con un lápiz. Esa suavidad en los cambios de dirección hace que el movimiento sea más estético y menos caótico visualmente.
 
 #### Copia el código en tu bitácora.
-/*
+
+``` js
 // Esteban - Ruido Perlin + colores por altura
 
 let walker;
@@ -604,7 +616,7 @@ class Walker {
     this.ty += 0.01;
   }
 }
-*/
+``` 
 
 #### Coloca en enlace a tu sketch en p5.js en tu bitácora.
 
