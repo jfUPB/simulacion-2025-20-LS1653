@@ -415,3 +415,201 @@ https://editor.p5js.org/estebanpuerta2006/sketches/9-_8j3-NJ
 #### Selecciona una captura de pantalla de tu sketch y colócala en tu bitácora.
 
 <img width="712" height="210" alt="image" src="https://github.com/user-attachments/assets/3cbc79fe-b5f9-4586-bb55-a6cc2f8e76e5" />
+
+
+### ACTIVIDAD 06
+
+#### Crea un nuevo sketch en p5.js donde modifiques uno de los ejemplos anteriores y adiciones de Lévy flight.
+#### Explica por qué usaste esta técnica y qué resultados esberabas obtener.
+Modifiqué la caminata aleatoria para incorporar la técnica de Lévy flight, para permitir saltos largos con baja probabilidad y pasos cortos con alta probabilidad. Con esto trato de simular un comportamiento más "realista". Además, añadí una representación visual donde los puntos se colorean según su altura: rojo para las zonas altas, azul para las bajas y naranja para la media. Esperaba ver una distribución más dispersa y menos uniforme, y efectivamente, los saltos largos de Lévy hacen que los puntos exploren zonas más alejadas del centro.
+
+#### Copia el código en tu bitácora.
+/*
+// Esteban - Lévy flight + colores por altura
+
+let walker;
+let counts = [0, 0, 0, 0]; // [x++, x--, y++, y--]
+let labels = ["x++", "x--", "y++", "y--"];
+
+function setup() {
+  createCanvas(640, 240);
+  walker = new Walker("circle");
+  background(220);
+  textSize(20);
+  textAlign(CENTER, CENTER);
+  fill(255);
+}
+
+function draw() {
+  walker.step();
+  walker.show();
+  drawTable();
+}
+
+function drawTable() {
+  noStroke();
+  fill(0, 150); // fondo tabla
+  rect(440, 0, 200, height);
+
+  fill(255);
+  for (let i = 0; i < counts.length; i++) {
+    text(labels[i], 540, 30 + i * 50);
+    text(counts[i], 600, 30 + i * 50);
+  }
+}
+
+class Walker {
+  constructor(_drawType) {
+    this.x = width / 2;
+    this.y = height / 2;
+    this.drawType = _drawType;
+  }
+
+  show() {
+    // Color según altura
+    if (this.y < 80) {
+      fill('red');
+    } else if (this.y > 160) {
+      fill('blue');
+    } else {
+      fill('orange');
+    }
+    noStroke();
+    circle(this.x, this.y, 4);
+  }
+
+  step() {
+    let stepSize = this.levy(); // puede ser grande o pequeño
+    let direction = int(random(4));
+    let dx = 0;
+    let dy = 0;
+
+    if (direction === 0) { dx = stepSize; counts[0]++; }    // x++
+    else if (direction === 1) { dx = -stepSize; counts[1]++; } // x--
+    else if (direction === 2) { dy = stepSize; counts[2]++; }  // y++
+    else { dy = -stepSize; counts[3]++; }                      // y--
+
+    this.x += dx;
+    this.y += dy;
+
+    // Limitar dentro del canvas
+    this.x = constrain(this.x, 0, width);
+    this.y = constrain(this.y, 0, height);
+  }
+
+  levy() {
+    let r1, r2, p;
+    while (true) {
+      r1 = random();       // número entre 0 y 1
+      p = r1;
+      r2 = random();       // otro número aleatorio
+      if (r2 < p) {
+        return int(map(r1, 0, 1, 1, 25)); // devuelve un valor entre 1 y 25
+      }
+    }
+  }
+}
+*/
+
+#### Coloca en enlace a tu sketch en p5.js en tu bitácora.
+
+https://editor.p5js.org/estebanpuerta2006/sketches/arTsBCFgW
+
+#### Selecciona una captura de pantalla de tu sketch y colócala en tu bitácora.
+
+<img width="798" height="302" alt="image" src="https://github.com/user-attachments/assets/785c8c25-c9fb-4ba7-a1dc-ace22b788df0" />
+
+### ACTIVIDAD 07
+
+#### Crea un nuevo sketch en p5.js donde los visualices.
+#### Explica el concepto qué resultados esberabas obtener.
+El ruido Perlin es un tipo de número aleatorio que varía de forma suave y continua, en lugar de cambiar bruscamente como lo hace el random() tradicional. Esto significa que los valores generados por noise() están correlacionados entre sí, lo cual permite crear movimientos o transiciones más naturales y fluidas.
+
+En el programa que realicé, el uso del ruido Perlin afectó el movimiento del objeto haciendo que no se desplazara al azar, sino con cierta coherencia entre pasos. Esto generó como resultado un trazo más suave, como si el objeto se moviera con intención o como si fuera "dibujando" con un lápiz. Esa suavidad en los cambios de dirección hace que el movimiento sea más estético y menos caótico visualmente.
+
+#### Copia el código en tu bitácora.
+/*
+// Esteban - Ruido Perlin + colores por altura
+
+let walker;
+let counts = [0, 0, 0, 0]; // [x++, x--, y++, y--]
+let labels = ["x++", "x--", "y++", "y--"];
+
+function setup() {
+  createCanvas(640, 240);
+  walker = new Walker("circle");
+  background(220);
+  textSize(20);
+  textAlign(CENTER, CENTER);
+  fill(255);
+}
+
+function draw() {
+  walker.step();
+  walker.show();
+  drawTable();
+}
+
+function drawTable() {
+  noStroke();
+  fill(0, 150); // fondo tabla
+  rect(440, 0, 200, height);
+
+  fill(255);
+  for (let i = 0; i < counts.length; i++) {
+    text(labels[i], 540, 30 + i * 50);
+    text(counts[i], 600, 30 + i * 50);
+  }
+}
+
+class Walker {
+  constructor(_drawType) {
+    this.x = width / 2;
+    this.y = height / 2;
+    this.tx = random(1000); // tiempo para Perlin en x
+    this.ty = random(1000); // tiempo para Perlin en y
+    this.drawType = _drawType;
+  }
+
+  show() {
+    // Color según altura
+    if (this.y < 80) {
+      fill('red');
+    } else if (this.y > 160) {
+      fill('blue');
+    } else {
+      fill('orange');
+    }
+    noStroke();
+    circle(this.x, this.y, 4);
+  }
+
+  step() {
+    // Movimiento suavizado con Perlin noise
+    let newX = map(noise(this.tx), 0, 1, 0, width);
+    let newY = map(noise(this.ty), 0, 1, 0, height);
+
+    // Conteo direccional
+    if (newX > this.x) counts[0]++;
+    else if (newX < this.x) counts[1]++;
+
+    if (newY > this.y) counts[2]++;
+    else if (newY < this.y) counts[3]++;
+
+    this.x = newX;
+    this.y = newY;
+
+    // Avanzar en "tiempo" Perlin
+    this.tx += 0.01;
+    this.ty += 0.01;
+  }
+}
+*/
+
+#### Coloca en enlace a tu sketch en p5.js en tu bitácora.
+
+https://editor.p5js.org/estebanpuerta2006/sketches/8AHJ4lggE
+
+#### Selecciona una captura de pantalla de tu sketch y colócala en tu bitácora.
+
+<img width="800" height="300" alt="image" src="https://github.com/user-attachments/assets/62e97748-31fb-4526-b706-7a7d734f49f2" />
