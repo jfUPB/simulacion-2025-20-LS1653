@@ -32,8 +32,18 @@ Mis dos mayores problemas fue el rendimiento, pues yo queria agregar más trazos
 
 ##### Si tuvieras que empezar la Actividad 08 de nuevo, ¿Qué harías de manera diferente basándote en lo que sabes ahora?
 Lo que yo haria es primero, configurar el cambio aleatorio del fondo y luego pintar por ensima el trazo, para que esta vez sin se puedan convinar estas dos acciones, de resto el proceso lo dejaria igual.
+
 ### Actividad 10
 #### Coevaluación
+##### Compañero:
+Simara Paola Villasmil Jiménez
+
+##### URL:
+https://github.com/jfUPB/simulacion-2025-20-catflyx/blob/unidad1/reflect/unidad-1/reflect.md
+
+##### Comentario:
+
+
 
 ### Actividad 11
 #### Feedback
