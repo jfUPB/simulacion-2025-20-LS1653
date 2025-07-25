@@ -44,6 +44,8 @@ https://github.com/jfUPB/simulacion-2025-20-catflyx/blob/unidad1/reflect/unidad-
 ##### Comentario:
 Me gusta el uso de los colores desaturados a la hora de generar las figuaras pues genera una sensación de humo o vapor, estuvo muy interesante visualmente y fue muy dinamico debido a que en sierta medida puedo intervenir en el direccionamiento de la obra, cabe resaltar que el trabajo cumple con todo lo pedido en la rubrica y en general me parecio un muy buen trabajo.
 
+##### Conversación:
+Lo estuvimos conversando durante la clase.
 
 ### Actividad 11
 #### Feedback
