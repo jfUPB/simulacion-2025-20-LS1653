@@ -64,3 +64,12 @@ Esta linea no funciona debido a que al ser un vector no se puede sumar de la for
 La línea position = position + velocity; no funciona porque position y velocity son objetos del tipo p5.Vector, no números simples.
 En JavaScript no se pueden sumar objetos directamente usando +. Esa operación solo funciona con tipos primitivos como números o cadenas de texto.
 Los vectores tienen componentes (x, y, z), y para sumarlos correctamente se debe usar el método .add(), que sabe cómo combinar cada componente individualmente:
+
+
+### Actividad 02
+
+#### Tome uno de los ejemplos de caminantes del Capítulo 0 y conviértalo en vectores de uso.
+#### Solución:
+``` js
+
+```
