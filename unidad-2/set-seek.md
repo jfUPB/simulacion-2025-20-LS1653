@@ -215,13 +215,50 @@ Ahora la diferencia entre mag() y magSq() es que magSq() calcula tambien el tama
 Y como se ve en la imagen dedido a que magSq() cancela la raiz, hace que calcular su resultado sea más sencillo lo cual la hace más eficiente.
 
 ##### ¿Para qué sirve el método normalize()?
+El método normalize() sirve para convertir un vector en uno de la misma dirección pero con una longitud (magnitud) igual a 1, hay que tener en cuenta que el vector que devuelve con magnitud 1 no reemplaza o cambia al vector original.
 
 ##### Te encuentras con un periodista en la calle y te pregunta ¿Para qué sirve el método dot()? ¿Qué le responderías en un frase?
+El método dot() sirve para calcular cuánto apuntan dos vectores en la misma dirección; osea nos devuelve un número que nos dice si van en la misma dirección, en direcciones opuestas o si son perpendiculares.
 
 ##### El método dot() tiene una versión estática y una de instancia. ¿Cuál es la diferencia entre ambas?
+###### Versión de instancia
+``` js
+let v1 = createVector(1, 2);
+let v2 = createVector(3, 4);
+
+let resultado = v1.dot(v2);
+```
+Se llama desde un objeto vector (en este caso v1).
+
+Hace el producto punto entre v1 y v2.
+
+Es como decir:
+"Desde el punto de vista de v1, dime cuál es su producto punto con v2".
+
+Versión estática
+``` js
+let v1 = createVector(1, 2);
+let v2 = createVector(3, 4);
+
+let resultado = p5.Vector.dot(v1, v2);
+```
+Se llama desde la clase Vector directamente, sin necesidad de tener un objeto que llame el método.
+
+También hace el producto punto entre v1 y v2.
+
+Es como decir:
+"Dado dos vectores, dame su producto punto" — sin estar "parado" en ninguno en particular.
 
 ##### Ahora el mismo periodista curioso de antes te pregunta si le puedes dar una intuición geométrica acerca del producto cruz. Entonces te pregunta ¿Cuál es la interpretación geométrica del producto cruz de dos vectores? Tu respuesta debe incluir qué pasa con la orientación y la magnitud del vector resultante.
+El producto cruz de dos vectores genera un nuevo vector perpendicular (es decir, en ángulo recto) al plano que forman esos dos vectores.
+
+La dirección de ese nuevo vector se determina con la regla de la mano derecha (si apuntas el índice en la dirección del primer vector y el medio hacia el segundo, el pulgar apunta en la dirección del producto cruz).
+
+La magnitud (o tamaño) del vector resultante equivale al área del paralelogramo formado por los dos vectores originales.
+
+Si los dos vectores son paralelos, el resultado es el vector cero porque no hay “plano” entre ellos.
 
 ##### ¿Para que te puede servir el método dist()?
+El método dist() sirve para calcular la distancia entre dos puntos definidos por sus coordenadas, usando el teorema de Pitágoras. Es útil para saber qué tan lejos están objetos o entidades en una escena ya sea en 2D o 3D.
 
 ##### ¿Para qué sirven los métodos normalize() y limit()?
