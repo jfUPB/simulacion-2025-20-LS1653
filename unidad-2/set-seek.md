@@ -5,8 +5,12 @@
 ### Actividad 01
 
 #### ¿Cómo funciona la suma dos vectores en p5.js?
+Para convertir el ejemplo original al uso de vectores, primero reemplacé las variables this.x y this.y por un solo vector llamado this.position, creado con createVector(width / 2, height / 2) en el constructor. Este vector almacena tanto la posición en x como en y del caminante.
 
-Para sumar dos vectores se usa el metodo add(), lo que hace dicha función es sumar los compenetes del vector:
+Luego, en el método show(), utilicé point(this.position.x, this.position.y) para dibujar el punto usando las coordenadas del vector.
+
+Por último, en el método step(), modifiqué directamente los componentes x o y del vector position dependiendo del resultado aleatorio, lo cual permite mover el punto
+
 ej: 
 ``` js
 // The Nature of Code
