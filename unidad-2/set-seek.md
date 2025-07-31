@@ -262,3 +262,12 @@ Si los dos vectores son paralelos, el resultado es el vector cero porque no hay 
 El método dist() sirve para calcular la distancia entre dos puntos definidos por sus coordenadas, usando el teorema de Pitágoras. Es útil para saber qué tan lejos están objetos o entidades en una escena ya sea en 2D o 3D.
 
 ##### ¿Para qué sirven los métodos normalize() y limit()?
+###### normalize()
+Como ya se habia respondido el método normalize() sirve para convertir un vector a un vector unitario, es decir, mantiene la misma dirección pero su magnitud pasa a ser 1.
+
+Su utilidad basicamente es que se puede utilizar para conservar la dirección de un vector sin que su tamaño influya y además es útil cuando solo te importa la dirección de un objeto, no qué tan rápido.
+
+###### limit()
+El método limit(max) sirve para restringir la magnitud (tamaño) de un vector a un valor máximo. Si el vector ya tiene menor magnitud, no lo cambia.
+
+Su utilidad basicamente es que se puede utilizar para evitar y regular valores como la velocidad.
