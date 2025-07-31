@@ -70,6 +70,58 @@ Los vectores tienen componentes (x, y, z), y para sumarlos correctamente se debe
 
 #### Tome uno de los ejemplos de caminantes del Capítulo 0 y conviértalo en vectores de uso.
 #### Solución:
-``` js
+##### ¿Qué tuviste que hacer para hacer la conversión propuesta?
+Para convertir el ejemplo original al uso de vectores, primero reemplacé las variables this.x y this.y por un solo vector llamado this.position, creado con createVector(width / 2, height / 2) en el constructor. Este vector almacena tanto la posición en x como en y del caminante.
 
+Luego, en el método show(), utilicé point(this.position.x, this.position.y) para dibujar el punto usando las coordenadas del vector.
+
+Por último, en el método step(), modifiqué directamente los componentes x o y del vector position dependiendo del resultado aleatorio, lo cual permite que se mueva el punto.
+
+##### Muestra el código que utilizaste para resolver el ejercicio.
+``` js
+let walker;
+
+function setup() {
+  createCanvas(640, 240);
+  walker = new Walker();
+  background(255);
+}
+
+function draw() {
+  walker.step();
+  walker.show();
+}
+
+class Walker {
+  constructor() {
+    this.position = createVector(width / 2, height / 2);// Usamos un vector para la posición
+    
+    //this.x = width / 2;
+    //this.y = height / 2;
+  }
+
+  show() {
+    stroke(0);
+    //point(this.position.x, this.position.y);
+    point(this.position);// Accedemos a x e y desde el vector
+    //point(this.position*mouseX/width, this.position*mouseY/height);
+  }
+
+  step() {
+    const choice = floor(random(4));
+    if (choice == 0) {
+      //this.x++;
+      this.position.x++;
+    } else if (choice == 1) {
+      //this.x--;
+      this.position.x--;
+    } else if (choice == 2) {
+      //this.y++;
+      this.position.y++;
+    } else {
+      //this.y--;
+      this.position.y--;
+    }
+  }
+}
 ```
