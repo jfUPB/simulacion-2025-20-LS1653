@@ -129,3 +129,73 @@ class Walker {
   }
 }
 ```
+
+### Actividad 03
+#### Experimenta
+#### Dale una mirada a este código:
+```js
+let position;
+
+function setup() {
+    createCanvas(400, 400);
+    position = createVector(6,9);
+    console.log(position.toString());
+    playingVector(position);
+    console.log(position.toString());
+    noLoop();
+}
+
+function playingVector(v){
+    v.x = 20;
+    v.y = 30;
+}
+
+function draw() {
+    background(220);
+    console.log("Only once");
+}
+```
+
+#### ¿Qué resultado esperas obtener en el programa anterior?
+Despues de desglosar en menor o mayor medida el codigo puedo llegar a deducir que lo que tendre como resultado es:
+Que en la consola se imprimira el vector posición, como no se que hace el metodo noLoop(), voy a considerar que para el programa, lo que a su vez hace que solo se imprima dos veces el vectoe posición en la consola.
+
+#### ¿Qué resultado obtuviste?
+Como dije al final solo se imprime dos veces el valor del vector posición, sin embargo no fue por la razón que dije, si o si en el programa se imprimira dos veces el valor del vector posición, lo que hace realmente el metodo noloop() es hacer que el programa se detenga luego de imprimir el mensaje en la función draw().
+
+#### Recuerda los conceptos de paso por valor y paso por referencia en programación. Muestra ejemplos de este concepto en javascript.
+##### Paso por valor: 
+significa que se copia el valor original. Si se modifica el valor dentro de una función, el original no cambia. Esto ocurre con tipos primitivos como números o strings.
+
+ej:
+``` js
+function cambiaValor(x) {
+  x = 100;
+}
+
+let a = 5;
+cambiaValor(a);
+console.log(a); // Imprime 5, no fue modificado
+```
+
+##### Paso por referencia: 
+significa que se pasa la referencia al mismo objeto o estructura. Si se modifica dentro de una función, el original también cambia. Esto ocurre con objetos y arrays.
+
+ej:
+``` js
+function modificaObjeto(obj) {
+  obj.nombre = "Nuevo";
+}
+
+let persona = { nombre: "Original" };
+modificaObjeto(persona);
+console.log(persona.nombre); // Imprime "Nuevo"
+```
+
+#### ¿Qué tipo de paso se está realizando en el código?
+En el código se está realizando paso por referencia, ya que se está pasando el vector posición (el cual es un objeto) a la función playingVector(v). Como los objetos en JavaScript se pasan por referencia, cualquier cambio hecho a la variable v dentro de la función también afecta directamente a position.
+
+Esto se puede ver y corroborar al ver que después de ejecutar playingVector(position), los valores de position han cambiado de (6, 9) a (20, 30).
+
+#### ¿Qué aprendiste?
+Aprendi dos cosas la primera que no tiene tanto que ver con lo explicado en este ejercicio es que el metodo noloop() detiene el ciclo interno del codigo generando que solo se ejecuten las funciones una vez y no continuamente en el tiempo.
