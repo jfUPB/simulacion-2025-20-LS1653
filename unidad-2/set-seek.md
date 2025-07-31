@@ -204,3 +204,4 @@ Lo segundo fue que comprendí mejor cómo funcionan los tipos de datos cuando se
 
 ### Actividad 04
 #### Explora posibilidades
+#### Explora posibilidades
