@@ -205,6 +205,12 @@ Lo segundo fue que comprendí mejor cómo funcionan los tipos de datos cuando se
 ### Actividad 04
 #### Explora posibilidades
 ##### ¿Para qué sirve el método mag()? Nota que hay otro método llamado magSq(). ¿Cuál es la diferencia entre ambos? ¿Cuál es más eficiente?
+El metodo mag() sirve para medir la magnitud de un vector o lo que es lo mismo encontrar cual es el tamaño de dicho vector, lo cual sirve para facilitarnos hacer operaciones  como normalización, comparación de velocidades o distancias.
+
+Ahora la diferencia entre mag() y magSq() es que magSq() calcula tambien el tamaño del vector pero al cuadrado, lo cual visualmente se ve de esta manera:
+<img width="828" height="172" alt="image" src="https://github.com/user-attachments/assets/7027b841-1b04-4f22-ab87-a38acf590d3d" />
+
+Y como se ve en la imagen dedido a que magSq() cancela la raiz, hace que calcular su resultado sea más sencillo lo cual la hace más eficiente.
 
 ##### ¿Para qué sirve el método normalize()?
 
