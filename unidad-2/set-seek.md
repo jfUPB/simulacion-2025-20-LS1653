@@ -199,3 +199,8 @@ Esto se puede ver y corroborar al ver que después de ejecutar playingVector(pos
 
 #### ¿Qué aprendiste?
 Aprendi dos cosas la primera que no tiene tanto que ver con lo explicado en este ejercicio es que el metodo noloop() detiene el ciclo interno del codigo generando que solo se ejecuten las funciones una vez y no continuamente en el tiempo.
+
+Lo segundo fue que comprendí mejor cómo funcionan los tipos de datos cuando se pasan a funciones. En este caso, al pasar un objeto, este se pasa por referencia, lo que significa que cualquier cambio dentro de la función afecta directamente al objeto original. Considero que este concepto sera muy util para manipular datos complejos, y me abre la posibilidad de experimentar con estructuras más dinámicas, como listas de objetos que pueden modificarse según ciertas condiciones o entradas aleatorias.
+
+### Actividad 04
+#### Explora posibilidades
