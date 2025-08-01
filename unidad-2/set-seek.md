@@ -271,3 +271,103 @@ Su utilidad basicamente es que se puede utilizar para conservar la dirección de
 El método limit(max) sirve para restringir la magnitud (tamaño) de un vector a un valor máximo. Si el vector ya tiene menor magnitud, no lo cambia.
 
 Su utilidad basicamente es que se puede utilizar para evitar y regular valores como la velocidad.
+
+### Actividad 05
+#### Interpolamos?
+#### Vas a tomar como inspiración este ejemplo de la referencia de p5.js:
+
+``` js
+function setup() {
+    createCanvas(100, 100);
+}
+
+function draw() {
+    background(200);
+
+    let v0 = createVector(50, 50);
+    let v1 = createVector(30, 0);
+    let v2 = createVector(0, 30);
+    let v3 = p5.Vector.lerp(v1, v2, 0.5);
+    drawArrow(v0, v1, 'red');
+    drawArrow(v0, v2, 'blue');
+    drawArrow(v0, v3, 'purple');
+}
+
+function drawArrow(base, vec, myColor) {
+    push();
+    stroke(myColor);
+    strokeWeight(3);
+    fill(myColor);
+    translate(base.x, base.y);
+    line(0, 0, vec.x, vec.y);
+    rotate(vec.heading());
+    let arrowSize = 7;
+    translate(vec.mag() - arrowSize, 0);
+    triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);
+    pop();
+}
+```
+
+#### Mi resultado
+``` js
+let l = 0;
+let arriba;
+
+function setup() {
+    createCanvas(400, 400);
+}
+
+function draw() {
+    background(200);
+    
+    let v0 = createVector(50, 50);
+    let v1 = createVector(200, 0);
+    let v2 = createVector(0, 200);
+    let v3 = p5.Vector.lerp(v1, v2, l);
+    let origen = p5.Vector.add(v0, v1);
+    let destino = p5.Vector.add(v0, v2);
+    let dir = p5.Vector.sub(destino, origen);
+    
+    // Interpolación de color
+    let c1 = color(255, 0, 0);    // rojo
+    let c2 = color(0, 0, 255);    // azul
+    let interpolado = lerpColor(c1, c2, l);  // color interpolado
+
+    drawArrow(v0, v1, 'red');
+    drawArrow(v0, v2, 'blue');
+    drawArrow(v0, v3, interpolado);  // color cambia dinámicamente
+    drawArrow(origen, dir, 'green');
+  
+    if(l <= 0){
+        arriba = true;
+    }
+    if(l >= 1){
+        arriba = false;
+    }
+    
+    if(arriba){
+        l = l + 0.01;
+    } else {
+        l = l - 0.01;
+    }
+}
+
+function drawArrow(base, vec, myColor) {
+    push();
+    stroke(myColor);
+    strokeWeight(3);
+    fill(myColor);
+    translate(base.x, base.y);
+    line(0, 0, vec.x, vec.y);
+    rotate(vec.heading());
+    let arrowSize = 7;
+    translate(vec.mag() - arrowSize, 0);
+    triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);
+    pop();
+}
+```
+
+#### Analiza cómo funciona el método lerp().
+lerp() se puede tomar como la forma de calcular las compoenetes de un vector teniendo en cuenta otrod dos vectores, esto lo que hace es que la posición de este nuevo vector sea definido como una interpolación de las posiciones de esos dos vectores, dependiendo de cual sea el tercer parametro que uno le coloque entre 1 y 0, este nuevo vector se asemejara más a uno de los vectores, pj: darle 1 como parametro hara que se paresca más al segundo vector, darle como parametro 1 hara que se paresca al primero y si se le da 0.5 hara que ese nuevo vector sea la parte media de los dos.
+
+#### Nota que además de la interpolación lineal de vectores, también puedes hacer interpolación lineal de colores con el método lerpColor().
