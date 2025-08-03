@@ -396,3 +396,16 @@ El concepto central de este tema es:
 Geométricamente, esto se interpreta en un espacio 2D o 3D, donde un objeto (en este caso, un círculo o esfera) posee un vector de velocidad que indica su dirección y magnitud de desplazamiento. En cada fotograma, este vector de velocidad se suma a su vector de posición, lo que produce un cambio en su ubicación y genera el movimiento.
 
 #### ¿Cómo se aplica motion 101 en el ejemplo?
+En el código, Motion 101 se aplica dentro de la clase Mover, comenzando en el constructor donde se definen las propiedades:
+
+this.position: representa la posición actual del objeto.
+
+this.velocity: representa la velocidad, un vector que indica la dirección y magnitud del movimiento.
+
+Luego, en el método update(), se ejecuta la operación clave que genera el movimiento:
+```js
+update() {
+  this.position.add(this.velocity);
+}
+```
+Con esta línea, en cada frame, la posición del objeto se actualiza sumando la velocidad, lo que genera el desplazamiento del objeto en la pantalla. Esta es la aplicación directa del principio de Motion 101.
