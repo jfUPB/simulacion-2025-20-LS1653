@@ -381,8 +381,18 @@ ej:
     let interpolado = lerpColor(c1, c2, l);  // color interpolado
 ```
 
-¿Cómo se dibuja una flecha usando drawArrow()?
+#### ¿Cómo se dibuja una flecha usando drawArrow()?
 Lo primero que se hace es:
 Crear una line la cual se le da un trazo del color que definimos en la función draw() y luego mandamos a drawarrow() a ese mismo traso se le asigna un ancho para hacer que la line dibujada sea más ancha, con esta linea ya dibujada se translada a las coordenadas dadas en el vector base o tambien conocido como v0. Hay que tener en cuenta que la linea que se genera trenda los valores del vector vec, el cual segun la linea que estemos generando en el contexto de esta actividad puede ser v1, v2 o v3.
 
 Terminada la linea ahora se hace un triangulo que imitara la punta de una flecha, para hacer esta primero se genera un tirangulo con un tamaño ya definido, luego rotaremos dichos triandulos según el angulo direccional del vector para que los triangulos esten alineados con las lineas, para finalizar estos triangulos se tranladan al punto final del vector sin embargo a este punto final se le resta el tamaño definido del triangulo para que este trianggulo quede sobre la linea.
+
+### Actividad 06
+#### Cuál es el concepto del marco motion 101 y cómo se interpreta geométricamente.
+El concepto central de este tema es:
+1)La velocidad afecta la posición.
+2)(Más adelante se explica que la aceleración afecta la velocidad, pero este punto no se abordará en esta interpretación geométrica.)
+
+Geométricamente, esto se interpreta en un espacio 2D o 3D, donde un objeto (en este caso, un círculo o esfera) posee un vector de velocidad que indica su dirección y magnitud de desplazamiento. En cada fotograma, este vector de velocidad se suma a su vector de posición, lo que produce un cambio en su ubicación y genera el movimiento.
+
+#### ¿Cómo se aplica motion 101 en el ejemplo?
