@@ -308,6 +308,7 @@ function drawArrow(base, vec, myColor) {
 }
 ```
 
+#### El código que genera el resultado que te pedí.
 #### Mi resultado
 ``` js
 let l = 0;
@@ -366,8 +367,22 @@ function drawArrow(base, vec, myColor) {
     pop();
 }
 ```
-
-#### Analiza cómo funciona el método lerp().
-lerp() se puede tomar como la forma de calcular las compoenetes de un vector teniendo en cuenta otrod dos vectores, esto lo que hace es que la posición de este nuevo vector sea definido como una interpolación de las posiciones de esos dos vectores, dependiendo de cual sea el tercer parametro que uno le coloque entre 1 y 0, este nuevo vector se asemejara más a uno de los vectores, pj: darle 1 como parametro hara que se paresca más al segundo vector, darle como parametro 1 hara que se paresca al primero y si se le da 0.5 hara que ese nuevo vector sea la parte media de los dos.
+#### ¿Cómo funciona lerp() y lerpColor().
+#### Cómo funciona el método lerp().
+lerp() se puede tomar como la forma de calcular las compoenetes de un vector teniendo en cuenta otros dos vectores, esto lo que hace es que la posición de este nuevo vector sea definido como una interpolación de las posiciones de esos dos vectores, dependiendo de cual sea el tercer parametro que uno le coloque entre 1 y 0, este nuevo vector se asemejara más a uno de los vectores, pj: darle 1 como parametro hara que se paresca más al segundo vector, darle como parametro 1 hara que se paresca al primero y si se le da 0.5 hara que ese nuevo vector sea la parte media de los dos.
 
 #### Nota que además de la interpolación lineal de vectores, también puedes hacer interpolación lineal de colores con el método lerpColor().
+Al usar lerpColor() es como usar el rjb, la diferencia es que los datos que pones son el rgb con el que comienza y el otro es el rgb con el que termina la interpolación, el ultimo dato es el que hace el cambio de color de forma gradual hasta llegar al valor del segundo dato, basicamente funciona igual que la función lerp(), simplemente que es aplicada al cambio gradual de color.
+ej:
+``` js
+// Interpolación de color
+    let c1 = color(255, 0, 0);    // rojo
+    let c2 = color(0, 0, 255);    // azul
+    let interpolado = lerpColor(c1, c2, l);  // color interpolado
+```
+
+¿Cómo se dibuja una flecha usando drawArrow()?
+Lo primero que se hace es:
+Crear una line la cual se le da un trazo del color que definimos en la función draw() y luego mandamos a drawarrow() a ese mismo traso se le asigna un ancho para hacer que la line dibujada sea más ancha, con esta linea ya dibujada se translada a las coordenadas dadas en el vector base o tambien conocido como v0. Hay que tener en cuenta que la linea que se genera trenda los valores del vector vec, el cual segun la linea que estemos generando en el contexto de esta actividad puede ser v1, v2 o v3.
+
+Terminada la linea ahora se hace un triangulo que imitara la punta de una flecha, para hacer esta primero se genera un tirangulo con un tamaño ya definido, luego rotaremos dichos triandulos según el angulo direccional del vector para que los triangulos esten alineados con las lineas, para finalizar estos triangulos se tranladan al punto final del vector sin embargo a este punto final se le resta el tamaño definido del triangulo para que este trianggulo quede sobre la linea.
