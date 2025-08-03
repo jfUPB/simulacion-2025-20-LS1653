@@ -409,3 +409,98 @@ update() {
 }
 ```
 Con esta línea, en cada frame, la posición del objeto se actualiza sumando la velocidad, lo que genera el desplazamiento del objeto en la pantalla. Esta es la aplicación directa del principio de Motion 101.
+
+### Actividad 07
+#### Codigo
+``` js
+let movers = [];
+
+function setup() {
+  createCanvas(800, 600);
+  movers.push(new Mover(100, 'constant', color(0, 100, 255)));
+  movers.push(new Mover(300, 'random', color(255, 50, 50)));
+  movers.push(new Mover(500, 'mouse', color(0, 255, 100)));
+}
+
+function draw() {
+  background(240);
+
+  for (let mover of movers) {
+    mover.update();
+    mover.checkEdges();
+    mover.display();
+  }
+}
+
+class Mover {
+  constructor(y, mode, col) {
+    this.startPos = createVector(20, y);     // posición inicial
+    this.position = this.startPos.copy();
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.mode = mode;
+    this.col = col;
+    this.radius = 15;
+    this.resetting = false;
+    this.resetTimer = 0;
+  }
+
+  applyAcceleration() {
+    if (this.mode === 'constant') {
+      this.acceleration = createVector(0.05, 0);
+    } else if (this.mode === 'random') {
+      this.acceleration = p5.Vector.random2D().mult(0.2);
+    } else if (this.mode === 'mouse') {
+      let dir = p5.Vector.sub(createVector(mouseX, mouseY), this.position);
+      dir.setMag(0.1);
+      this.acceleration = dir;
+    }
+  }
+
+  update() {
+    if (this.resetting) {
+      this.resetTimer--;
+      if (this.resetTimer <= 0) {
+        this.resetting = false;
+      }
+      return;  // no se actualiza mientras está "quieto"
+    }
+
+    this.applyAcceleration();
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+  }
+
+  checkEdges() {
+    if (
+      this.position.x > width - this.radius ||
+      this.position.x < this.radius ||
+      this.position.y > height - this.radius ||
+      this.position.y < this.radius
+    ) {
+      this.reset();
+    }
+  }
+
+  reset() {
+    this.position = this.startPos.copy();
+    this.velocity.set(0, 0);
+    this.acceleration.set(0, 0);
+    this.resetting = true;
+    this.resetTimer = 60; // espera 1 segundo (60 frames)
+  }
+
+  display() {
+    fill(this.col);
+    noStroke();
+    ellipse(this.position.x, this.position.y, this.radius * 2);
+  }
+}
+
+```
+#### ¿Qué observaste cuando usas cada una de las aceleraciones propuestas?
+Pude darme cuenta de que la esfera con aceleración constante siempre se desplaza en línea recta, aumentando su velocidad en la misma dirección. Incluso si colisiona con el borde del canvas, puede programarse para invertir la dirección de su aceleración, generando un efecto de rebote hacia el lado opuesto.
+
+Por otro lado, el círculo con aceleración hacia el mouse inicialmente parece seguir al cursor. Sin embargo, si se deja el mouse quieto, el círculo continúa en la misma dirección, sobrepasando el punto objetivo y alejándose indefinidamente si no hay colisión. En caso de colisión, el círculo seguirá intentando avanzar hacia el mouse, pero parecerá detenido al no poder atravesar el obstáculo.
+
+Finalmente, el círculo con aceleración aleatoria cambia su velocidad y dirección de forma impredecible. Puede moverse rápido o lento según los valores que reciba en cada momento, y también puede cambiar bruscamente de dirección si la aceleración toma valores negativos en algún eje.
