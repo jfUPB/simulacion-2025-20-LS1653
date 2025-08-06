@@ -177,7 +177,8 @@ class FallingStar {
 ### Un enlace al proyecto en el editor de p5.js.
 [Mi obra orbital](https://editor.p5js.org/estebanpuerta2006/sketches/BniqhMnUc)
 
-
 ### Una captura de pantalla representativa de tu pieza de arte generativo.
+<img width="922" height="672" alt="image" src="https://github.com/user-attachments/assets/70693cc4-7182-4fd2-8a4c-b1808b24f271" />
+
 
 
