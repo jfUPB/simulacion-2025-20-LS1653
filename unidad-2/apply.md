@@ -179,6 +179,8 @@ class FallingStar {
 
 ### Una captura de pantalla representativa de tu pieza de arte generativo.
 <img width="922" height="672" alt="image" src="https://github.com/user-attachments/assets/70693cc4-7182-4fd2-8a4c-b1808b24f271" />
+<img width="918" height="672" alt="image" src="https://github.com/user-attachments/assets/d87bf524-53dc-4354-8526-ecdab4ad510a" />
+
 
 
 
