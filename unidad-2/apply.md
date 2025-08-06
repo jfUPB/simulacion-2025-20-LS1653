@@ -4,6 +4,7 @@
 ## 🛠 Fase: Apply
 
 ### Describe el concepto de tu obra generativa:
+#### Fase inicial
 Mi obra consiste en un sistema de movimiento generado aleatoriamente en el que múltiples objetos orbitan alrededor del mouse. Estos objetos se desplazan dentro de una órbita definida por la posición del cursor, y su comportamiento cambia dinámicamente dependiendo de la interacción del usuario y las colisiones entre ellos.
 
 Cuando dos objetos colisionan, se destruyen entre sí y el fondo de la pantalla cambia de color, tomando como base una mezcla de los colores aleatorios asignados a dichos objetos. Inmediatamente después, nuevos objetos son generados para mantener constante la población en pantalla.
@@ -12,19 +13,165 @@ Además, con un clic izquierdo del mouse, se invierte la dirección de la órbit
 
 Como agregado, con la tecla "m" se podran generar más objetos y con la tecla "p" se para el traso generado con noise.
 
+#### Resultado que salio 
 ### ¿Cómo piensas aplicar el marco MOTION 101 y por qué?
-Voy a utilizar el marco 101 al generar el movimiento por default de los objetos y tambien con el movimiento orbital generado por el mouse, esto por que puedo afectar la dirección de movimiento de manera más sencilla mediante vectores.
+
 
 ### ¿Qué algoritmo de aceleración vas a utilizar? ¿Por qué?
-Voy a utilizar los tres algoritmos vistos en la actividad 7, todo esto para generar una orbita caotica que se genere más impacto visual.
+
 
 ### El contenido generado debe ser interactivo. Puedes utilizar mouse, teclado, cámara, micrófono, etc, para variar los parámetros del algoritmo en tiempo real.
-Con la tecla "m" se podran generar más objetos y con la tecla "p" se para el traso generado con noise, Tambien al dar click se invertira la fuerza de atracción del mouse.
+
 
 ### El código de la aplicación.
 
 ``` js
+let orbiters = [];
+let orbitDirection = 1;
+let noiseOffset = 0;
+let drawNoise = true;
+let raining = false;
+let stars = [];
 
+function setup() {
+  createCanvas(800, 600);
+  for (let i = 0; i < 10; i++) {
+    orbiters.push(new Orbiter());
+  }
+  background(255);
+}
+
+function draw() {
+  if (drawNoise && random(1) < 0.01) {
+    let r = noise(noiseOffset) * 255;
+    let g = noise(noiseOffset + 100) * 255;
+    let b = noise(noiseOffset + 200) * 255;
+    background(r, g, b, 30);
+    noiseOffset += 0.01;
+  }
+
+  // Orbiters
+  for (let i = orbiters.length - 1; i >= 0; i--) {
+    orbiters[i].update();
+    orbiters[i].display();
+
+    for (let j = i - 1; j >= 0; j--) {
+      let d = dist(
+        orbiters[i].pos.x,
+        orbiters[i].pos.y,
+        orbiters[j].pos.x,
+        orbiters[j].pos.y
+      );
+      if (d < 20) {
+        let mixColor = lerpColor(orbiters[i].col, orbiters[j].col, 0.5);
+        background(mixColor);
+        orbiters.splice(i, 1);
+        orbiters.splice(j, 1);
+        orbiters.push(new Orbiter());
+        orbiters.push(new Orbiter());
+        break;
+      }
+    }
+  }
+
+  // Lluvia de estrellas
+  if (raining && frameCount % 10 === 0) {
+    stars.push(new FallingStar());
+  }
+
+  for (let i = stars.length - 1; i >= 0; i--) {
+    stars[i].update();
+    stars[i].display();
+
+    if (stars[i].shouldRemove) {
+      stars.splice(i, 1);
+    }
+  }
+}
+
+function mousePressed() {
+  if (mouseButton === LEFT) {
+    orbitDirection *= -1;
+  }
+}
+
+function keyPressed() {
+  if (key === 'm') {
+    orbiters.push(new Orbiter());
+  }
+  if (key === 'p') {
+    raining = !raining;
+  }
+  if (key === 'n') {
+    drawNoise = !drawNoise;
+  }
+  if (key === 'r') {
+    // Elimina una órbita solo si hay más de una
+    if (orbiters.length > 1) {
+      orbiters.pop();
+    }
+  }
+}
+
+class Orbiter {
+  constructor() {
+    this.angle = random(TWO_PI);
+    this.radius = random(50, 150);
+    this.speed = random(0.01, 0.03);
+    this.col = color(random(255), random(255), random(255));
+    this.pos = createVector(0, 0);
+  }
+
+  update() {
+    this.angle += this.speed * orbitDirection;
+
+    let orbitX = mouseX + cos(this.angle) * this.radius;
+    let orbitY = mouseY + sin(this.angle) * this.radius;
+
+    this.pos.set(orbitX, orbitY);
+  }
+
+  display() {
+    noStroke();
+    fill(this.col);
+    circle(this.pos.x, this.pos.y, 15);
+  }
+}
+
+class FallingStar {
+  constructor() {
+    this.pos = createVector(random(width), 0);
+    this.speed = random(2, 5);
+    this.frozen = false;
+    this.freezeChance = random(); // Probabilidad al inicio
+    this.shouldRemove = false;
+    this.color = color(random(200, 255), random(200, 255), random(100, 255));
+  }
+
+  update() {
+    if (this.frozen) return;
+
+    if (random(1) < this.freezeChance * 0.01) {
+      this.frozen = true;
+      return;
+    }
+
+    this.pos.y += this.speed;
+
+    if (this.pos.y > height) {
+      this.shouldRemove = true;
+    }
+  }
+
+  display() {
+    fill(this.color);
+    noStroke();
+    push();
+    translate(this.pos.x, this.pos.y);
+    triangle(0, -5, -5, 5, 5, 5);
+    pop();
+  }
+}
 ```
 
 ### Un enlace al proyecto en el editor de p5.js.
@@ -32,3 +179,4 @@ Con la tecla "m" se podran generar más objetos y con la tecla "p" se para el tr
 
 
 ### Una captura de pantalla representativa de tu pieza de arte generativo.
+
