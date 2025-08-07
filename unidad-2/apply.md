@@ -14,9 +14,23 @@ Además, con un clic izquierdo del mouse, se invierte la dirección de la órbit
 Como agregado, con la tecla "m" se podran generar más objetos y con la tecla "p" se para el traso generado con noise.
 
 #### Resultado que salio 
-Al final mi obra termino siendo un sistema de movimiento generado aleatoriamente en el que múltiples objetos orbitan alrededor del mouse. Estos objetos se desplazan dentro de una órbita definida por la posición del cursor, y su comportamiento cambia dinámicamente dependiendo de la interacción del usuario y las colisiones entre ellos.
+Al final mi obra termino siendo un sistema de movimiento generado aleatoriamente en el que múltiples objetos orbitan alrededor del cursor del mouse. Estos objetos se desplazan siguiendo una órbita definida por la posición del cursor, y su comportamiento cambia dinámicamente según la interacción del usuario y las colisiones entre ellos.
 
-Cuando dos objetos colisionan, se destruyen entre sí y el fondo de la pantalla cambia de color, tomando como base una mezcla de los colores aleatorios asignados a dichos objetos. Inmediatamente después, nuevos objetos son generados para mantener constante la población en pantalla.
+Cuando dos círculos colisionan, se destruyen mutuamente y el fondo de la pantalla cambia de color, tomando como base una mezcla de los colores aleatorios asignados a dichos objetos. Inmediatamente después del cambio de color y la destrucción de los círculos, se generan nuevos para mantener constante la población en pantalla.
+
+La interactividad con el espectador se logra de diversas formas:
+
+Los círculos siempre buscan la posición del cursor.
+
+Al presionar la tecla "p", se genera una lluvia de triángulos que simulan una lluvia de estrellas; estos triángulos caen hasta que, aleatoriamente, se detienen o se destruyen al llegar al borde inferior.
+
+Con la tecla "m", se agregan más círculos, haciendo más caótica la órbita y el cambio de color.
+
+Con la tecla "r", se reduce la cantidad de esferas, siendo el mínimo permitido una.
+
+Para dar una sensación de paso del tiempo, el fondo se vuelve gradualmente más oscuro. Si este efecto no es del agrado del espectador, se puede desactivar presionando la tecla "n".
+
+Finalmente, al hacer clic con el botón izquierdo del mouse, las órbitas cambian de dirección.
 ### ¿Cómo piensas aplicar el marco MOTION 101 y por qué?
 
 
@@ -183,6 +197,7 @@ class FallingStar {
 ### Una captura de pantalla representativa de tu pieza de arte generativo.
 <img width="922" height="672" alt="image" src="https://github.com/user-attachments/assets/70693cc4-7182-4fd2-8a4c-b1808b24f271" />
 <img width="918" height="672" alt="image" src="https://github.com/user-attachments/assets/d87bf524-53dc-4354-8526-ecdab4ad510a" />
+
 
 
 
