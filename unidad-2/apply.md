@@ -20,25 +20,68 @@ Cuando dos círculos colisionan, se destruyen mutuamente y el fondo de la pantal
 
 La interactividad con el espectador se logra de diversas formas:
 
-Los círculos siempre buscan la posición del cursor.
+* Los círculos siempre buscan la posición del cursor.
 
-Al presionar la tecla "p", se genera una lluvia de triángulos que simulan una lluvia de estrellas; estos triángulos caen hasta que, aleatoriamente, se detienen o se destruyen al llegar al borde inferior.
+* Al presionar la tecla "p", se genera una lluvia de triángulos que simulan una lluvia de estrellas; estos triángulos caen hasta que, aleatoriamente, se detienen    se destruyen al llegar al borde inferior.
 
-Con la tecla "m", se agregan más círculos, haciendo más caótica la órbita y el cambio de color.
+* Con la tecla "m", se agregan más círculos, haciendo más caótica la órbita y el cambio de color.
 
-Con la tecla "r", se reduce la cantidad de esferas, siendo el mínimo permitido una.
+* Con la tecla "r", se reduce la cantidad de esferas, siendo el mínimo permitido una.
 
-Para dar una sensación de paso del tiempo, el fondo se vuelve gradualmente más oscuro. Si este efecto no es del agrado del espectador, se puede desactivar presionando la tecla "n".
+* Para dar una sensación de paso del tiempo, el fondo se vuelve gradualmente más oscuro. Si este efecto no es del agrado del espectador, se puede desactivar         presionando la tecla "n".
 
-Finalmente, al hacer clic con el botón izquierdo del mouse, las órbitas cambian de dirección.
+* Finalmente, al hacer clic con el botón izquierdo del mouse, las órbitas cambian de dirección.
+
 ### ¿Cómo piensas aplicar el marco MOTION 101 y por qué?
-
+Voy a aplicar el marco MOTION 101 siguiendo el concepto de aceleración → velocidad → posición, donde la posición de cada esfera se actualiza en cada fotograma a partir de su velocidad, y la velocidad se ajusta según la aceleración.
+En este caso, la aceleración estará influenciada por un campo de ruido (con ofNoise()), lo que genera un movimiento fluido y orgánico, evitando trayectorias predecibles y manteniendo una estética dinámica.
 
 ### ¿Qué algoritmo de aceleración vas a utilizar? ¿Por qué?
+En nuestro proyecto, aplicamos el marco MOTION 101 para dar a las partículas un movimiento fluido, natural y continuo. La idea fue separar claramente las tres fases que propone el marco: posición → velocidad → aceleración.
 
+En el código, cada partícula tiene variables para manejar estos tres estados:
+``` js
+ofVec2f pos;     // posición
+ofVec2f vel;     // velocidad
+ofVec2f acc;     // aceleración
+```
+
+Durante la actualización (update()), se pone la aceleración controlada por ofNoise para que el movimiento tenga variaciones suaves y no sea abrupto:
+``` js
+// Usamos ofNoise para generar aceleraciones suaves
+float angle = ofNoise(ofGetElapsedTimef(), id * 0.1) * TWO_PI;
+acc.x = cos(angle) * 0.1;
+acc.y = sin(angle) * 0.1;
+```
+
+Luego, se pone el flujo del MOTION 101:
+``` js
+vel += acc;   // velocidad = velocidad + aceleración
+pos += vel;   // posición = posición + velocidad
+```
+
+Finalmente, para evitar que las partículas se vuelvan incontrolables, limitamos la velocidad máxima:
+``` js
+vel.limit(4); // límite de velocidad
+```
+
+#### ¿Por qué lo usamos?
+Porque el MOTION 101 nos da una estructura clara y controlada del movimiento. Esto permite que, al modificar solo la aceleración todo el movimiento responda de forma orgánica y coherente.
 
 ### El contenido generado debe ser interactivo. Puedes utilizar mouse, teclado, cámara, micrófono, etc, para variar los parámetros del algoritmo en tiempo real.
+La interactividad con el espectador se logra de diversas formas:
 
+* Los círculos siempre buscan la posición del cursor.
+
+* Al presionar la tecla "p", se genera una lluvia de triángulos que simulan una lluvia de estrellas; estos triángulos caen hasta que, aleatoriamente, se detienen    se destruyen al llegar al borde inferior.
+
+* Con la tecla "m", se agregan más círculos, haciendo más caótica la órbita y el cambio de color.
+
+* Con la tecla "r", se reduce la cantidad de esferas, siendo el mínimo permitido una.
+
+* Para dar una sensación de paso del tiempo, el fondo se vuelve gradualmente más oscuro. Si este efecto no es del agrado del espectador, se puede desactivar         presionando la tecla "n".
+
+* Finalmente, al hacer clic con el botón izquierdo del mouse, las órbitas cambian de dirección.
 
 ### El código de la aplicación.
 
@@ -197,6 +240,7 @@ class FallingStar {
 ### Una captura de pantalla representativa de tu pieza de arte generativo.
 <img width="922" height="672" alt="image" src="https://github.com/user-attachments/assets/70693cc4-7182-4fd2-8a4c-b1808b24f271" />
 <img width="918" height="672" alt="image" src="https://github.com/user-attachments/assets/d87bf524-53dc-4354-8526-ecdab4ad510a" />
+
 
 
 
