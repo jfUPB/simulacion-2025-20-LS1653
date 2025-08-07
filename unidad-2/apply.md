@@ -14,6 +14,9 @@ Además, con un clic izquierdo del mouse, se invierte la dirección de la órbit
 Como agregado, con la tecla "m" se podran generar más objetos y con la tecla "p" se para el traso generado con noise.
 
 #### Resultado que salio 
+Al final mi obra termino siendo un sistema de movimiento generado aleatoriamente en el que múltiples objetos orbitan alrededor del mouse. Estos objetos se desplazan dentro de una órbita definida por la posición del cursor, y su comportamiento cambia dinámicamente dependiendo de la interacción del usuario y las colisiones entre ellos.
+
+Cuando dos objetos colisionan, se destruyen entre sí y el fondo de la pantalla cambia de color, tomando como base una mezcla de los colores aleatorios asignados a dichos objetos. Inmediatamente después, nuevos objetos son generados para mantener constante la población en pantalla.
 ### ¿Cómo piensas aplicar el marco MOTION 101 y por qué?
 
 
@@ -180,6 +183,7 @@ class FallingStar {
 ### Una captura de pantalla representativa de tu pieza de arte generativo.
 <img width="922" height="672" alt="image" src="https://github.com/user-attachments/assets/70693cc4-7182-4fd2-8a4c-b1808b24f271" />
 <img width="918" height="672" alt="image" src="https://github.com/user-attachments/assets/d87bf524-53dc-4354-8526-ecdab4ad510a" />
+
 
 
 
