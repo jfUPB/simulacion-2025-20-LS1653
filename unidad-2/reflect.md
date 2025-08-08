@@ -63,7 +63,10 @@
       }
    ```
 ##### ¿Cómo se relaciona el marco MOTION 101 con los conceptos de position, velocidad y aceleración?
+El marco MOTION 101 se basa en representar posición, velocidad y aceleración como vectores, lo que permite modificar de forma dinámica el comportamiento de un objeto. Si estos conceptos no se aplican, el movimiento del objeto dependerá únicamente de valores predefinidos, sin responder a variaciones de fuerzas externas, resultando en desplazamientos repetitivos y aburridos.
+
 ##### Si tuvieras que explicar el concepto de motion 101 de manera geométrica, ¿Cómo lo harías?
+Si tuviera que explicarlo de alguna manera, diria que la interpretación geometrica de motion 101 seria como un triangulo, en el cual cada uno de sus lados representa alguano de los vectores de velocidad, aceleración y posición los cuales por si mismos se pueden describir como el lugar en el que esta el objeto, su cambio de posición y el cambio de velocidad, los cuales nos darian como resultado el desplazamiento dinamico de algún objeto como explique en la pregunta anterior.
 
 
 
