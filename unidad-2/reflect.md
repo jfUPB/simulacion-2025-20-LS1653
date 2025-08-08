@@ -44,19 +44,22 @@
    ``` js
       class Objmove {
         constructor() {
-          this.position = createVector(width / 2, height / 2);
-          this.velocity = createVector(0, 0);
-          this.acceleration = createVector(0, 0);
+          ...
         }
 
         update() {
           this.velocity.add(this.acceleration);
           this.position.add(this.velocity);
-
-
+        }
+        show() {
+          ...
+        }
+        checkEdges() {
+          ...
         }
       }
    ```
 ##### ¿Cómo se relaciona el marco MOTION 101 con los conceptos de position, velocidad y aceleración?
 ##### Si tuvieras que explicar el concepto de motion 101 de manera geométrica, ¿Cómo lo harías?
+
 
