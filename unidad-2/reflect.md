@@ -30,6 +30,9 @@
       }
    ```
 4) El objeto tiene dos o tres vectores: posición, velocidad y aceleración.
+   position: dónde está el objeto.
+   velocity: hacia dónde y qué tan rápido se mueve.
+   acceleration: cómo cambia la velocidad.
    ``` js
       class Objmove {
         constructor() {
@@ -61,5 +64,6 @@
    ```
 ##### ¿Cómo se relaciona el marco MOTION 101 con los conceptos de position, velocidad y aceleración?
 ##### Si tuvieras que explicar el concepto de motion 101 de manera geométrica, ¿Cómo lo harías?
+
 
 
