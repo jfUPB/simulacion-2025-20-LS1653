@@ -68,5 +68,15 @@ El marco MOTION 101 se basa en representar posición, velocidad y aceleración c
 ##### Si tuvieras que explicar el concepto de motion 101 de manera geométrica, ¿Cómo lo harías?
 Si tuviera que explicarlo de alguna manera, diria que la interpretación geometrica de motion 101 seria como un triangulo, en el cual cada uno de sus lados representa alguano de los vectores de velocidad, aceleración y posición los cuales por si mismos se pueden describir como el lugar en el que esta el objeto, su cambio de posición y el cambio de velocidad, los cuales nos darian como resultado el desplazamiento dinamico de algún objeto como explique en la pregunta anterior.
 
+#### Parte 2: reflexión sobre tu proceso (Metacognición)
+##### ¿Qué fue lo más desafiante en la Actividad 08? ¿El concepto creativo, la implementación del algoritmo de aceleración o la integración de la interactividad?
+Diria que lo más complicado fue la implementación de la aceleración debido a querer generar una orbita en la cual los objetos chocacen, tenia que encontrar un valor maximo de la velocidad en el cual no se viera afectado el rendimiento ni la parte visual del trabajo.
 
+##### ¿Tu algoritmo de aceleración produjo el efecto que esperabas? Describe un momento “sorpresa” (esperado o inesperado) durante su desarrollo.
+Lo más inespera que me pudo pasar fue que algunos objetos se movian a velocidades estrepitosas generando que colicionaran inmediatamente entre ellas, lo cual a su vez generaba un cambio de color demaciado abrupto en el fondo llegandome a marear.
+
+##### ¿Cómo ha cambiado tu forma de pensar sobre el “movimiento” en una pantalla después de esta unidad?
+
+
+##### Si tuvieras una semana más, ¿qué mejorarías o qué otro algoritmo de aceleración te gustaría experimentar?
 
