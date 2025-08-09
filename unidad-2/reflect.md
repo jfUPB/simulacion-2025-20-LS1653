@@ -69,6 +69,7 @@ El marco MOTION 101 se basa en representar posición, velocidad y aceleración c
 Si tuviera que explicarlo de alguna manera, diria que la interpretación geometrica de motion 101 seria como un triangulo, en el cual cada uno de sus lados representa alguano de los vectores de velocidad, aceleración y posición los cuales por si mismos se pueden describir como el lugar en el que esta el objeto, su cambio de posición y el cambio de velocidad, los cuales nos darian como resultado el desplazamiento dinamico de algún objeto como explique en la pregunta anterior.
 
 #### Parte 2: reflexión sobre tu proceso (Metacognición)
+
 ##### ¿Qué fue lo más desafiante en la Actividad 08? ¿El concepto creativo, la implementación del algoritmo de aceleración o la integración de la interactividad?
 Diria que lo más complicado fue la implementación de la aceleración debido a querer generar una orbita en la cual los objetos chocacen, tenia que encontrar un valor maximo de la velocidad en el cual no se viera afectado el rendimiento ni la parte visual del trabajo.
 
@@ -76,7 +77,17 @@ Diria que lo más complicado fue la implementación de la aceleración debido a 
 Lo más inespera que me pudo pasar fue que algunos objetos se movian a velocidades estrepitosas generando que colicionaran inmediatamente entre ellas, lo cual a su vez generaba un cambio de color demaciado abrupto en el fondo llegandome a marear.
 
 ##### ¿Cómo ha cambiado tu forma de pensar sobre el “movimiento” en una pantalla después de esta unidad?
-
+He descubierto un sin fin de posibilidades que puedo utilizar para generar movimientos más dinamicos los cuales le puedan dar más vida a mis obras.
 
 ##### Si tuvieras una semana más, ¿qué mejorarías o qué otro algoritmo de aceleración te gustaría experimentar?
+Lo que yo le agregaria seria seguramente más interacciones, como otros objetos que se generen en la pantalla además de los triangulos que caen, talvez dar algún boton que cambie el color de los circulos que orbitan para que no se tenga que esperar a que estas colicionen para que cambien de color y por ultimo dejar que el usuario escoja si quiere que los circulos colisionen o si mejor simplemente dejar que estos dibujen sin interrupción.
 
+### Actividad 10
+#### Intercambia la URL de tu bitácora con un compañero.
+#### Analiza su Actividad 08. Ejecuta su sketch, lee su concepto y revisa su código.
+#### En tu propia bitácora, escribe una retroalimentación constructiva para tu compañero, evaluando:
+Claridad del Concepto: ¿La obra visual refleja la intención descrita?
+Implementación Técnica: ¿Se aplica correctamente el marco MOTION 101? ¿Es el código legible y está bien estructurado?
+Creatividad del Algoritmo: ¿El algoritmo de aceleración es interesante y genera un comportamiento único?
+Calidad de la Interactividad: ¿La interacción es intuitiva y tiene un impacto significativo en la obra?
+##### Conversa con tu compañero sobre tu feedback.
