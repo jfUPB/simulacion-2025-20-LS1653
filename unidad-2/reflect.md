@@ -83,11 +83,15 @@ He descubierto un sin fin de posibilidades que puedo utilizar para generar movim
 Lo que yo le agregaria seria seguramente más interacciones, como otros objetos que se generen en la pantalla además de los triangulos que caen, talvez dar algún boton que cambie el color de los circulos que orbitan para que no se tenga que esperar a que estas colicionen para que cambien de color y por ultimo dejar que el usuario escoja si quiere que los circulos colisionen o si mejor simplemente dejar que estos dibujen sin interrupción.
 
 ### Actividad 10
-#### Intercambia la URL de tu bitácora con un compañero.
-#### Analiza su Actividad 08. Ejecuta su sketch, lee su concepto y revisa su código.
-#### En tu propia bitácora, escribe una retroalimentación constructiva para tu compañero, evaluando:
-Claridad del Concepto: ¿La obra visual refleja la intención descrita?
-Implementación Técnica: ¿Se aplica correctamente el marco MOTION 101? ¿Es el código legible y está bien estructurado?
-Creatividad del Algoritmo: ¿El algoritmo de aceleración es interesante y genera un comportamiento único?
-Calidad de la Interactividad: ¿La interacción es intuitiva y tiene un impacto significativo en la obra?
-##### Conversa con tu compañero sobre tu feedback.
+Compañero:
+Simara Paola Villasmil Jiménez
+
+#### URL:
+https://github.com/jfUPB/simulacion-2025-20-catflyx/blob/unidad1/reflect/unidad-1/reflect.md
+
+#### Comentario:
+##### Claridad del Concepto: 
+
+#### Conversación:
+Lo estuvimos conversando durante la clase.
+
