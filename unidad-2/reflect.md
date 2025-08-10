@@ -90,8 +90,26 @@ Simara Paola Villasmil Jiménez
 https://github.com/jfUPB/simulacion-2025-20-catflyx/blob/unidad1/reflect/unidad-1/reflect.md
 
 #### Comentario:
-##### Claridad del Concepto: 
+##### Claridad del Concepto: La descripción en su mayoria ayuda a visualizar lo que se quiere lograr, sin embargo igual queda muy ambiguo debido a que no se especifican formas, objetos o colores; sin embargo esto se debe a que estas descripciones no fueron colocadas en el concepto sino despues, en la parte del codigo, ya con esa parte leida el concepto queda completamente entendida y representa fielmente el resultado.
 
+##### Creatividad del Algoritmo: El resultado me parecio muy vacano debido a las interacciones de movimiento en la orbita y a los objetos que chocan por la pantalla genera un efecto visual unico y llamativo que siempre cambia.
+
+##### Calidad de la Interactividad: El impacto que genera la interactividad es puramente en la parte visual osea color y forma lo cual le favorece al diseño, ya en la parte de intuitividad, no puedo decir que algo fuera intuitivo ya que las teclas no parecen la inicial de la acción que se hace, tipo z y x cambian de color los objetos que orbitan y r y t los objetos que chocan con el borde de la pantalla y eso no me dice nada.
 #### Conversación:
 Lo estuvimos conversando durante la clase.
 
+### Actividad 11
+#### Continuar: ¿Qué actividad o concepto de esta unidad te resultó más “iluminador” o útil?
+El concepto más util fue la aceleración en el motion 101 debido a que con esta puedo tratar de integrar sistemás fisicos semirealistas o inventarme los mios para hacer proyectos más llamativos.
+
+#### Dejar de hacer: ¿Hubo alguna actividad que te pareció redundante o menos efectiva?
+Por lo que experimente no creo que en este caso hubiera una actividad que fuera util.
+
+#### Empezar a hacer: ¿Qué te gustaría explorar a continuación? ¿Más fuerzas físicas (fricción, resortes), sistemas de partículas, o algo más?
+Justamente me gustaria ver como implementar sistemas fiscos semirealistas para ver que nuevos resultados obtendria.
+
+#### Método de aprendizaje: ¿El paso de los experimentos guiados (Seek) a la aplicación libre (Apply) te pareció una transición natural y efectiva? ¿Por qué?
+Considero que si y no al mismo tiempo, debido a que considero que debimos tener por lo menos otra guia del Seek desbelando utilidades del motion 101, ya que nuestra unica ilustración fue "trate de hacer tres tipos de movimientos" en ves de darnos un repertorio más grande, ya que lo más efectivo a mi gusto es mostrar ejemplos y luego pedir que se haga algo.
+
+#### Comentario adicional: ¿Algo más que quieras compartir sobre tu experiencia en esta unidad?
+Nada en particular, simplemente que me gusto este nuevo tema y voy a probar a hacer algunas cosas nuevas con elasticidad o fricción a ver como interactuan con un sistema como js.
