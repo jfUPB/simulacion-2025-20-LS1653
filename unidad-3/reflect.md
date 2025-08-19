@@ -71,3 +71,87 @@ class Mover {
   }
 }
 ```
+
+### Actividad 05
+
+``` js
+class Mover {
+  constructor() {
+    this.position = createVector();
+    this.velocity = createVector();
+    this.acceleration = createVector();
+  }
+}
+
+//Ahora, considera que en un frame actúan sobre este elemento dos fuerzas: viento y gravedad. Por tanto, en ese frame aplicarás las dos fuerzas:
+
+mover.applyForce(wind);
+
+//y luego:
+
+mover.applyForce(gravity);
+
+//Finalmente, en el método applyForce de la clase Mover tendrás algo como:
+
+applyForce(force) {
+  this.acceleration = force;
+}
+```
+#### ¿Qué problema le ves a este planteamiento?
+El problema que detecto es que estamos cambiando la aceleración cada vez que se llama en vez de que se sumen entre ellas, osea la estamos modificando.
+
+#### ¿Qué solución propones?
+Mi solución seria usar la función add() para sumar las fuerzas y asi tener la verdadera aceleración.
+``` js
+applyForce(force) {
+  let f = p5.Vector.div(force, this.mass); // por si luego usamos masas distintas
+  this.acceleration.add(f); 
+}
+```
+#### ¿Cómo lo implementarías en p5.js?
+La implementación quedaria de esta manera:
+``` js
+let mover; // 👈 declaramos fuera para que lo reconozcan setup y draw
+
+class Mover {
+  constructor(x, y, m) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.mass = m; // masa del objeto
+  }
+
+  applyForce(force) {
+    let f = p5.Vector.div(force, this.mass); 
+    this.acceleration.add(f); // acumulamos la fuerza/m
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0); // reseteamos la aceleración
+  }
+
+  display() {
+    ellipse(this.position.x, this.position.y, this.mass * 16);
+  }
+}
+
+function setup() {
+  createCanvas(400, 400);
+  mover = new Mover(200, 200, 1);
+}
+
+function draw() {
+  background(220);
+
+  let wind = createVector(0.1, 0);    // fuerza hacia la derecha
+  let gravity = createVector(0, 0.2); // fuerza hacia abajo
+
+  mover.applyForce(wind);
+  mover.applyForce(gravity);
+
+  mover.update();
+  mover.display();
+}
+```
