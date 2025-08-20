@@ -197,3 +197,100 @@ Porque la aceleración debe reflejar únicamente las fuerzas del frame actual, n
 #### ¿Por qué se multiplica por cero justo al final de update()?
 
 Porque es justo después de haber usado la aceleración acumulada para modificar la velocidad y la posición.
+
+### Actividad 07
+
+``` js
+mover.applyForce(wind);
+mover.applyForce(gravity);
+
+applyForce(force) {
+    // Asume que la masa es 10
+    force.div(10);
+    this.acceleration.add(force);
+}
+```
+
+#### ¿Qué ves raro?
+
+Lo raro es que se esta dividiendo el vector "force" directamente, pero "force" es un objeto y los objetos se pasan por referencia en js.p5.
+
+Lo cual hace que se modifique el mismo vector force.
+
+Entonces, pj:
+``` js
+let wind = createVector(1, 0);
+let gravity = createVector(0, 0.5);
+
+mover.applyForce(wind);
+mover.applyForce(gravity);
+```
+
+Después de la primera llamada:
+
+wind ya no es (1, 0), ahora quedó dividido entre 10 → (0.1, 0).
+
+Después de la segunda llamada:
+
+gravity tampoco es (0, 0.5), ahora quedó en (0, 0.05).
+
+Es decir, se estan alterando las fuerzas originales, cuando en realidad las fuerzas deberían permanecer intactas, porque son propiedades del "mundo" y no del objeto que recibe la fuerza.
+
+La solución correcta es hacer una copia del vector antes de modificarlo:
+``` js
+applyForce(force) {
+    let f = force.copy();   // 👈 hacemos una copia
+    f.div(10);              // dividimos la copia por la masa
+    this.acceleration.add(f);
+}
+```
+
+De esta forma:
+
+wind sigue siendo (1, 0)
+
+gravity sigue siendo (0, 0.5)
+
+Lo que se modifica es solo la copia, que se acumula en la aceleración.
+
+### Actividad 08
+``` js
+let friction = this.velocity.copy();
+let friction = this.velocity;
+```
+
+#### ¿Cuál es la diferencia entre las dos líneas?
+##### Línea 1: let friction = this.velocity.copy();
+
+.copy() crea un nuevo objeto p5.Vector con los mismos valores que this.velocity.
+
+Esto significa que friction es independiente de this.velocity.
+
+Si después modificas friction, no afecta a this.velocity.
+
+##### Línea 2: let friction = this.velocity;
+
+Aquí no hay copia: friction y this.velocity son dos referencias al mismo objeto en memoria.
+
+Si cambias algo en friction, también cambia en this.velocity, porque ambos apuntan al mismo vector.
+
+#### ¿Qué podría salir mal con let friction = this.velocity;
+
+Lo que puede salir mal es que por ejemplo al querer calcular la fricción basada en la velocidad actual, pero al normalizar o escalar friction, también se termina modificando this.velocity sin querer. Eso rompe la lógica, porque la velocidad debería mantenerse intacta hasta el momento en que sumas todas las fuerzas.
+
+#### En el fragmento de código ¿Cuándo es por VALOR y cuándo por REFERENCIA.
+
+this.velocity.copy() → nuevo objeto (VALOR).
+
+this.velocity → misma referencia (REFERENCIA).
+
+### Actividad 09
+#### 1. Fricción → El cuadrado deslizándose en una colina
+
+Concepto:
+Un cuadrado baja por una pendiente, pero la fricción en la superficie va frenando su velocidad hasta detenerlo. La obra representa la lucha entre el movimiento y la resistencia de la superficie.
+
+Modelado:
+Fuerza de fricción:
+<img width="817" height="108" alt="image" src="https://github.com/user-attachments/assets/d6592618-a053-42d9-9bc4-a241c41b015c" />
+
