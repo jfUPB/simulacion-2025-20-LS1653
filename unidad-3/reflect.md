@@ -367,3 +367,6 @@ class Cuadrado {
 ```
 
 [Enlace del ejemplo](https://editor.p5js.org/estebanpuerta2006/sketches/CAxZodIk7)
+
+<img width="942" height="496" alt="image" src="https://github.com/user-attachments/assets/3f17789b-dcef-4339-8bb3-fff0706e740d" />
+
