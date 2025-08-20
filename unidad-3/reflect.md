@@ -287,10 +287,83 @@ this.velocity → misma referencia (REFERENCIA).
 ### Actividad 09
 #### 1. Fricción → El cuadrado deslizándose en una colina
 
-Concepto:
-Un cuadrado baja por una pendiente, pero la fricción en la superficie va frenando su velocidad hasta detenerlo. La obra representa la lucha entre el movimiento y la resistencia de la superficie.
+Concepto
 
-Modelado:
-Fuerza de fricción:
-<img width="817" height="108" alt="image" src="https://github.com/user-attachments/assets/d6592618-a053-42d9-9bc4-a241c41b015c" />
+Cada click genera un nuevo cuadrado en el borde izquierdo.
+Cada cuadrado arranca con la velocidad inicial predefinida.
+Si se presiona la tecla "v", se aumenta la velocidad inicial, pero solo para los nuevos cuadrados creados.
+Si se presiona la tecla "f", se aumenta la fuerza de fricción para todos los cuadrados ya existentes y los que aparezcan después.
+La fricción hará que los cuadrados se detengan progresivamente.
 
+Modelado de la fuerza: La fricción se modela como una reducción constante de la velocidad en cada frame (this.vel -= friccionBase).
+
+Relación con la obra generativa: Cada cuadrado representa un "objeto en movimiento" que inevitablemente se detiene por la fricción, pero el usuario puede alterar las condiciones del mundo: más velocidad para futuros cuadrados o más fricción para todo el sistema.
+
+Interactividad: El usuario juega con la creación y el comportamiento de los cuadrados, manipulando las fuerzas que actúan sobre ellos.
+
+
+
+``` js
+let cuadrados = [];
+let velocidadInicial = 5; // velocidad inicial de nuevos cuadrados
+let friccionBase = 0.05; // fricción global
+
+function setup() {
+  createCanvas(800, 400);
+}
+
+function draw() {
+  background(220);
+  
+  // Mostrar e actualizar todos los cuadrados
+  for (let c of cuadrados) {
+    c.update();
+    c.display();
+  }
+  
+  // Mostrar info en pantalla
+  fill(0);
+  textSize(14);
+  text("Click: generar cuadrado | 'v': aumentar velocidad (" + velocidadInicial + ") | 'f': aumentar fricción (" + friccionBase.toFixed(2) + ")", 10, height - 10);
+}
+
+function mousePressed() {
+  cuadrados.push(new Cuadrado(velocidadInicial));
+}
+
+function keyPressed() {
+  if (key === 'v' || key === 'V') {
+    velocidadInicial += 1;
+  }
+  if (key === 'f' || key === 'F') {
+    friccionBase += 0.01;
+  }
+}
+
+// Clase Cuadrado
+class Cuadrado {
+  constructor(vel) {
+    this.x = 0;
+    this.y = random(height - 40);
+    this.size = 40;
+    this.vel = vel;
+  }
+  
+  update() {
+    if (this.vel > 0) {
+      // aplicar fricción
+      let friccion = friccionBase;
+      this.vel -= friccion;
+      this.vel = max(this.vel, 0); // evitar negativos
+      this.x += this.vel;
+    }
+  }
+  
+  display() {
+    fill(100, 150, 255);
+    rect(this.x, this.y, this.size, this.size);
+  }
+}
+```
+
+[Enlace del ejemplo](https://editor.p5js.org/estebanpuerta2006/sketches/CAxZodIk7)
