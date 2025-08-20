@@ -189,3 +189,11 @@ update() {
     this.acceleration.mult(0);
 }
 ``` 
+
+#### ¿Por qué es necesario multiplicar la aceleración por cero en cada frame?
+
+Porque la aceleración debe reflejar únicamente las fuerzas del frame actual, no arrastrar fuerzas viejas.
+
+#### ¿Por qué se multiplica por cero justo al final de update()?
+
+Porque es justo después de haber usado la aceleración acumulada para modificar la velocidad y la posición.
