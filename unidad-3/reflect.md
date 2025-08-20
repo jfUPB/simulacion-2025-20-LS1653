@@ -155,3 +155,37 @@ function draw() {
   mover.display();
 }
 ```
+
+### Actividad 06
+``` js
+//Ya te diste cuenta entonces que la fuerza neta es la sumatoria de todas las fuerzas que actúan sobre un objeto. Ahora, ¿Qué pasa si en un frame actúan sobre un objeto dos fuerzas? ¿Cómo calculas la aceleración resultante?
+
+mover.applyForce(wind);
+mover.applyForce(gravity);
+.
+.
+.
+
+applyForce(force) {
+  // Segunda ley de Newton, pero con acumulación de fuerza, sumando todas las fuerzas de entrada a la aceleración
+  this.acceleration.add(force);
+}
+
+⚠️
+
+//Te diste cuenta qué pasó aquí con respecto a la actividad anterior? Vuelve a mirar.
+
+//Entonces en cada frame, la aceleración se calcula como la sumatoria de todas las fuerzas que actúan sobre un objeto:
+
+mover.applyForce(wind);
+mover.applyForce(gravity);
+mover.update();
+
+//Y en el método update() se actualiza la velocidad y la posición del objeto:
+
+update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+}
+``` 
