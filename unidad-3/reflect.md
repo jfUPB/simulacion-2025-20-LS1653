@@ -285,22 +285,20 @@ this.velocity.copy() → nuevo objeto (VALOR).
 this.velocity → misma referencia (REFERENCIA).
 
 ### Actividad 09
-#### 1. Fricción → El cuadrado deslizándose en una colina
+#### 1. Fricción → El cuadrado deslizándose
 
-Concepto
+##### Cómo modelé la fuerza:
 
-Cada click genera un nuevo cuadrado en el borde izquierdo.
-Cada cuadrado arranca con la velocidad inicial predefinida.
-Si se presiona la tecla "v", se aumenta la velocidad inicial, pero solo para los nuevos cuadrados creados.
-Si se presiona la tecla "f", se aumenta la fuerza de fricción para todos los cuadrados ya existentes y los que aparezcan después.
-La fricción hará que los cuadrados se detengan progresivamente.
+La fricción se modeló como una fuerza que se opone al movimiento del objeto.
+Cada vez que se hace clic aparece un cuadrado en el borde izquierdo que se desplaza horizontalmente con una velocidad inicial.
+La fricción se resta a la velocidad en cada frame, hasta que el cuadrado se detiene.
+Con la tecla "v" aumentamos la velocidad inicial de los nuevos cuadrados.
+Con la tecla "f" aumentamos la magnitud de la fricción.
 
-Modelado de la fuerza: La fricción se modela como una reducción constante de la velocidad en cada frame (this.vel -= friccionBase).
+##### Relación conceptual:
 
-Relación con la obra generativa: Cada cuadrado representa un "objeto en movimiento" que inevitablemente se detiene por la fricción, pero el usuario puede alterar las condiciones del mundo: más velocidad para futuros cuadrados o más fricción para todo el sistema.
-
-Interactividad: El usuario juega con la creación y el comportamiento de los cuadrados, manipulando las fuerzas que actúan sobre ellos.
-
+La fricción representa cómo los objetos en el mundo real pierden energía al deslizarse, y aquí los cuadrados se van deteniendo con el tiempo.
+La interactividad simboliza cómo nuestras acciones (clic, teclas) pueden cambiar las condiciones de un sistema físico.
 
 
 ``` js
@@ -370,3 +368,183 @@ class Cuadrado {
 
 <img width="942" height="496" alt="image" src="https://github.com/user-attachments/assets/3f17789b-dcef-4339-8bb3-fff0706e740d" />
 
+
+#### 2. Resistencia del aire y de fluidos → Caida libre del cialo al agua
+
+##### Cómo modelé la fuerza:
+
+Cada clic genera un círculo en la parte superior que cae en caída libre.
+El canvas está dividido en dos mitades:
+Parte superior (aire): resistencia baja.
+Parte inferior (agua): resistencia alta.
+La tecla "p" cambia el paso de integración (afecta cómo se siente la caída en el agua).
+
+##### Relación conceptual:
+
+Muestra cómo los fluidos afectan la caída de los objetos.
+Simboliza el contraste entre el movimiento libre y el movimiento resistido.
+
+``` js
+let particles = [];
+let gravity;
+let airResistance = 0.01;   // Resistencia del aire
+let waterResistance = 0.1;  // Resistencia del agua (se puede modificar con "p")
+
+function setup() {
+  createCanvas(600, 600);
+  gravity = createVector(0, 0.2); // fuerza de gravedad
+}
+
+function draw() {
+  background(220);
+
+  // Divisiones: aire (arriba) y agua (abajo)
+  stroke(0);
+  line(0, height/2, width, height/2);
+  noStroke();
+  fill(180, 220, 255, 100);
+  rect(0, 0, width, height/2);  // cielo
+  fill(0, 100, 255, 120);
+  rect(0, height/2, width, height/2); // agua
+
+  // Actualizar partículas
+  for (let p of particles) {
+    // Gravedad
+    p.applyForce(gravity);
+
+    // Determinar si está en aire o agua
+    if (p.pos.y < height/2) {
+      // Aire
+      let drag = p.vel.copy();
+      drag.mult(-1);
+      drag.setMag(airResistance * p.vel.magSq());
+      p.applyForce(drag);
+    } else {
+      // Agua
+      let drag = p.vel.copy();
+      drag.mult(-1);
+      drag.setMag(waterResistance * p.vel.magSq());
+      p.applyForce(drag);
+    }
+
+    p.update();
+    p.display();
+  }
+}
+
+function mousePressed() {
+  particles.push(new Particle(mouseX, 20));
+}
+
+function keyPressed() {
+  if (key === 'p' || key === 'P') {
+    waterResistance += 0.05; // Aumentar resistencia del agua
+    print("Nueva resistencia del agua: " + waterResistance);
+  }
+}
+
+// Clase Partícula
+class Particle {
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+    this.vel = createVector(0, 0);
+    this.acc = createVector(0, 0);
+    this.r = 16;
+  }
+
+  applyForce(force) {
+    let f = force.copy();
+    this.acc.add(f);
+  }
+
+  update() {
+    this.vel.add(this.acc);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+  }
+
+  display() {
+    fill(255, 100, 100);
+    ellipse(this.pos.x, this.pos.y, this.r*2);
+  }
+}
+```
+
+[Enlace del ejemplo](https://editor.p5js.org/estebanpuerta2006/sketches/QToKZP1l6)
+
+<img width="750" height="692" alt="image" src="https://github.com/user-attachments/assets/6f048faa-1f72-4b7e-b366-e636473e0084" />
+
+#### 3. Atracción gravitacional → orbitas
+
+##### Cómo modelé la fuerza:
+
+Se generan varias esferas en pantalla.
+Todas son atraídas hacia un punto central (la “estrella”).
+La gravedad es una fuerza proporcional a la distancia.
+Con la tecla "f" se aumenta la intensidad de la gravedad.
+No hay colisión entre objetos, y el fondo no cambia de color.
+
+##### Relación conceptual:
+
+Representa el comportamiento de los cuerpos celestes bajo la gravedad.
+Simboliza cómo todo tiende a atraerse hacia un centro común.
+
+``` js
+let estrellas = [];
+let gravedad = 1500; // fuerza gravitacional inicial
+let centro;
+
+function setup() {
+  createCanvas(800, 600);
+  centro = createVector(width/2, height/2); // "orbita" central que atrae
+}
+
+function draw() {
+  background(0);
+
+  // Dibujar el centro (la "órbita A")
+  fill(255, 200, 0);
+  noStroke();
+  ellipse(centro.x, centro.y, 30, 30);
+
+  // Dibujar y actualizar las estrellas
+  for (let estrella of estrellas) {
+    // Vector de dirección hacia el centro
+    let dir = p5.Vector.sub(centro, estrella.pos);
+    let distSq = constrain(dir.magSq(), 100, 10000); 
+    let fuerza = gravedad / distSq; // Ley de gravitación simplificada
+
+    dir.setMag(fuerza);
+    estrella.vel.add(dir); // Aplicar fuerza
+    estrella.pos.add(estrella.vel);
+
+    // Dibujar la estrella
+    fill(150, 200, 255);
+    ellipse(estrella.pos.x, estrella.pos.y, 10, 10);
+  }
+
+  // Texto de info
+  fill(255);
+  textSize(16);
+  text("Click = Crear estrella | f = aumentar gravedad (" + nf(gravedad, 1, 2) + ")", 10, 20);
+}
+
+function mousePressed() {
+  // Crear estrella en posición aleatoria
+  let nueva = {
+    pos: createVector(mouseX, mouseY),
+    vel: p5.Vector.random2D().mult(random(2, 4))
+  };
+  estrellas.push(nueva);
+}
+
+function keyPressed() {
+  if (key === 'f' || key === 'F') {
+    gravedad += 100; // aumentar la fuerza de atracción
+  }
+}
+```
+
+[Enlace del ejemplo](https://editor.p5js.org/estebanpuerta2006/sketches/xU8XVmbYbX)
+
+<img width="918" height="672" alt="image" src="https://github.com/user-attachments/assets/16b02be1-3139-4595-b3a8-e4c2107c4a83" />
