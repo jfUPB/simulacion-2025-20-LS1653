@@ -210,6 +210,11 @@ class CentralBody {
 <img width="917" height="673" alt="image" src="https://github.com/user-attachments/assets/dddc6b0e-14a2-471b-844b-8ad72f2d9f77" />
 <img width="917" height="673" alt="image" src="https://github.com/user-attachments/assets/8e7d99e6-a408-456d-9763-57477b5112cd" />
 
+#### Usa tu creatividad para crear algo diferente basado en ese concepto y en las esculturas cinéticas de Alexander Calder.
+
+Luego de ver muchas obras de el, siento que sus obras siempre muestran la conección entre los elementos más pequeños conectados a elementos más grandes, decidi hacer una obra que
+
+
 
 
 
