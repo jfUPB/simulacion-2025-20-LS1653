@@ -51,11 +51,16 @@ Algoritmos de aceleración: Son reglas artificiales que definen cómo cambia la 
 Yo diria que en esta ocación fue el concepto inspirativo ya que no soy un hombre de arte o por lo menos no de este tiepo de arte, por lo que en realidad fue muy dificil definir que me transmitia el ver esas obras y con eso poder hacer la mia, por esta razón considero que lo que más se me dificulto fue hacer el concepto creativo.
 
 ##### ¿Las fuerzas que modelaste produjeron el comportamiento que esperabas? Describe un momento “sorpresa” (esperado o inesperado) durante el desarrollo.
-
+Cuando estaba experimentando con la atracción en los n-cuerpos estaba probando con masas no se querian atraer entre ellas, lo cual me llevo a pensar que hice mal todo el proceso y eso me dejo preocupado y despues de muschos cambios nada funcionaba, hasta que por un capricho le puse una fuerza gravitacional más grande a uno de los obejtos y en ese momento comenzo a funcionar la atracción sin embargo los cambios que efectue dañaron tanto el codigo que hizo que cuando se atrageran se lanzaron disparadas en direcciones opuestas.
 
 ##### ¿Cómo ha cambiado tu forma de pensar sobre la “física” en el arte generativo después de esta unidad?
-
+La verdad ya de por si me gustaban las obras con sistemas fisicos realistas, pero ahora puedo apresiar mucho más el como se logra llegar a diseñar un sistema que imite al mundo real y que pueda generar mostrar un sentimiento o idea de alguien.
 
 ##### Si tuvieras una semana más, ¿Qué otras fuerzas te gustaría modelar o cómo mejorarías tu simulación del problema de los n-cuerpos?
+Me gustaria modelar sistemas de coliciones con rebotes y elasticidad, ya que aunque mi obra este inspirada en el sistema solar, no significa que quiero que sea un sistema estable o realista, me gustaria que hubira cierto sentido de caos que de sorpresas al usuario.
+
+### Actividad 12
+
+#### Intercambia la URL de tu bitácora con un compañero.
 
 
