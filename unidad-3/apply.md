@@ -212,7 +212,8 @@ class CentralBody {
 
 #### Usa tu creatividad para crear algo diferente basado en ese concepto y en las esculturas cinéticas de Alexander Calder.
 
-Luego de ver muchas obras de el, siento que sus obras siempre muestran la conección entre los elementos más pequeños conectados a elementos más grandes, decidi hacer una obra que
+Al observar varias de sus obras, me dio la sensación de que transmiten la conexión entre elementos pequeños y estructuras más grandes. Inspirado en ello, diseñé una obra que toma como referencia el sistema solar: una estrella central que influye en el movimiento de los cuerpos que la rodean. Además, incorporé variaciones de color en el fondo para representar cómo los detalles más sutiles pueden transformar el entorno visible. Con estos dos aspectos busco reflejar, a mi manera, la esencia que me dajan las esculturas de Alexander Calder.
+
 
 
 
