@@ -6,14 +6,14 @@
 ### Actividad 10
 
 #### Diseña e implementa tu obra generativa interactiva en tiempo real.
-    - Debe ser interactiva.
+    Debe ser interactiva.
       m: agrega una nueva esfera.
       r: elimina la última esfera.
       p: pausa/reanuda el sistema.
       t: activa/desactiva manualmente la “esfera ancla” (la masa central).
       Arrastrar con el mouse: rotar cámara (usando orbitControl en WEBGL).
       
-    - Debes usar al menos dos algoritmos diferentes de la unidad 1, además de random.
+    Debes usar al menos dos algoritmos diferentes de la unidad 1, además de random.
       Ruido Perlin (noise): Usado para la posición inicial de cada esfera, esto para que su aparción sea sercana y a su vez no se genere literalmente ensima de otra esfera.
       Distribución normal (randomGaussian): Usado para colocar el radio y la masa de cada esfera, con valores mayormente cercanos a un promedio, pero permitiendo la aparición de masas atípicas o mejor dicho fuera de la media.
       
@@ -213,6 +213,7 @@ class CentralBody {
 #### Usa tu creatividad para crear algo diferente basado en ese concepto y en las esculturas cinéticas de Alexander Calder.
 
 Al observar varias de sus obras, me dio la sensación de que transmiten la conexión entre elementos pequeños y estructuras más grandes. Inspirado en ello, diseñé una obra que toma como referencia el sistema solar: una estrella central que influye en el movimiento de los cuerpos que la rodean. Además, incorporé variaciones de color en el fondo para representar cómo los detalles más sutiles pueden transformar el entorno visible. Con estos dos aspectos busco reflejar, a mi manera, la esencia que me dajan las esculturas de Alexander Calder.
+
 
 
 
