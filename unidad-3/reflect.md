@@ -44,10 +44,11 @@ La verdad no estoy seguro de como responder a esta pregunta.
 Modelar fuerzas: Significa usar las leyes físicas (como la gravedad, fricción, empuje) para calcular aceleraciones y cambios de movimiento. Osea es tratar de recrear o basarse en la física real: se suman fuerzas, se aplica 𝐹=𝑚(𝑎) y de ahí sale la aceleración.
 
 Algoritmos de aceleración: Son reglas artificiales que definen cómo cambia la velocidad sin necesidad de una fuerza. Por ejemplo: “cada frame aumenta la velocidad en 1” no depende de una fuerza física, sino de una instrucción programada.
+
 #### Parte 2: reflexión sobre tu proceso (Metacognición)
 
 ##### ¿Qué fue lo más desafiante en la Actividad 10 (problema de los n-cuerpos)? ¿El concepto creativo, la implementación de las fuerzas o la integración de la interactividad?
-
+Yo diria que en esta ocación fue el concepto inspirativo ya que no soy un hombre de arte o por lo menos no de este tiepo de arte, por lo que en realidad fue muy dificil definir que me transmitia el ver esas obras y con eso poder hacer la mia, por esta razón considero que lo que más se me dificulto fue hacer el concepto creativo.
 
 ##### ¿Las fuerzas que modelaste produjeron el comportamiento que esperabas? Describe un momento “sorpresa” (esperado o inesperado) durante el desarrollo.
 
@@ -56,4 +57,5 @@ Algoritmos de aceleración: Son reglas artificiales que definen cómo cambia la 
 
 
 ##### Si tuvieras una semana más, ¿Qué otras fuerzas te gustaría modelar o cómo mejorarías tu simulación del problema de los n-cuerpos?
+
 
