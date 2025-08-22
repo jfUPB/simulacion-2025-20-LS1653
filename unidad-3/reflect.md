@@ -63,4 +63,21 @@ Me gustaria modelar sistemas de coliciones con rebotes y elasticidad, ya que aun
 
 #### Intercambia la URL de tu bitácora con un compañero.
 
+[Bitácora](https://github.com/jfUPB/simulacion-2025-20-catflyx/blob/unidad3/apply/unidad-3/apply.md)
 
+#### Analiza su Actividad 10 (problema de los n-cuerpos). Ejecuta su simulación, lee su concepto y revisa su código.
+
+[Link de la actividad 10 de mi compañero](https://editor.p5js.org/catflyx/sketches/-dtaUlNS4)
+
+#### En tu propia bitácora, escribe una retroalimentación constructiva para tu compañero, evaluando:
+##### Claridad del Concepto: ¿La obra visual refleja la inspiración en las esculturas cinéticas de Calder y el problema de los n-cuerpos?
+Si, los representa, segun mi apreciación su uso del color, y su forma abstracta le favorece de gran manera en la parte artistica y la parte de los n-cuerpos no vi ninguna novedad en su codigo que genere el pensar que esta mal implementado, todo funciona de buena manera y sin fallos.
+
+##### Implementación de Fuerzas: ¿Se aplican correctamente las leyes de Newton? ¿Las fuerzas se acumulan apropiadamente?
+Si, luego de ver el codigo considero que estaba bien conectado y no vi alguna reareza que me haga decir que no se aplico de manera fiel la fuerzas o la ley de Newton.
+
+##### Creatividad en el Modelado: ¿El modelado de fuerzas es interesante y genera comportamientos únicos?
+Completamente, me parece una obra visual muy llamativa y ademas me gusto como fue el desarrollo de su trabajo hasta terminar en lo que se muestra en el link que puse en la sección anterior.
+
+##### Calidad de la Interactividad: ¿La interacción permite explorar diferentes aspectos del sistema de fuerzas?
+Permite 
