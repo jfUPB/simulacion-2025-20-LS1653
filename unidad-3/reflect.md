@@ -80,4 +80,18 @@ Si, luego de ver el codigo considero que estaba bien conectado y no vi alguna re
 Completamente, me parece una obra visual muy llamativa y ademas me gusto como fue el desarrollo de su trabajo hasta terminar en lo que se muestra en el link que puse en la sección anterior.
 
 ##### Calidad de la Interactividad: ¿La interacción permite explorar diferentes aspectos del sistema de fuerzas?
-Permite 
+Por lo que persibi, el sistema de seguimiento del objeto al mouse cuando se da click en la pantalla muestra un buen sistema de cambio de dirección con vectores.
+
+### Actividad 13
+
+#### Continuar: ¿Qué actividad o concepto de esta unidad te resultó más “revelador” para entender las fuerzas en el arte generativo?
+
+
+#### Dejar de hacer: ¿Hubo alguna actividad que te pareció redundante o menos efectiva para comprender el modelado de fuerzas?
+Progresión conceptual: ¿El paso de manipular aceleración directamente (unidad 2) a modelar fuerzas (unidad 3) te pareció una progresión natural y efectiva? ¿Por qué?
+
+
+#### Conexión arte-física: ¿Cómo te ha ayudado esta unidad a ver la conexión entre conceptos físicos y expresión artística? ¿Te sientes más cómodo “jugando” con las leyes de la física en tus creaciones?
+
+
+#### Comentario adicional: ¿Algo más que quieras compartir sobre tu experiencia explorando fuerzas en el arte generativo?
