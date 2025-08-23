@@ -85,13 +85,16 @@ Por lo que persibi, el sistema de seguimiento del objeto al mouse cuando se da c
 ### Actividad 13
 
 #### Continuar: ¿Qué actividad o concepto de esta unidad te resultó más “revelador” para entender las fuerzas en el arte generativo?
-
+Diria que fueron la actividad 10 con el sistema de n-cuerpos y la actividad 9 donde nosostros mismos recreamos las diferentes fuerzas.
 
 #### Dejar de hacer: ¿Hubo alguna actividad que te pareció redundante o menos efectiva para comprender el modelado de fuerzas?
-Progresión conceptual: ¿El paso de manipular aceleración directamente (unidad 2) a modelar fuerzas (unidad 3) te pareció una progresión natural y efectiva? ¿Por qué?
+En esta unidad ninguna de las actividades las vi con poca utilidad.
 
+#### Progresión conceptual: ¿El paso de manipular aceleración directamente (unidad 2) a modelar fuerzas (unidad 3) te pareció una progresión natural y efectiva? ¿Por qué?
+Me parecio que todo estaba bien colocado para ir siguiendo este progreso ya que comienza de menos a más, sin embargo tambien me ubiera parecido natural hacer primero la unidad 3 y luego la dos ya que en este momento las vimos de forma que nosotros primero inventaramos las fuerzas que actuan sobre nuestro arte y luego imitamos a las fuerzas reales para que actuen sobre nuestro arte, si hubiera sido al revez seria que primero imitamr lo real para luego hacer algo propio y diferente, pero ese seria un punto de vista en el que ya sepamos utilizar los bien vectores cosa que vimos en la unidad 2, al final es un punto de vista en el que tocaria reestructura el como se enseñaria de esa forma las unidades para que los estudiantes entiendan los vectores con fuerzas que imitan la realidad y despues decirles que toqueten a su gusto para hacer sus propios modelos de fuerzas, pero pues al final lo mejor es dejarlo como esta ya que si de por si ya funciona bien mi idea solo es como un "que pasaria si", de igual forma como dije al principio el recorrido que seguimos en estas unidades ya me parece bien y en realidad no le cambiaria nada.
 
 #### Conexión arte-física: ¿Cómo te ha ayudado esta unidad a ver la conexión entre conceptos físicos y expresión artística? ¿Te sientes más cómodo “jugando” con las leyes de la física en tus creaciones?
-
+Esta unidad me ha ayudado a ver las fuerzas como otro medio que genere mayor dinamismo a mis obras y una forma de recrear nuestro mundo en una forma de expresión virtual.
 
 #### Comentario adicional: ¿Algo más que quieras compartir sobre tu experiencia explorando fuerzas en el arte generativo?
+Por el momento no me queda nada más por agregar, solo que disfrute provando el uso de fuerzas con visuales en 3d, lo cual lo hizo más divertido y llamativo.
