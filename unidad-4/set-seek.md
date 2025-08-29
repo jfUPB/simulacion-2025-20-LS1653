@@ -38,3 +38,5 @@ Se usa para que a la hora de girar se haga de manera natural desde el centro del
 El ángulo de rotación (angle) proviene de this.velocity.heading().
 Eso significa que el rectángulo rota para “apuntar” en la dirección de su velocidad.
 Matemáticamente, es el mismo ángulo que forma el vector de velocidad con el eje X.
+
+## Actividad 3
