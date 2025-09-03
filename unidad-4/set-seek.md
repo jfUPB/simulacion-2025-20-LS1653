@@ -544,3 +544,38 @@ Cree una fuerza de "viento oscilante" que empuja los osciladores de un lado a ot
 La fuerza se acumula en this.acceleration, se integra en la velocidad angular y se resetea cada frame.
 
 ### Actividad 8
+``` js
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+
+let angleVelocity = 0.2;
+let amplitude = 100;
+let phase = 0; // fase global que hará que la onda se mueva
+
+function setup() {
+  createCanvas(640, 240);
+}
+
+function draw() {
+  background(255);
+
+  stroke(0);
+  strokeWeight(2);
+  fill(127, 127);
+
+  let angle = phase; // empezamos en la fase global
+  for (let x = 0; x <= width; x += 24) {
+    // y depende de sin() con la fase incluida
+    let y = amplitude * sin(angle);
+    circle(x, y + height / 2, 48);
+    angle += angleVelocity;
+  }
+
+  // mover la fase global poco a poco → hace que la onda "viaje"
+  phase += 0.05;
+}
+
+```
+
+## Actividad 9
