@@ -384,3 +384,163 @@ El círculo vuelve a girar alrededor del centro, exactamente como antes.
 La diferencia es que ahora usamos p5.Vector.fromAngle(angle, length) el es un atajo para construir el vector, es parecido a mi solución de antes pero más simplificada (menos lineas).
 
 ## Actividad 6
+### Recuerda estos conceptos: velocidad angular, frecuencia, periodo, amplitud y fase.
+Velocidad angular (ω): qué tan rápido avanza la onda.
+
+Frecuencia (f): cuántas oscilaciones ocurren en un tiempo dado.
+
+Periodo (T): el tiempo que tarda en hacer un ciclo completo (T = 1/f).
+
+Amplitud (A): hasta dónde llega el movimiento (máximo desplazamiento).
+
+Fase (φ): dónde empieza la onda (desplazamiento inicial).
+
+### Realiza una simulación en la que puedas modificar estos parámetros y observar cómo se comporta la función sinusoide.
+``` js
+let amplitudeSlider, frequencySlider, phaseSlider;
+let theta = 0;
+
+function setup() {
+  createCanvas(800, 400);
+
+  // sliders para modificar los parámetros
+  amplitudeSlider = createSlider(20, 200, 100); // amplitud
+  amplitudeSlider.position(20, 20);
+
+  frequencySlider = createSlider(1, 20, 5); // frecuencia
+  frequencySlider.position(20, 50);
+
+  phaseSlider = createSlider(0, TWO_PI, 0, 0.01); // fase
+  phaseSlider.position(20, 80);
+}
+
+function draw() {
+  background(255);
+  stroke(0);
+  noFill();
+
+  let amplitude = amplitudeSlider.value();
+  let frequency = frequencySlider.value();
+  let phase = phaseSlider.value();
+
+  // título de referencia
+  text("Amplitud: " + amplitude, 160, 35);
+  text("Frecuencia: " + frequency, 160, 65);
+  text("Fase: " + phase.toFixed(2), 160, 95);
+
+  beginShape();
+  for (let x = 0; x < width; x += 5) {
+    let angle = (theta + phase) + x * 0.02 * frequency;
+    let y = height/2 + amplitude * sin(angle);
+    vertex(x, y);
+  }
+  endShape();
+
+  // incrementar el ángulo = velocidad angular
+  theta += 0.02; 
+}
+```
+
+## Actividad 7
+``` js
+class Oscillator {
+  constructor(i) {
+    this.index = i; // para usar ruido Perlin con offset
+    this.angle = createVector();
+    this.angleVelocity = createVector(0, 0);
+    this.amplitude = createVector(
+      random(20, width / 2),
+      random(20, height / 2)
+    );
+    this.acceleration = createVector(0, 0); // fuerza acumulada
+  }
+
+  applyForce(force) {
+    // como masa=1, sumamos directamente
+    this.acceleration.add(force);
+  }
+
+  update() {
+    // usar ruido Perlin para variar velocidad angular suavemente
+    let n = noise(this.index * 0.1, frameCount * 0.01);
+    this.angleVelocity.x = map(n, 0, 1, -0.05, 0.05);
+
+    // integrar fuerzas
+    this.angleVelocity.add(this.acceleration);
+    this.angle.add(this.angleVelocity);
+
+    // reset de la aceleración para el próximo frame
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    let x = sin(this.angle.x) * this.amplitude.x;
+    let y = sin(this.angle.y) * this.amplitude.y;
+
+    push();
+    translate(width / 2, height / 2);
+    stroke(0);
+    strokeWeight(2);
+    fill(127);
+    line(0, 0, x, y);
+    circle(x, y, 32);
+    pop();
+  }
+}
+
+let oscillators = [];
+
+function setup() {
+  createCanvas(640, 240);
+  for (let i = 0; i < 10; i++) {
+    oscillators.push(new Oscillator(i));
+  }
+}
+
+function draw() {
+  background(255);
+
+  // crear una "fuerza de viento" que depende de seno del tiempo
+  let wind = createVector(sin(frameCount * 0.01) * 0.01, 0);
+
+  for (let o of oscillators) {
+    o.applyForce(wind);  // fuerza de la unidad 3
+    o.update();
+    o.show();
+  }
+}
+
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+
+// An array of objects
+let oscillators = [];
+
+function setup() {
+  createCanvas(640, 240);
+  // Initialize all objects
+  for (let i = 0; i < 10; i++) {
+    oscillators.push(new Oscillator());
+  }
+}
+
+function draw() {
+  background(255);
+  // Run all objects
+  for (let i = 0; i < oscillators.length; i++) {
+    oscillators[i].update();
+    oscillators[i].show();
+  }
+}
+```
+### ¿Qué cambió?
+
+### Aleatoriedad (Unidad 1):
+Ya no se usaandom() para las velocidades angulares, sino noise(), que produce variaciones más naturales y continuas.
+
+### Fuerzas (Unidad 3):
+Cree una fuerza de "viento oscilante" que empuja los osciladores de un lado a otro.
+La fuerza se acumula en this.acceleration, se integra en la velocidad angular y se resetea cada frame.
+
+### Actividad 8
