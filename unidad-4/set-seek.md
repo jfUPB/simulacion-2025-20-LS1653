@@ -724,3 +724,105 @@ class SpringObj {
   }
 }
 ```
+
+## Actividad 10
+``` js
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+
+class Pendulum {
+  constructor(x, y, r) {
+    this.pivot = createVector(x, y);
+    this.bob = createVector();
+    this.r = r;
+    this.angle = PI / 4;
+
+    this.angleVelocity = 0.0;
+    this.angleAcceleration = 0.0;
+    this.damping = 0.995;
+    this.ballr = 16.0;
+    this.dragging = false;
+  }
+
+  update() {
+    if (!this.dragging) {
+      let gravity = 0.4;
+      this.angleAcceleration = ((-1 * gravity) / this.r) * sin(this.angle);
+      this.angleVelocity += this.angleAcceleration;
+      this.angle += this.angleVelocity;
+      this.angleVelocity *= this.damping;
+    }
+  }
+
+  show() {
+    this.bob.set(this.r * sin(this.angle), this.r * cos(this.angle));
+    this.bob.add(this.pivot);
+
+    stroke(0);
+    strokeWeight(2);
+    line(this.pivot.x, this.pivot.y, this.bob.x, this.bob.y);
+    fill(127);
+    circle(this.bob.x, this.bob.y, this.ballr * 2);
+  }
+
+  // --- Interacción con mouse ---
+  clicked(mx, my) {
+    let d = dist(mx, my, this.bob.x, this.bob.y);
+    if (d < this.ballr) {
+      this.dragging = true;
+    }
+  }
+
+  stopDragging() {
+    this.angleVelocity = 0;
+    this.dragging = false;
+  }
+
+  drag() {
+    if (this.dragging) {
+      let diff = p5.Vector.sub(this.pivot, createVector(mouseX, mouseY));
+      this.angle = atan2(-1 * diff.y, diff.x) - radians(90);
+    }
+  }
+}
+
+
+
+
+let pendulum1;
+let pendulum2;
+
+function setup() {
+  createCanvas(640, 480);
+  // Primer péndulo desde el techo
+  pendulum1 = new Pendulum(width / 2, 50, 150);
+  // Segundo péndulo, conectado al bob del primero
+  pendulum2 = new Pendulum(0, 0, 100);
+}
+
+function draw() {
+  background(255);
+
+  // Actualizar el primero
+  pendulum1.update();
+  pendulum1.show();
+  pendulum1.drag();
+
+  // Conectar el segundo al bob del primero
+  pendulum2.pivot = pendulum1.bob.copy();
+  pendulum2.update();
+  pendulum2.show();
+  pendulum2.drag();
+}
+
+function mousePressed() {
+  pendulum1.clicked(mouseX, mouseY);
+  pendulum2.clicked(mouseX, mouseY);
+}
+
+function mouseReleased() {
+  pendulum1.stopDragging();
+  pendulum2.stopDragging();
+}
+```
