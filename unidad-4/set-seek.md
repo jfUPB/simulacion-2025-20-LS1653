@@ -579,3 +579,148 @@ function draw() {
 ```
 
 ## Actividad 9
+``` js
+// Sistema de 2 resortes en serie
+let bob1, bob2;
+let spring1, spring2;
+
+function setup() {
+  createCanvas(640, 360);
+
+  // Primer resorte (techo → bob1)
+  spring1 = new Spring(width / 2, 10, 100);
+  bob1 = new Bob(width / 2, 100);
+
+  // Segundo resorte (bob1 → bob2)
+  spring2 = new SpringObj(100);
+  bob2 = new Bob(width / 2, 200);
+}
+
+function draw() {
+  background(255);
+
+  // Gravedad (misma para ambos bobs)
+  let gravity = createVector(0, 0.5);
+  bob1.applyForce(gravity);
+  bob2.applyForce(gravity);
+
+  // --- FASE 1: aplicar fuerzas de los resortes ---
+  spring1.connect(bob1);
+  spring2.connect(bob1, bob2);
+
+  // --- FASE 2: actualizar posiciones ---
+  bob1.update();
+  bob2.update();
+
+  // Drag con el mouse
+  bob1.handleDrag(mouseX, mouseY);
+  bob2.handleDrag(mouseX, mouseY);
+
+  // --- FASE 3: restricciones de longitud ---
+  spring1.constrainLength(bob1, 30, 200);
+  spring2.constrainLength(bob1, bob2, 30, 200);
+
+  // --- FASE 4: dibujar ---
+  spring1.showLine(bob1);
+  spring1.show();
+  bob1.show();
+
+  spring2.showLine(bob1, bob2);
+  bob2.show();
+}
+
+function mousePressed() {
+  bob1.handleClick(mouseX, mouseY);
+  bob2.handleClick(mouseX, mouseY);
+}
+
+function mouseReleased() {
+  bob1.stopDragging();
+  bob2.stopDragging();
+}
+
+
+
+// Resorte fijo a un ancla
+class Spring {
+  constructor(x, y, length) {
+    this.anchor = createVector(x, y);
+    this.restLength = length;
+    this.k = 0.2;
+  }
+
+  connect(bob) {
+    let force = p5.Vector.sub(bob.position, this.anchor);
+    let currentLength = force.mag();
+    let stretch = currentLength - this.restLength;
+    force.setMag(-1 * this.k * stretch);
+    bob.applyForce(force);
+  }
+
+  constrainLength(bob, minlen, maxlen) {
+    let dir = p5.Vector.sub(bob.position, this.anchor);
+    let len = dir.mag();
+    if (len < minlen) {
+      dir.setMag(minlen);
+      bob.position = p5.Vector.add(this.anchor, dir);
+      bob.velocity.mult(0);
+    } else if (len > maxlen) {
+      dir.setMag(maxlen);
+      bob.position = p5.Vector.add(this.anchor, dir);
+      bob.velocity.mult(0);
+    }
+  }
+
+  show() {
+    fill(127);
+    circle(this.anchor.x, this.anchor.y, 10);
+  }
+
+  showLine(bob) {
+    stroke(0);
+    line(bob.position.x, bob.position.y, this.anchor.x, this.anchor.y);
+  }
+}
+
+// Resorte entre 2 bobs
+class SpringObj {
+  constructor(length) {
+    this.restLength = length;
+    this.k = 0.2;
+  }
+
+  connect(bobA, bobB) {
+    let force = p5.Vector.sub(bobB.position, bobA.position);
+    let currentLength = force.mag();
+    let stretch = currentLength - this.restLength;
+
+    // Fuerza sobre bobB
+    force.setMag(-1 * this.k * stretch);
+    bobB.applyForce(force);
+
+    // Acción–reacción sobre bobA
+    force.mult(-1);
+    bobA.applyForce(force);
+  }
+
+  constrainLength(bobA, bobB, minlen, maxlen) {
+    let dir = p5.Vector.sub(bobB.position, bobA.position);
+    let len = dir.mag();
+
+    if (len < minlen) {
+      dir.setMag(minlen);
+      bobB.position = p5.Vector.add(bobA.position, dir);
+      bobB.velocity.mult(0);
+    } else if (len > maxlen) {
+      dir.setMag(maxlen);
+      bobB.position = p5.Vector.add(bobA.position, dir);
+      bobB.velocity.mult(0);
+    }
+  }
+
+  showLine(bobA, bobB) {
+    stroke(0);
+    line(bobA.position.x, bobA.position.y, bobB.position.x, bobB.position.y);
+  }
+}
+```
