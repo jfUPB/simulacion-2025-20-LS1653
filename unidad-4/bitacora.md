@@ -4,23 +4,23 @@
 
 * ¿Qué concepto de la unidad 4 y cómo lo aplicaste en la obra?
 > Tu respuesta aquí:
->
+> El concepto fue ondas. Lo apliqué creando una onda circular de círculos que se expande hacia afuera. La onda tiene picos de colores aleatorios y entre ellos se hace una interpolación de color, lo que genera un efecto dinámico y rítmico en la composición.
 
 * ¿Qué concepto de la unidad 3 y cómo lo aplicaste en la obra?
 > Tu respuesta aquí:
->
+> El concepto fue el de n-cuerpos y atracción gravitacional. Implementé varios cuerpos que interactúan entre sí con fuerzas de atracción y además influyen de manera aleatoria sobre los círculos de la onda, generando distorsiones y un movimiento orgánico.
 
 * ¿Qué concepto de la unidad 2 y cómo lo aplicaste en la obra?
 > Tu respuesta aquí:
->
+> El concepto fue Motion 101 e interpolación de colores. Apliqué Motion 101 en el comportamiento de los cuerpos al actualizar sus posiciones y velocidades siguiendo las fuerzas de atracción. También utilicé la interpolación de colores para los espacios entre los picos de la onda, creando una transición visual suave.
 
 * ¿Qué concepto de la unidad 1 y cómo lo aplicaste en la obra?
 > Tu respuesta aquí:
-> 
+> Los conceptos fueron aleatoriedad con ruido Perlin y salto de Lévy. El ruido Perlin lo usé para generar variaciones suaves y naturales en los colores de la onda, mientras que el salto de Lévy lo empleé para determinar la aparición de los cuerpos, lo que aporta un carácter impredecible y orgánico a la obra.
 
 ## ¿Cómo resolviste la interacción?
 > Tu respuesta aquí:
->
+> La interacción la resolví de forma sencilla: El espectador puede modificar el patrón de la onda a su gusto, lo que le da control creativo sobre la obra. Además, implementé navegación con el mouse: con el botón derecho se puede mover por el canva y con las teclas + y - se controla el zoom para acercar o alejar la vista. Finalmente, con la tecla r es posible eliminar uno de los cuerpos para reducir el caos en la dinámica, y con la tecla m se puede añadir un nuevo cuerpo, generando así un comportamiento más caótico y complejo.
 
 ## Enlace a la obra en el editor de p5.js
 
@@ -483,6 +483,7 @@ class CentralBody {
 <img width="892" height="673" alt="image" src="https://github.com/user-attachments/assets/de407a28-4498-4867-8bd9-7d1c89987c8d" />
 
 <img width="892" height="666" alt="image" src="https://github.com/user-attachments/assets/1e9a41b4-dc70-4148-bb87-3344e962c6d1" />
+
 
 
 
