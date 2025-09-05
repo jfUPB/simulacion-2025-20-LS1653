@@ -24,7 +24,7 @@
 
 ## Enlace a la obra en el editor de p5.js
 
-[Aquí está mi obra]((https://editor.p5js.org/estebanpuerta2006/sketches/aD9mw1VIp))
+[Aquí está mi obra](https://editor.p5js.org/estebanpuerta2006/sketches/aD9mw1VIp)
 
 ## Código de la obra 
 
@@ -483,6 +483,7 @@ class CentralBody {
 <img width="892" height="673" alt="image" src="https://github.com/user-attachments/assets/de407a28-4498-4867-8bd9-7d1c89987c8d" />
 
 <img width="892" height="666" alt="image" src="https://github.com/user-attachments/assets/1e9a41b4-dc70-4148-bb87-3344e962c6d1" />
+
 
 
 
