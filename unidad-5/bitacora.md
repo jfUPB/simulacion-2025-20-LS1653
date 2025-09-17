@@ -145,7 +145,31 @@ Con esto, el sistema mantiene solo partículas activas -> optimiza uso de RAM.
 
 #### Analisis 
 
+1. Creación de partículas
+
+En cada draw() se crea una nueva partícula, esto significa que el sistema esta en constante crecimiento, pero no infinito, ya que hay un mecanismo de eliminación.
+
+
 #### ¿Cómo se está gestionando la creación y la desaparción de las partículas y cómo se gestiona la memoria en cada una de las simulaciones?
+
+#### Creación de partículas
+
+En cada ciclo (draw()):
+    ``` js
+
+    for (let emitter of emitters) {
+     emitter.run();
+     emitter.addParticle();
+     }
+   ```
+
+Cada emisor (Emitter) genera una nueva partícula en su origin con addParticle().
+
+Esto ocurre continuamente mientras la simulación corre → hay un flujo constante de partículas.
+
+#### Desaparición de partículas
+
+#### Gestión de memoria en esta simulación
 
 #### Experimento
 
@@ -165,6 +189,12 @@ Con esto, el sistema mantiene solo partículas activas -> optimiza uso de RAM.
 
 #### ¿Cómo se está gestionando la creación y la desaparción de las partículas y cómo se gestiona la memoria en cada una de las simulaciones?
 
+#### Creación de partículas
+
+#### Desaparición de partículas
+
+#### Gestión de memoria en esta simulación
+
 #### Experimento
 
 ### Analiza el ejemplo 4.7:
@@ -174,7 +204,14 @@ Con esto, el sistema mantiene solo partículas activas -> optimiza uso de RAM.
 
 #### ¿Cómo se está gestionando la creación y la desaparción de las partículas y cómo se gestiona la memoria en cada una de las simulaciones?
 
+#### Creación de partículas
+
+#### Desaparición de partículas
+
+#### Gestión de memoria en esta simulación
+
 #### Experimento
+
 
 
 
