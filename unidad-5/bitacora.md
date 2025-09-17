@@ -46,8 +46,7 @@
 
 4. Clase Particle
 
-#### Constructor
-
+Constructor
     ``` js
      constructor(x, y) {
        this.position = createVector(x, y);
