@@ -145,31 +145,61 @@ Con esto, el sistema mantiene solo partículas activas -> optimiza uso de RAM.
 
 #### Analisis 
 
-1. Creación de partículas
-
-En cada draw() se crea una nueva partícula, esto significa que el sistema esta en constante crecimiento, pero no infinito, ya que hay un mecanismo de eliminación.
-
+Estructura General:
+Se usa un arreglo particles[] para almacenar todas las partículas activas, en donde cada frame (draw()), se añade una nueva partícula y se actualizan las existentes. Las partículas tienen un ciclo de vida definido por su atributo lifespan y cuando una partícula “muere” (lifespan ≤ 0), se elimina del arreglo.
 
 #### ¿Cómo se está gestionando la creación y la desaparción de las partículas y cómo se gestiona la memoria en cada una de las simulaciones?
 
 #### Creación de partículas
 
 En cada ciclo (draw()):
-    ``` js
+
+   ``` js
 
     for (let emitter of emitters) {
      emitter.run();
      emitter.addParticle();
      }
    ```
+   Cada emisor (Emitter) genera una nueva partícula en su origen con addParticle().
+   Esto ocurre continuamente mientras la simulación este activa -> hay un flujo constante de partículas.
 
-Cada emisor (Emitter) genera una nueva partícula en su origin con addParticle().
+Cuando haces click (mousePressed()):
 
-Esto ocurre continuamente mientras la simulación corre → hay un flujo constante de partículas.
+   ``` js
+     emitters.push(new Emitter(mouseX, mouseY));
+   ```
+   Se crea un nuevo sistema de partículas independiente en la posición del mouse. 
+   Cada emisor administra sus propias partículas, así se puede tener múltiples “fuegos artificiales” simultaneamente.
 
 #### Desaparición de partículas
 
+En el método run() de Emitter:
+
+   ``` js
+     for (let i = this.particles.length - 1; i >= 0; i--) {
+      this.particles[i].run();
+      if (this.particles[i].isDead()) {
+         this.particles.splice(i, 1);
+      }
+     }
+   ```
+   Cada partícula se actualiza (update()), dibuja (show()) y reduce su lifespan.
+   Cuando lifespan < 0, isDead() devuelve true.
+   En ese momento se elimina con splice(i, 1).
+   Al recorrer el arreglo de atrás hacia adelante, no se rompen los índices al eliminar.
+
 #### Gestión de memoria en esta simulación
+
+*Arreglos dinámicos (this.particles):
+Cada emisor mantiene un arreglo propio con solo las partículas activas.
+
+*Liberación de objetos muertos:
+Al usar splice, los objetos Particle salen del arreglo y quedan sin referencias.
+
+*Luego, el garbage collector de JavaScript libera la memoria automáticamente.
+Escalabilidad:
+Como se eliminan las partículas muertas en cada frame, el sistema evita fugas de memoria y mantiene un número controlado de objetos.
 
 #### Experimento
 
@@ -211,6 +241,7 @@ Esto ocurre continuamente mientras la simulación corre → hay un flujo constan
 #### Gestión de memoria en esta simulación
 
 #### Experimento
+
 
 
 
