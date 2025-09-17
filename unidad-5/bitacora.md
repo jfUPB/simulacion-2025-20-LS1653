@@ -145,8 +145,66 @@ Con esto, el sistema mantiene solo partículas activas -> optimiza uso de RAM.
 
 #### Analisis 
 
-Estructura General:
+1)Estructura General:
 Se usa un arreglo particles[] para almacenar todas las partículas activas, en donde cada frame (draw()), se añade una nueva partícula y se actualizan las existentes. Las partículas tienen un ciclo de vida definido por su atributo lifespan y cuando una partícula “muere” (lifespan ≤ 0), se elimina del arreglo.
+
+2)Creación y control de emisores:
+
+En mousePressed():
+
+``` js
+  emitters.push(new Emitter(mouseX, mouseY));
+```
+Cada vez que se hace clic, se crea un nuevo emisor en la posición del mouse.
+Esto permite tener múltiples sistemas de partículas activos simultáneamente.
+Todos los emisores se almacenan en el arreglo global emitters[].
+
+3)Clase Particle
+
+La partícula conserva la misma lógica básica:
+Atributos:
+ *position: posición en el espacio.
+ *velocity: velocidad inicial aleatoria, le da un movimiento natural y diverso.
+ *acceleration: se acumulan fuerzas externas como la gravedad.
+ *lifespan: controla el tiempo de vida de la partícula.
+
+Métodos:
+ *applyForce(force): suma la fuerza a la aceleración.
+ *update(): aplica física newtoniana → velocidad y posición cambian.
+ *show(): la dibuja como un círculo que se desvanece al envejecer.
+ *isDead(): determina si debe eliminarse. 
+
+ 4)Clase Emitter
+El emisor administra un conjunto de partículas:
+a)Atributo principal:
+``` js
+this.origin = createVector(x, y);
+this.particles = [];
+```
+Guarda la posición de origen y un arreglo dinámico de partículas.
+
+b)Creación de partículas:
+``` js
+addParticle() {
+  this.particles.push(new Particle(this.origin.x, this.origin.y));
+}
+```
+Cada ciclo, se agrega una nueva partícula en el origen del emisor.
+
+c)Gestión de partículas:
+``` js
+run() {
+  for (let i = this.particles.length - 1; i >= 0; i--) {
+    this.particles[i].run();
+    if (this.particles[i].isDead()) {
+      this.particles.splice(i, 1);
+    }
+  }
+}
+```
+Se recorren las partículas de atrás hacia adelante.
+Se ejecuta su lógica (run()).
+Si están muertas, se eliminan del arreglo -> memoria liberada por el garbage collector.
 
 #### ¿Cómo se está gestionando la creación y la desaparción de las partículas y cómo se gestiona la memoria en cada una de las simulaciones?
 
@@ -241,6 +299,7 @@ Como se eliminan las partículas muertas en cada frame, el sistema evita fugas d
 #### Gestión de memoria en esta simulación
 
 #### Experimento
+
 
 
 
