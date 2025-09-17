@@ -55,7 +55,7 @@ Constructor
        this.lifespan = 255.0;
     }
    ```
-    Cada partícula tiene:
+   Cada partícula tiene:
        position: dónde está.
        velocity: movimiento inicial, aleatorio en X y negativo en Y → tienden a moverse hacia arriba.
        acceleration: empieza en 0, se usa para acumular fuerzas.
@@ -90,5 +90,6 @@ Constructor
 #### Analisis 
 
 #### ¿Cómo se está gestionando la creación y la desaparción de las partículas y cómo se gestiona la memoria en cada una de las simulaciones?
+
 
 
