@@ -1253,9 +1253,45 @@ class Emitter {
 
 ## Mi nota propuesta
 
-Tu mismo vas a propoer una nota basada en la rúbrica y justificarás cada criterio de la rúbrica indicando qué evidencias presentes en la bitácora justifican la nota que propones.
+### Tu mismo vas a propoer una nota basada en la rúbrica y justificarás cada criterio de la rúbrica indicando qué evidencias presentes en la bitácora justifican la nota que propones.
+
+### Es unidad incluye una novedad: DISEÑO. Debes intencionar tu obra. Esta vez te pediré que DISEÑES antes de generar código. Define un concepto, haz bocetos, define la interacción, etc. ¿Cuál es el concepto de tu obra? ¿Qué quieres comunicar con ella?
+
+1)Concepto: Representar un entorno apacible que se pueda admirar en silencio -> Un lago tranquilo, donde los peces se mueven libremente pero reaccionan al alimento lanzado. Al comer, generan ondas en el agua, simbolizando un efecto en el entorno.
+
+2)Boceto: 
+
+2) Interacción:
+   Click izquierdo: tirar pan (Bread) en la posición del mouse.
+   Los peces nadan solos, pero al detectar pan, nadan hacia él.
+   Cuando comen el pan, desaparece y surge una onda concéntrica (Wave).
+   Teclas:
+      C cambia paleta de colores (día / tarde / noche).
+      R resetea el lago.
+
+### Debes utilizar los conceptos de herencia y polimorfismo que revisaste en la fase de investigación.
+
+
+### Debes utilizar al menos un concepto de cada una de las unidades anteriores: 4 conceptos.
+
+
+### Debes definir cómo vas a gestionar el tiempo de vida de las partículas y la memoria.
+
+
+### La obra debe ser interactiva en tiempo real. Puedes usar teclado, mouse, música, el micrófono, video, sensor o cualquier otro dispositivo de entrada.
+
+
+### Incluye un enlace a tu código en el editor de p5.js.
+
+
+### Incluye el código fuente.
+
+
+### Captura de pantallas de tu obra con las imágenes que más te gusten
+
 
 Si tu bitácora no incluye la nota propuesta y la justificación tendrás una nota de 0.
+
 
 
 
