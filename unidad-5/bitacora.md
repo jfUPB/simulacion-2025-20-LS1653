@@ -1251,6 +1251,12 @@ class Emitter {
 ### Actividad 3
 
 
+## Mi nota propuesta
+
+Tu mismo vas a propoer una nota basada en la rúbrica y justificarás cada criterio de la rúbrica indicando qué evidencias presentes en la bitácora justifican la nota que propones.
+
+Si tu bitácora no incluye la nota propuesta y la justificación tendrás una nota de 0.
+
 
 
 
