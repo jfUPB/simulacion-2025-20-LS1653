@@ -1261,7 +1261,7 @@ class Emitter {
 
 2)Boceto: 
 
-2) Interacción:
+3)Interacción:
    Click izquierdo: tirar pan (Bread) en la posición del mouse.
    Los peces nadan solos, pero al detectar pan, nadan hacia él.
    Cuando comen el pan, desaparece y surge una onda concéntrica (Wave).
@@ -1291,6 +1291,7 @@ class Emitter {
 
 
 Si tu bitácora no incluye la nota propuesta y la justificación tendrás una nota de 0.
+
 
 
 
