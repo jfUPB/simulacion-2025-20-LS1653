@@ -140,6 +140,96 @@ Con esto, el sistema mantiene solo partículas activas -> optimiza uso de RAM.
 
 #### Experimento
 
+1.Modificación
+Unidad 1: Aleatoriedad
+Se añadió aleatoriedad en el tamaño (random(5,15)) y el color (random(100,255)).
+
+2.Gestión
+Cada partícula se guarda en el array particles.
+En cada frame se revisa si su vida (lifespan) es menor que 0, y si lo es, se elimina con splice().
+De esta manera se evita acumular partículas muertas en memoria
+
+3.Explicación
+Unidad 1: Aleatoriedad
+   Se añadió aleatoriedad en el tamaño (random(5,15)) y el color (random(100,255)).
+   Esto se aplicó en el constructor de cada partícula.
+
+Por qué:
+   La aleatoriedad da diversidad visual y naturalidad al sistema, evitando que todas las partículas se vean idénticas.
+
+4.Enlace
+[Enlace](https://editor.p5js.org/estebanpuerta2006/sketches/pyemkROqv)
+
+5.Codigo
+``` js
+  let particles = [];
+
+function setup() {
+  createCanvas(640, 240);
+}
+
+function draw() {
+  background(255);
+  particles.push(new Particle(width / 2, 20));
+
+  // Looping through backwards to delete
+  for (let i = particles.length - 1; i >= 0; i--) {
+    let particle = particles[i];
+    particle.run();
+    if (particle.isDead()) {
+      //remove the particle
+      particles.splice(i, 1);
+    }
+  }
+}
+
+
+class Particle {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.acceleration = createVector(0, 0);
+    this.velocity = createVector(random(-1, 1), random(-1, 0));
+    this.lifespan = 255.0;
+
+    // ---- Unidad 1: Aleatoriedad ----
+    this.size = random(5, 15); // tamaño aleatorio
+    this.color = color(random(100, 255), random(100, 255), random(100, 255), this.lifespan);
+  }
+
+  run() {
+    let gravity = createVector(0, 0.05);
+    this.applyForce(gravity); // Unidad 3: Gravedad
+    this.update();
+    this.show();
+  }
+
+  applyForce(force) {
+    this.acceleration.add(force);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.lifespan -= 2;
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    noStroke();
+    fill(this.color);
+    circle(this.position.x, this.position.y, this.size);
+  }
+
+  isDead() {
+    return (this.lifespan < 0.0);
+  }
+}
+```
+
+6.Captura
+<img width="458" height="300" alt="image" src="https://github.com/user-attachments/assets/c2f1c31c-f7a8-4ed8-900b-ec89d37c6b53" />
+
+
 ### Analiza el ejemplo 4.4:
 [Ejemplo 4.4](https://natureofcode.com/particles/#example-44-a-system-of-systems)
 
@@ -260,6 +350,13 @@ Escalabilidad:
 Como se eliminan las partículas muertas en cada frame, el sistema evita fugas de memoria y mantiene un número controlado de objetos.
 
 #### Experimento
+
+1.Modificación
+2.Gestión
+3.Explicación
+4.Enlace
+5.Codigo
+6.Captura
 
 ### Analiza el ejemplo 4.5:
 [Ejemplo 4.5](https://natureofcode.com/particles/#example-45-a-particle-system-with-inheritance-and-polymorphism)
@@ -410,6 +507,13 @@ Como se eliminan las partículas muertas en cada frame, el sistema evita fugas d
 
 #### Experimento
 
+1.Modificación
+2.Gestión
+3.Explicación
+4.Enlace
+5.Codigo
+6.Captura
+
 ### Analiza el ejemplo 4.6:
 [Ejemplo 4.6](https://natureofcode.com/particles/#example-46-a-particle-system-with-forces)
 
@@ -495,6 +599,13 @@ Como se eliminan las partículas muertas en cada frame, el sistema evita fugas d
 
 #### Experimento
 
+1.Modificación
+2.Gestión
+3.Explicación
+4.Enlace
+5.Codigo
+6.Captura
+
 ### Analiza el ejemplo 4.7:
 [Ejemplo 4.7](https://natureofcode.com/particles/#example-47-a-particle-system-with-a-repeller)
 
@@ -556,6 +667,14 @@ Como se eliminan las partículas muertas en cada frame, el sistema evita fugas d
    Garbage Collector: al no haber referencias a las partículas muertas, el motor de JS (V8 en p5.js) recicla esa memoria.
 
 #### Experimento
+
+1.Modificación
+2.Gestión
+3.Explicación
+4.Enlace
+5.Codigo
+6.Captura
+
 
 
 
