@@ -266,7 +266,147 @@ Como se eliminan las partículas muertas en cada frame, el sistema evita fugas d
 
 #### Analisis 
 
+1. Estructura General:
+   a)Sketch principal (setup(), draw()):
+        Configura el entorno.
+        Maneja un único emisor de partículas.
+   
+    b)Clase Particle:
+        Modelo base de partícula.
+        Incluye física, dibujo y ciclo de vida.
+
+    c)Clase Emitter:  
+        Contenedor que administra todas las partículas generadas.
+        Cada frame crea nuevas partículas y elimina las muertas.
+
+     d)Clase Confetti (subclase de Particle):
+        Redefine la visualización de la partícula.
+
+2. Sketch Principal:
+     ``` js
+        function setup() {
+           createCanvas(640, 240);
+           emitter = new Emitter(width / 2, 20);
+        }
+
+        function draw() {
+           background(255);
+           emitter.addParticle();
+           emitter.run();
+         }
+     ```
+     a)Crea un solo emisor en el centro superior del canvas.
+
+     b)Cada frame:
+         Genera una nueva partícula (addParticle).
+         Actualiza y dibuja todas las partículas (run).
+
+3. Clase Particle:
+     a)Atributos:
+         position: vector posición.
+         velocity: velocidad aleatoria inicial (dando variación).
+         acceleration: acumulación de fuerzas.
+         lifespan: control de ciclo de vida.
+
+     b)Métodos:
+         applyForce(): acumula fuerzas (ej. gravedad).
+         update(): actualiza velocidad y posición, reduce vida.
+         show(): dibuja un círculo translúcido que se desvanece.
+         isDead(): indica cuándo debe eliminarse.
+         run(): aplica gravedad, actualiza y dibuja (ciclo de vida).
+
+4. Clase Emitter:
+     ``` js
+        addParticle() {
+           let r = random(1);
+           if (r < 0.5) {
+              this.particles.push(new Particle(this.origin.x, this.origin.y));
+           } else {
+               this.particles.push(new Confetti(this.origin.x, this.origin.y));
+           }
+        }
+     ```
+     Cada frame, el emisor genera una nueva partícula.
+     Aleatoriamente crea un Particle o un Confetti.
+     Esto introduce variación visual automática.
+
+   ``` js
+        run() {
+           for (let i = this.particles.length - 1; i >= 0; i--) {
+               let p = this.particles[i];
+               p.run();
+               if (p.isDead()) {
+                  this.particles.splice(i, 1);
+               }
+           }
+        }
+     ```
+     Recorre las partículas de atrás hacia adelante para poder borrarlas sin errores de índice.
+     Llama a run() (polimórfico, puede ser Particle.run() o Confetti.run()).
+     Elimina partículas muertas.
+
+5. Clase Confetti:
+     ``` js
+        class Confetti extends Particle {
+           show() {
+               let angle = map(this.position.x, 0, width, 0, TWO_PI * 2);
+               rectMode(CENTER);
+               fill(127, this.lifespan);
+               stroke(0, this.lifespan);
+               strokeWeight(2);
+               push();
+               translate(this.position.x, this.position.y);
+               rotate(angle);
+               square(0, 0, 12);
+               pop();
+           }
+        }
+     ```
+     Hereda de Particle: conserva posición, velocidad, gravedad y ciclo de vida. 
+     Sobreescribe (override) el método show():
+     En vez de un círculo, dibuja un cuadrado girado.
+     La rotación depende de la posición en el eje X (map() -> da dinamismo).
+     Mantiene el efecto de desvanecimiento usando lifespan.
+
 #### ¿Cómo se está gestionando la creación y la desaparción de las partículas y cómo se gestiona la memoria en cada una de las simulaciones?
+
+#### Creación de partículas
+   En cada ciclo de draw(), se llama a emitter.addParticle().
+   Ese método decide, con probabilidad 50%, crear un Particle o un Confetti (que hereda de Particle pero redefine show).
+   Cada nueva partícula se construye con:
+      a)Un vector de posición en el origen del emisor.
+      b)Un vector de velocidad aleatoria hacia arriba.
+      c)Un lifespan inicial de 255.
+   Las partículas se almacenan en el array dinámico this.particles dentro de Emitter.
+
+#### Actualización de partículas
+   Cada partícula, en p.run():
+     1)Recibe una fuerza de gravedad (applyForce).
+     2)Se actualiza (velocidad, posición y disminución de lifespan).
+     3)Se dibuja en pantalla (show).
+   Esto ocurre en cada frame hasta que la partícula “muere”.
+
+#### Desaparición de partículas
+   La vida útil (lifespan) disminuye en cada actualización (this.lifespan -= 2).
+   Cuando lifespan < 0, la partícula se considera muerta (isDead() devuelve true).
+   En el método Emitter.run(), se recorre el array de partículas de atrás hacia adelante:
+   ``` js
+     for (let i = this.particles.length - 1; i >= 0; i--) {
+          let p = this.particles[i];
+          p.run();
+          if (p.isDead()) {
+               this.particles.splice(i, 1); // elimina la partícula del array
+          }
+     }
+   ```
+   Esto elimina el objeto del array, lo que significa que ya no está referenciado en el programa.
+   
+#### Gestión de memoria en esta simulación
+   El garbage collector se encarga de liberar la memoria automáticamente. 
+   Es decir, al hacer splice(i, 1), el objeto Particle eliminado deja de estar en particles, y eventualmente es liberado por el motor de JS.
+   No hay fugas de memoria porque:
+      a)Las partículas muertas no quedan acumuladas en el array.
+      b)No se guarda ninguna referencia oculta a ellas.
 
 #### Experimento
 
@@ -299,6 +439,7 @@ Como se eliminan las partículas muertas en cada frame, el sistema evita fugas d
 #### Gestión de memoria en esta simulación
 
 #### Experimento
+
 
 
 
