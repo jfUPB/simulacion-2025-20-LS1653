@@ -415,13 +415,83 @@ Como se eliminan las partículas muertas en cada frame, el sistema evita fugas d
 
 #### Analisis 
 
+1)Estructura general:
+
+   Programa principal (setup y draw) -> Inicializa el lienzo, crea un emisor y controla el bucle de animación.
+   Clase Particle → Define cómo se comporta una partícula individual: su movimiento, cómo recibe fuerzas, cómo se dibuja y cómo “muere”.
+   Clase Emitter → Gestiona un conjunto dinámico de partículas: las crea, les aplica fuerzas y elimina las que mueren.
+
+2)Programa principal:
+   ``` js
+     function setup() {
+       createCanvas(1280, 480);
+       emitter = new Emitter(width / 2, 50);
+     }
+
+     function draw() {
+       background(255,30);
+
+       let gravity = createVector(0, 0.1);
+       emitter.applyForce(gravity);
+
+       emitter.addParticle();
+       emitter.run();
+     }
+   ```
+   Se crea un emisor de partículas en el centro horizontal y a 50 px de la parte superior.
+   Cada frame:
+      Se dibuja un fondo blanco con transparencia (30) -> crea un efecto de “estela” al mover partículas.
+      Se crea un vector gravedad que empuja a todas las partículas hacia abajo.
+      El emisor:
+         Crea una nueva partícula en cada frame (addParticle).
+         Actualiza todas las partículas activas (run).
+
+3)Clase Particle:
+   ``` js
+     class Particle {
+        constructor(x, y) {
+        this.position = createVector(x, y);
+        this.acceleration = createVector(0, 0.0);
+        this.velocity = createVector(random(-1, 1), random(-2, 0));
+        this.lifespan = 255.0;
+        this.mass = 1;
+     }
+   ```
+   Cada partícula tiene:
+     Posición inicial en el emisor.
+     Aceleración (se acumula con fuerzas aplicadas).
+     Velocidad inicial aleatoria hacia arriba/los lados.
+     Tiempo de vida (lifespan): empieza en 255 (transparencia máxima).
+     Masa (se usa para calcular cómo afecta una fuerza).
+
+4)Clase Emitter:
+   ``` js
+     class Emitter {
+       constructor(x, y) {
+       this.origin = createVector(x, y);
+       this.particles = [];
+     }
+   ```
+   El emisor tiene:
+     Un origen (posición fija donde nacen las partículas).
+     Una lista dinámica de partículas (this.particles).
+
 #### ¿Cómo se está gestionando la creación y la desaparción de las partículas y cómo se gestiona la memoria en cada una de las simulaciones?
 
 #### Creación de partículas
+  Cada frame se llama a emitter.addParticle().
+  Si la simulación corre a 60 fps -> se crean ~60 partículas por segundo.
 
 #### Desaparición de partículas
-
+  Una vez muerta (lifespan < 0), el Emitter la elimina del array.
+   
 #### Gestión de memoria en esta simulación
+  Cuando el Emitter hace splice(i, 1), elimina la referencia a la partícula muerta.
+  Como ya no hay referencias, el recolector de basura libera esa memoria automáticamente.
+  Resultado:
+     No se acumulan partículas muertas.
+     El array mantiene un tamaño estable (dependiendo de cuántas estén vivas en un momento dado).
+     No hay fugas de memoria.
 
 #### Experimento
 
@@ -430,15 +500,63 @@ Como se eliminan las partículas muertas en cada frame, el sistema evita fugas d
 
 #### Analisis 
 
+1)Estructura general del programa:
+   El código simula un sistema de partículas que:
+     Se emiten desde un punto fijo en la pantalla (un Emitter).
+     Son afectadas por gravedad universal.
+     Son repelidas por un objeto invisible (Repeller).
+     Desaparecen gradualmente con el tiempo para evitar acumulación infinita.
+
+2)Clase Particle:
+   Atributos: posición, velocidad, aceleración, vida útil.
+   Métodos:
+      applyForce(f): acumula fuerzas en la aceleración.
+      update(): integra aceleración y velocidad → movimiento realista.
+      show(): dibuja un círculo semitransparente que se desvanece al morir.
+      isDead(): indica cuándo la partícula debe eliminarse.
+
+3)Clase Emitter:
+    Atributos: origen de emisión, arreglo de partículas.
+    Métodos:
+      addParticle(): genera nuevas partículas en el origen.
+      applyForce(force): aplica una fuerza (como la gravedad) a todas las partículas.
+      applyRepeller(repeller): calcula una fuerza de repulsión entre cada partícula y el repulsor.
+      run(): actualiza, dibuja y elimina partículas muertas.
+
+4)Clase Repeller:
+    Atributos: posición fija y fuerza de repulsión (power).
+    Métodos:
+      repel(particle): calcula la fuerza de repulsión basada en la distancia (inspirada en la ley de gravitación, pero invertida).
+      show(): dibuja un círculo representando el repulsor.
+      
 #### ¿Cómo se está gestionando la creación y la desaparción de las partículas y cómo se gestiona la memoria en cada una de las simulaciones?
 
 #### Creación de partículas
+   ``` js
+     this.particles.push(new Particle(this.origin.x, this.origin.y));
+   ```
+   En cada ciclo de draw() se ejecuta emitter.addParticle().
+   Este método hace:
 
 #### Desaparición de partículas
 
+   Cada partícula tiene un atributo lifespan, que comienza en 255.0 y disminuye en update():
+   ``` js
+      this.lifespan -= 2;
+   ```
+   Cuando lifespan llega a 0, el método isDead() devuelve true.
+   En el método run() del Emitter, se recorre el arreglo de partículas de atrás hacia adelante y si alguna está muerta, se elimina con:
+   ``` js
+      this.particles.splice(i, 1);
+   ```
+
 #### Gestión de memoria en esta simulación
+   Creación dinámica: cada frame aparecen nuevas partículas, ocupando memoria en el heap.
+   Eliminación temprana: al morir, se eliminan del arreglo con splice().
+   Garbage Collector: al no haber referencias a las partículas muertas, el motor de JS (V8 en p5.js) recicla esa memoria.
 
 #### Experimento
+
 
 
 
