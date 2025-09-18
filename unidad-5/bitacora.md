@@ -227,6 +227,7 @@ class Particle {
 ```
 
 6.Captura
+
 <img width="458" height="300" alt="image" src="https://github.com/user-attachments/assets/c2f1c31c-f7a8-4ed8-900b-ec89d37c6b53" />
 
 
@@ -499,6 +500,7 @@ class Emitter {
 ```
 
 6.Captura
+
 <img width="797" height="298" alt="image" src="https://github.com/user-attachments/assets/432bb30c-4416-4c2b-b9ff-2812cc049b3f" />
 
 
@@ -798,7 +800,9 @@ class Confetti extends Particle {
 ```
 
 6.Captura
+
 <img width="415" height="302" alt="image" src="https://github.com/user-attachments/assets/46c858a3-a859-40ed-bf9d-eebf29569cc7" />
+
 <img width="382" height="300" alt="image" src="https://github.com/user-attachments/assets/026cb8c4-7cd3-4ac8-9666-4a50202b09a3" />
 
 
@@ -1016,6 +1020,7 @@ class Emitter {
 ```
 
 6.Captura
+
 <img width="517" height="600" alt="image" src="https://github.com/user-attachments/assets/824f43e1-c910-42e1-8762-20f57f5fc2c3" />
 
 
@@ -1238,8 +1243,12 @@ class Emitter {
 ```
 
 6.Captura
+
 <img width="511" height="293" alt="image" src="https://github.com/user-attachments/assets/31eac5c3-099c-4f85-a83a-0ec27a690d0b" />
 
+## Apply
+
+### Actividad 3
 
 
 
