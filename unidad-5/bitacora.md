@@ -352,11 +352,155 @@ Como se eliminan las partículas muertas en cada frame, el sistema evita fugas d
 #### Experimento
 
 1.Modificación
+Unidad 2: Motion 101, suma de fuerzas
+Además de la gravedad, añadí otra fuerza constante: el viento.
+
 2.Gestión
+Cada Emitter crea partículas en su origen (addParticle()).
+Estas se almacenan en un array dentro del objeto Emitter.
+En cada frame, se recorre el array en reversa y se eliminan con splice() aquellas que han muerto (lifespan < 0).
+Esto garantiza que la memoria no se llene con partículas innecesarias.
+
 3.Explicación
+Unidad 2: Motion 101, suma de fuerzas
+Además de la gravedad, añadí otra fuerza constante: el viento.
+En cada frame, la partícula recibe dos fuerzas:
+   gravity = (0, 0.05)
+   wind = (0.02, 0)
+Estas fuerzas se suman en la aceleración (this.acceleration.add(force)).
+Luego, la aceleración modifica la velocidad, y la velocidad la posición (modelo clásico de Motion 101).
+
+Por qué:
+Esto ilustra cómo varias fuerzas simultáneas afectan el movimiento de un objeto y el como con esto se puede lograr un concepto más atractivo visualmente.
+
+
 4.Enlace
+[Enlace](https://editor.p5js.org/estebanpuerta2006/sketches/stdxSBDu2)
+
 5.Codigo
+``` js
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+
+// Particles are generated each cycle through draw(),
+// fall with gravity and fade out over time
+// A ParticleSystem object manages a variable size
+// list of particles.
+
+// an array of ParticleSystems
+let emitters = [];
+
+function setup() {
+  createCanvas(640, 240);
+  let text = createP("click to add particle systems");
+}
+
+function draw() {
+  background(255);
+  for (let emitter of emitters) {
+    emitter.run();
+    emitter.addParticle();
+  }
+}
+
+function mousePressed() {
+  emitters.push(new Emitter(mouseX, mouseY));
+}
+
+class Particle {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.acceleration = createVector(0, 0);
+    this.velocity = createVector(random(-1, 1), random(-1, 0));
+    this.lifespan = 255.0;
+  }
+
+  run() {
+    // Unidad 3: Gravedad
+    let gravity = createVector(0, 0.05);
+    this.applyForce(gravity);
+
+    // ---- Unidad 2: Motion 101 (suma de fuerzas) ----
+    let wind = createVector(0.06, 0); // viento hacia la derecha
+    this.applyForce(wind);
+
+    this.update();
+    this.show();
+  }
+
+  applyForce(force) {
+    this.acceleration.add(force);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.lifespan -= 2;
+    this.acceleration.mult(0); // reset acumulador
+  }
+
+  show() {
+    stroke(0, this.lifespan);
+    strokeWeight(2);
+    fill(127, this.lifespan);
+    circle(this.position.x, this.position.y, 8);
+  }
+
+  isDead() {
+    return this.lifespan < 0.0;
+  }
+}
+
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+
+class Emitter {
+  constructor(x, y) {
+    this.origin = createVector(x, y);
+    this.particles = [];
+  }
+
+  addParticle() {
+    this.particles.push(new Particle(this.origin.x, this.origin.y));
+  }
+
+  run() {
+    // Looping through backwards to delete
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      this.particles[i].run();
+      if (this.particles[i].isDead()) {
+        // Remove the particle
+        this.particles.splice(i, 1);
+      }
+    }
+
+    // Run every particle
+    // ES6 for..of loop
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of
+    // https://www.youtube.com/watch?v=Y8sMnRQYr3c
+    // for (let particle of this.particles) {
+    //   particle.run();
+    // }
+
+    // Filter removes any elements of the array that do not pass the test
+    // I am also using ES6 arrow snytax
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+    // https://www.youtube.com/watch?v=mrYMzpbFz18
+    // this.particles = this.particles.filter(particle => !particle.isDead());
+
+    // Without ES6 arrow code would look like:
+    // this.particles = this.particles.filter(function(particle) {
+    //   return !particle.isDead();
+    // });
+  }
+}
+```
+
 6.Captura
+<img width="797" height="298" alt="image" src="https://github.com/user-attachments/assets/432bb30c-4416-4c2b-b9ff-2812cc049b3f" />
+
 
 ### Analiza el ejemplo 4.5:
 [Ejemplo 4.5](https://natureofcode.com/particles/#example-45-a-particle-system-with-inheritance-and-polymorphism)
@@ -508,11 +652,155 @@ Como se eliminan las partículas muertas en cada frame, el sistema evita fugas d
 #### Experimento
 
 1.Modificación
+Unidad 4: Ondas / sinusoides
+Se añadió un movimiento horizontal ondulatorio a cada partícula.
+
 2.Gestión
+Cada Emitter guarda sus partículas en un array.
+Se crean nuevas en cada frame y se eliminan las muertas con splice().
+Esto mantiene el sistema eficiente y evita fugas de memoria.
+
 3.Explicación
+Unidad 4: Ondas / sinusoides
+Se añadió un movimiento horizontal ondulatorio a cada partícula.
+Usamos la función sin(frameCount * frecuencia + desfase) * amplitud para modificar su posición en X.
+Esto hace que las partículas se balanceen mientras caen.
+
+Por qué:
+En vez de caer en línea recta, las partículas parecen “flotar” o mecerse en el aire, logrando que se sienta cómo un confeti real.
+
 4.Enlace
+[Enlace](https://editor.p5js.org/estebanpuerta2006/sketches/qcXwoAlZL)
+
 5.Codigo
+``` js
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+
+// Particles are generated each cycle through draw(),
+// fall with gravity and fade out over time
+// A ParticleSystem object manages a variable size
+// list of particles.
+
+
+let emitter;
+
+function setup() {
+  createCanvas(640, 240);
+  emitter = new Emitter(width / 2, 20);
+}
+
+function draw() {
+  background(255);
+  emitter.addParticle();
+  emitter.run();
+}
+
+class Particle {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.acceleration = createVector(0, 0);
+    this.velocity = createVector(random(-1, 1), random(-1, 0));
+    this.lifespan = 255.0;
+
+    // Unidad 4: Ondas / Sinusoides
+    this.amplitude = random(10, 30); // amplitud de la onda
+    this.frequency = random(0.05, 0.1); // frecuencia de la onda
+    this.offset = random(TWO_PI); // desfase
+  }
+
+  run() {
+    let gravity = createVector(0, 0.05);
+    this.applyForce(gravity);
+    this.update();
+    this.show();
+  }
+
+  applyForce(force) {
+    this.acceleration.add(force);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+
+    // Movimiento ondulatorio agregado (Unidad 4)
+    this.position.x += sin(frameCount * this.frequency + this.offset) * 2;
+
+    this.lifespan -= 2;
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    stroke(0, this.lifespan);
+    strokeWeight(2);
+    fill(127, this.lifespan);
+    circle(this.position.x, this.position.y, 8);
+  }
+
+  isDead() {
+    return this.lifespan < 0.0;
+  }
+}
+
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+
+class Emitter {
+  constructor(x, y) {
+    this.origin = createVector(x, y);
+    this.particles = [];
+  }
+
+  addParticle() {
+    let r = random(1);
+    if (r < 0.5) {
+      this.particles.push(new Particle(this.origin.x, this.origin.y));
+    } else {
+      this.particles.push(new Confetti(this.origin.x, this.origin.y));
+    }
+  }
+
+  run() {
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      let p = this.particles[i];
+      p.run();
+      if (p.isDead()) {
+        this.particles.splice(i, 1);
+      }
+    }
+  }
+}
+
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+
+// Child class constructor
+class Confetti extends Particle {
+  // Override the show method
+  show() {
+    let angle = map(this.position.x, 0, width, 0, TWO_PI * 2);
+
+    rectMode(CENTER);
+    fill(127, this.lifespan);
+    stroke(0, this.lifespan);
+    strokeWeight(2);
+    push();
+    translate(this.position.x, this.position.y);
+    rotate(angle);
+    square(0, 0, 12);
+    pop();
+  }
+}
+```
+
 6.Captura
+<img width="415" height="302" alt="image" src="https://github.com/user-attachments/assets/46c858a3-a859-40ed-bf9d-eebf29569cc7" />
+<img width="382" height="300" alt="image" src="https://github.com/user-attachments/assets/026cb8c4-7cd3-4ac8-9666-4a50202b09a3" />
+
 
 ### Analiza el ejemplo 4.6:
 [Ejemplo 4.6](https://natureofcode.com/particles/#example-46-a-particle-system-with-forces)
@@ -600,11 +888,136 @@ Como se eliminan las partículas muertas en cada frame, el sistema evita fugas d
 #### Experimento
 
 1.Modificación
+Unidad 1: Aleatoriedad, variante Perlin noise
+En lugar de usar random(), utilicé noise() para controlar un movimiento horizontal suave.
+
 2.Gestión
+El Emitter crea partículas en cada frame con addParticle().
+Todas las partículas se guardan en un array.
+En cada iteración (run()), si una partícula muere (lifespan < 0), se elimina con splice().
+Esto asegura que el array solo guarde partículas vivas y evita fugas de memoria.
+
 3.Explicación
+En lugar de usar random(), utilicé noise() para controlar un movimiento horizontal suave.
+Cada partícula tiene un noiseOffset diferente, por lo que no se mueven todas igual.
+Esto hace que las trayectorias sean orgánicas, más parecidas a fenómenos naturales como humo o polvo.
+
+Por qué:
+Le da un aspecto más suave gracias al ruido Perlin y lo hace más bonito a la vista del espectador ya que parece algo ordenado entre lo aleatorio.
+
 4.Enlace
+[Enlace](https://editor.p5js.org/estebanpuerta2006/sketches/BbvOOv-Hc)
+
 5.Codigo
+``` js
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+
+let emitter;
+
+function setup() {
+  createCanvas(1280, 480);
+  emitter = new Emitter(width / 2, 50);
+}
+
+function draw() {
+  background(255,30);
+
+  // Apply gravity force to all Particles
+  let gravity = createVector(0, 0.1);
+  emitter.applyForce(gravity);
+
+  emitter.addParticle();
+  emitter.run();
+}
+
+class Particle {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.acceleration = createVector(0, 0.0);
+    this.velocity = createVector(random(-1, 1), random(-2, 0));
+    this.lifespan = 255.0;
+    this.mass = 1;
+
+    // ---- Unidad 1 (variante): Perlin noise ----
+    this.noiseOffset = random(1000); // punto de partida diferente para cada partícula
+  }
+
+  run() {
+    this.update();
+    this.show();
+  }
+
+  applyForce(force) {
+    let f = force.copy();
+    f.div(this.mass);
+    this.acceleration.add(f);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+
+    // Movimiento horizontal suave con Perlin noise
+    let n = noise(this.noiseOffset + frameCount * 0.01);
+    let offset = map(n, 0, 1, -2, 2); 
+    this.position.x += offset;
+
+    this.acceleration.mult(0);
+    this.lifespan -= 2.0;
+  }
+
+  show() {
+    stroke(0, this.lifespan);
+    strokeWeight(2);
+    fill(127, this.lifespan);
+    circle(this.position.x, this.position.y, 8);
+  }
+
+  isDead() {
+    return this.lifespan < 0.0;
+  }
+}
+
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+
+class Emitter {
+
+  constructor(x, y) {
+    this.origin = createVector(x, y);
+    this.particles = [];
+  }
+
+  addParticle() {
+    this.particles.push(new Particle(this.origin.x, this.origin.y));
+  }
+
+  applyForce(force) {
+    //{!3} Using a for of loop to apply the force to all particles
+    for (let particle of this.particles) {
+      particle.applyForce(force);
+    }
+  }
+
+  run() {
+    //{!7} Can’t use the enhanced loop because checking for particles to delete.
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      const particle = this.particles[i];
+      particle.run();
+      if (particle.isDead()) {
+        this.particles.splice(i, 1);
+      }
+    }
+  }
+}
+```
+
 6.Captura
+<img width="517" height="600" alt="image" src="https://github.com/user-attachments/assets/824f43e1-c910-42e1-8762-20f57f5fc2c3" />
+
 
 ### Analiza el ejemplo 4.7:
 [Ejemplo 4.7](https://natureofcode.com/particles/#example-47-a-particle-system-with-a-repeller)
@@ -669,11 +1082,165 @@ Como se eliminan las partículas muertas en cada frame, el sistema evita fugas d
 #### Experimento
 
 1.Modificación
+Unidad 4
+Apliqué el modelo de Hooke: F = -k * distancia.
+
 2.Gestión
+El sistema de partículas sigue manejando la vida útil con lifespan, y cuando una partícula está muerta (isDead()), se elimina con splice. Esto evita que se acumulen partículas en memoria.
+-> Así se gestiona de manera eficiente la creación/destrucción dinámica.
+
 3.Explicación
+Unidad 4
+Apliqué el modelo de Hooke: F = -k * distancia.
+El emisor ahora oscila alrededor de un ancla, produciendo un movimiento elástico.
+Esto se aplicó directamente a la posición del emitter en cada frame.
+
+Por qué:
+Los resortes añaden momentos menos predecibles y tambien queria utilizarlo ya que es el que menos tengo repasado.
+
 4.Enlace
+[Enlace](https://editor.p5js.org/estebanpuerta2006/sketches/1_V73Zi5w)
+
 5.Codigo
+``` js
+let emitter;
+let repeller;
+let anchor; // punto de anclaje del resorte
+
+function setup() {
+  createCanvas(640, 240);
+  anchor = createVector(width / 2, 60);
+  emitter = new Emitter(width / 2, 60);
+  repeller = new Repeller(width / 2, 200);
+}
+
+function draw() {
+  background(255);
+
+  // El emisor ahora está conectado al anchor con un resorte
+  let springForce = p5.Vector.sub(anchor, emitter.origin);
+  let k = 0.05; // constante de elasticidad
+  springForce.mult(k);
+  emitter.origin.add(springForce); // aplicamos fuerza hacia el anchor
+
+  emitter.addParticle();
+
+  // Gravedad universal
+  let gravity = createVector(0, 0.1);
+  emitter.applyForce(gravity);
+
+  // Repulsión
+  emitter.applyRepeller(repeller);
+
+  emitter.run();
+  repeller.show();
+
+  // Dibujar el resorte como línea para visualizarlo
+  stroke(0, 100);
+  line(anchor.x, anchor.y, emitter.origin.x, emitter.origin.y);
+  fill(0);
+  circle(anchor.x, anchor.y, 8); // punto de anclaje
+}
+
+// Repeller igual que antes
+class Repeller {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.power = 150;
+  }
+
+  show() {
+    stroke(0);
+    strokeWeight(2);
+    fill(127);
+    circle(this.position.x, this.position.y, 32);
+  }
+
+  repel(particle) {
+    let force = p5.Vector.sub(this.position, particle.position);
+    let distance = force.mag();
+    distance = constrain(distance, 5, 50);
+    let strength = (-1 * this.power) / (distance * distance);
+    force.setMag(strength);
+    return force;
+  }
+}
+
+class Particle {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(random(-1, 1), random(-1, 0));
+    this.acceleration = createVector(0, 0);
+    this.lifespan = 255.0;
+  }
+
+  run() {
+    this.update();
+    this.show();
+  }
+
+  applyForce(f) {
+    this.acceleration.add(f);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.lifespan -= 2;
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    stroke(0, this.lifespan);
+    strokeWeight(2);
+    fill(127, this.lifespan);
+    circle(this.position.x, this.position.y, 8);
+  }
+
+  isDead() {
+    return this.lifespan < 0.0;
+  }
+}
+
+class Emitter {
+  constructor(x, y) {
+    this.origin = createVector(x, y);
+    this.particles = [];
+  }
+
+  addParticle() {
+    this.particles.push(new Particle(this.origin.x, this.origin.y));
+  }
+
+  applyForce(force) {
+    for (let particle of this.particles) {
+      particle.applyForce(force);
+    }
+  }
+
+  applyRepeller(repeller) {
+    for (let particle of this.particles) {
+      let force = repeller.repel(particle);
+      particle.applyForce(force);
+    }
+  }
+
+  run() {
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      const particle = this.particles[i];
+      particle.run();
+      if (particle.isDead()) {
+        this.particles.splice(i, 1);
+      }
+    }
+  }
+}
+```
+
 6.Captura
+<img width="511" height="293" alt="image" src="https://github.com/user-attachments/assets/31eac5c3-099c-4f85-a83a-0ec27a690d0b" />
+
+
 
 
 
