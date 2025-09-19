@@ -1270,13 +1270,105 @@ class Emitter {
       R resetea el lago.
 
 ### Debes utilizar los conceptos de herencia y polimorfismo que revisaste en la fase de investigación.
+``` js
+              ┌─────────────────────────┐
+              │        Particle          │
+              │--------------------------│
+              │ + position : p5.Vector   │
+              │ + velocity : p5.Vector   │
+              │ + acceleration : p5.Vector│
+              │ + lifespan : float       │
+              │--------------------------│
+              │ + applyForce(f:Vector)   │
+              │ + update()               │
+              │ + show()   (polimórfico) │
+              │ + isDead(): bool         │
+              └───────────┬─────────────┘
+                          │
+     ┌────────────────────┼─────────────────────┐
+     │                    │                     │
+┌─────────────┐    ┌───────────────┐     ┌───────────────┐
+│    Fish     │    │     Bread     │     │     Wave      │
+│-------------│    │---------------│     │---------------│
+│ + size      │    │ + depthLimit  │     │ + radius      │
+│ + noiseOff  │    │ + sinkSpeed   │     │ + growthRate  │
+│-------------│    │---------------│     │---------------│
+│ + swim()    │    │ + sink()      │     │ + expand()    │
+│ + show()    │    │ + show()      │     │ + show()      │
+└─────────────┘    └───────────────┘     └───────────────┘
 
+
+┌─────────────────────────┐
+│        Emitter           │
+│--------------------------│
+│ + fishes[] : Fish        │
+│ + breads[] : Bread       │
+│ + waves[]  : Wave        │
+│--------------------------│
+│ + addFish()              │
+│ + addBread(x,y)          │
+│ + addWave(x,y)           │
+│ + run()                  │
+└─────────────────────────┘
+
+```
+
+#### Clase base Particle:
+Define atributos comunes (posición, velocidad, aceleración, vida). Todas las subclases heredan de aquí.
+
+show() es polimórfico: cada subclase dibuja diferente.
+
+#### Subclase Fish:
+Tamaño generado con randomGaussian().
+Movimiento basado en Perlin noise.
+Se atraen hacia panes (applyForce).
+
+#### Subclase Bread:
+Tiene un límite de profundidad definido con random().
+Se hunde con gravedad hasta ese límite.
+
+#### Subclase Wave:
+Se genera cuando un pez come un pan.
+Expande un círculo concéntrico hasta desvanecerse.
+
+#### Clase Emitter:
+Administra arrays de Fish, Bread y Wave.
+Controla creación, actualización y eliminación (splice() cuando mueren).
+
+#### Herencia
+Fish, Bread y Wave heredan de Particle.
+
+#### Polimorfismo
+show() está declarado en Particle, pero cada subclase lo dibuja distinto:
+Fish.show() dibuja un pez con ellipse() o triangle().
+Bread.show() dibuja una miga que se hunde.
+Wave.show() dibuja un círculo que se expande.
 
 ### Debes utilizar al menos un concepto de cada una de las unidades anteriores: 4 conceptos.
 
+#### Unidad 1 – Aleatoriedad
+  Uso de distribución gaussiana (randomGaussian()) para definir:
+  El número inicial de peces.
+  El tamaño de cada pez (unos más grandes, otros más pequeños).
+  Uso de random() para definir qué tanto se hunde cada pan.
+
+#### Unidad 2 – Motion 101 (fuerzas)
+  Los peces se mueven con fuerzas de aceleración (ruido Perlin para dirección base).
+  Se aplica una fuerza de atracción hacia los panes cuando aparecen.
+
+#### Unidad 3 – Fricción, resistencia y gravedad
+  Los peces y las ondas tienen resistencia del agua (fricción ligera que reduce velocidad).
+  Los panes tienen gravedad, pero con variación aleatoria de profundidad máxima (unos flotan más, otros se hunden más).
+
+#### Unidad 4 – Coordenadas polares, ondas, resortes, péndulos
+  Cada vez que un pez come pan, se genera una onda concéntrica en coordenadas polares que se expande y desvanece.
+  El lago tiene un gradiente de profundidad en 3 colores, simulando un entorno natural más realista.
 
 ### Debes definir cómo vas a gestionar el tiempo de vida de las partículas y la memoria.
-
+Fish: permanentes (reciclados siempre).
+Bread: desaparecen cuando lifespan llega a 0 o un pez lo come.
+Wave: se expanden, se desvanecen y se eliminan (lifespan).
+Uso de .splice() para limpiar arrays, evitando fugas de memoria.
 
 ### La obra debe ser interactiva en tiempo real. Puedes usar teclado, mouse, música, el micrófono, video, sensor o cualquier otro dispositivo de entrada.
 
@@ -1291,6 +1383,7 @@ class Emitter {
 
 
 Si tu bitácora no incluye la nota propuesta y la justificación tendrás una nota de 0.
+
 
 
 
