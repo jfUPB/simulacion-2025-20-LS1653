@@ -1262,12 +1262,13 @@ class Emitter {
 2)Boceto: 
 
 3)Interacción:
-   Click izquierdo: tirar pan (Bread) en la posición del mouse.
-   Los peces nadan solos, pero al detectar pan, nadan hacia él.
-   Cuando comen el pan, desaparece y surge una onda concéntrica (Wave).
-   Teclas:
-      C cambia paleta de colores (día / tarde / noche).
-      R resetea el lago.
+Click izquierdo → tiras un pan (Bread) en la posición del mouse.
+Peces (Fish) → nadan solos.
+Si hay pan, lo detectan solo si está en un radio de 120 px.
+Cuando lo alcanzan, el pan desaparece y en su lugar se genera una onda (Wave).
+Ondas (Wave) → se expanden desde donde desapareció el pan y luego se desvanecen.
+Tecla C → cambia la paleta de colores del lago entre día, tarde y noche.
+Tecla R → resetea el lago (reinicia el grupo de peces, su número y tamaños definidos con distribución gaussiana).
 
 ### Debes utilizar los conceptos de herencia y polimorfismo que revisaste en la fase de investigación.
 ``` js
@@ -1371,18 +1372,227 @@ Wave: se expanden, se desvanecen y se eliminan (lifespan).
 Uso de .splice() para limpiar arrays, evitando fugas de memoria.
 
 ### La obra debe ser interactiva en tiempo real. Puedes usar teclado, mouse, música, el micrófono, video, sensor o cualquier otro dispositivo de entrada.
-
+Click izquierdo → tiras un pan (Bread) en la posición del mouse.
+Peces (Fish) → nadan solos.
+Si hay pan, lo detectan solo si está en un radio de 120 px.
+Cuando lo alcanzan, el pan desaparece y en su lugar se genera una onda (Wave).
+Ondas (Wave) → se expanden desde donde desapareció el pan y luego se desvanecen.
+Tecla C → cambia la paleta de colores del lago entre día, tarde y noche.
+Tecla R → resetea el lago (reinicia el grupo de peces, su número y tamaños definidos con distribución gaussiana).
 
 ### Incluye un enlace a tu código en el editor de p5.js.
-
+[Mi obra](https://editor.p5js.org/estebanpuerta2006/sketches/pFCKNSTK_)
 
 ### Incluye el código fuente.
+``` js
+let fishes = [];
+let breads = [];
+let waves = [];
+let paletteIndex = 0;
 
+let palettes = [
+  // Día
+  { c1: [100, 180, 255], c2: [50, 130, 220], c3: [20, 70, 160] },
+  // Tarde
+  { c1: [255, 180, 100], c2: [200, 100, 70], c3: [120, 50, 40] },
+  // Noche
+  { c1: [40, 60, 100], c2: [20, 40, 80], c3: [10, 20, 40] }
+];
+
+function setup() {
+  createCanvas(800, 600);
+  initFishes();
+}
+
+function draw() {
+  drawLakeBackground();
+
+  // Panes
+  for (let i = breads.length - 1; i >= 0; i--) {
+    let b = breads[i];
+    b.update();
+    b.show();
+    if (b.isDead()) {
+      waves.push(new Wave(b.position.x, b.position.y));
+      breads.splice(i, 1);
+    }
+  }
+
+  // Peces
+  for (let f of fishes) {
+    if (breads.length > 0) {
+      let target = findClosestBreadInRange(f, 120); // visión limitada
+      if (target) f.seek(target.position);
+    }
+    f.update();
+    f.show();
+  }
+
+  // Ondas
+  for (let i = waves.length - 1; i >= 0; i--) {
+    let w = waves[i];
+    w.update();
+    w.show();
+    if (w.isDead()) waves.splice(i, 1);
+  }
+}
+
+// -------------------- Fondo --------------------
+function drawLakeBackground() {
+  let { c1, c2, c3 } = palettes[paletteIndex];
+  noStroke();
+  for (let y = 0; y < height; y++) {
+    let inter = map(y, 0, height, 0, 1);
+    let col = lerpColor(
+      lerpColor(color(c1), color(c2), constrain(inter * 2, 0, 1)),
+      color(c3),
+      constrain(inter - 0.5, 0, 0.5) * 2
+    );
+    stroke(col);
+    line(0, y, width, y);
+  }
+}
+
+// -------------------- Helpers --------------------
+function initFishes() {
+  fishes = [];
+  let n = int(max(5, randomGaussian(15, 5)));
+  for (let i = 0; i < n; i++) {
+    fishes.push(new Fish(random(width), random(height)));
+  }
+}
+
+function findClosestBreadInRange(fish, range) {
+  let closest = null;
+  let record = range;
+  for (let b of breads) {
+    let d = dist(fish.position.x, fish.position.y, b.position.x, b.position.y);
+    if (d < record) {
+      record = d;
+      closest = b;
+    }
+  }
+  return closest;
+}
+
+function mousePressed() {
+  if (mouseButton === LEFT) {
+    breads.push(new Bread(mouseX, mouseY));
+  }
+}
+
+function keyPressed() {
+  if (key === 'R' || key === 'r') {
+    initFishes();
+  }
+  if (key === 'C' || key === 'c') {
+    paletteIndex = (paletteIndex + 1) % palettes.length;
+  }
+}
+
+// -------------------- Clases --------------------
+class Particle {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.velocity = createVector();
+    this.acceleration = createVector();
+    this.lifespan = 255;
+  }
+  applyForce(f) { this.acceleration.add(f); }
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+  isDead() { return this.lifespan <= 0; }
+  show() {}
+}
+
+class Fish extends Particle {
+  constructor(x, y) {
+    super(x, y);
+    this.size = max(5, randomGaussian(20, 6));
+    this.maxSpeed = 2;
+    this.maxForce = 0.05;
+  }
+  update() {
+    super.update();
+    this.wrapEdges();
+  }
+  seek(target) {
+    let desired = p5.Vector.sub(target, this.position);
+    desired.setMag(this.maxSpeed);
+    let steer = p5.Vector.sub(desired, this.velocity);
+    steer.limit(this.maxForce);
+    this.applyForce(steer);
+  }
+  wrapEdges() {
+    if (this.position.x < 0) this.position.x = width;
+    if (this.position.x > width) this.position.x = 0;
+    if (this.position.y < 0) this.position.y = height;
+    if (this.position.y > height) this.position.y = 0;
+  }
+  show() {
+    push();
+    translate(this.position.x, this.position.y);
+    rotate(this.velocity.heading());
+    fill(255, 150, 0);
+    noStroke();
+    ellipse(0, 0, this.size * 2, this.size);
+    triangle(-this.size, 0, -this.size * 1.5, -this.size / 2, -this.size * 1.5, this.size / 2);
+    pop();
+  }
+}
+
+class Bread extends Particle {
+  constructor(x, y) {
+    super(x, y);
+    this.sinkLimit = y + random(20, 200);
+    this.velocity = createVector(0, 1);
+  }
+  update() {
+    if (this.position.y < this.sinkLimit) {
+      this.applyForce(createVector(0, 0.05));
+    } else {
+      this.velocity.mult(0.95);
+      this.lifespan -= 1.5;
+    }
+    super.update();
+  }
+  show() {
+    fill(230, 200, 150, this.lifespan);
+    noStroke();
+    ellipse(this.position.x, this.position.y, 12, 8);
+  }
+}
+
+class Wave {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.radius = 1;
+    this.growthRate = 2;
+    this.lifespan = 255;
+  }
+  update() {
+    this.radius += this.growthRate;
+    this.lifespan -= 2;
+  }
+  show() {
+    stroke(255, 255, 255, this.lifespan);
+    noFill();
+    circle(this.position.x, this.position.y, this.radius * 2);
+  }
+  isDead() { return this.lifespan <= 0; }
+}
+```
 
 ### Captura de pantallas de tu obra con las imágenes que más te gusten
+<img width="945" height="675" alt="image" src="https://github.com/user-attachments/assets/bc92e76a-98d6-4165-83f8-f5aebf037bff" />
 
 
-Si tu bitácora no incluye la nota propuesta y la justificación tendrás una nota de 0.
+## Si tu bitácora no incluye la nota propuesta y la justificación tendrás una nota de 0.
+
+### Tu mismo vas a propoer una nota basada en la rúbrica y justificarás cada criterio de la rúbrica indicando qué evidencias presentes en la bitácora justifican la nota que propones.
 
 
 
