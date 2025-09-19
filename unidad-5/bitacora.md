@@ -1261,6 +1261,8 @@ class Emitter {
 
 2)Boceto: 
 
+<img width="1531" height="527" alt="image" src="https://github.com/user-attachments/assets/c006f0b9-33f2-4a7f-8eeb-99301aec7263" />
+
 3)Interacción:
 Click izquierdo → tiras un pan (Bread) en la posición del mouse.
 Peces (Fish) → nadan solos.
@@ -1609,6 +1611,7 @@ Pienso que me faltaria pulir más mi codigo pues aunque funcione, seguramente es
 
 #### 4. Calidad de la Obra Final (Artefacto Entregado)  Nota: 4.2
 Es muy simple, podria ser más llamativa, sin embargo encaja con la sensación que yo queria transmitir a la obra.
+
 
 
 
