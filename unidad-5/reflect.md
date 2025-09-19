@@ -1,1 +1,22 @@
+# Unidad 5
 
+### Tu mismo vas a propoer una nota basada en la rúbrica y justificarás cada criterio de la rúbrica indicando qué evidencias presentes en la bitácora justifican la nota que propones.
+
+Luego de presentar mi trabajo de la unidad 5, y ver que a todos les gusto mi trabajo y ademas dijeron que me puse una nota muy baja, me di cuenta de que fui muy autodemandante con mi esfuerzo, por lo que decidi ser un poco más compresivo he indulgente, y luego de eso comprendi que en realidad no hice un mal trabajo y debo valorar más mis esfuerzos.
+
+
+### Nota que propongo luego de meditar más: 5.0
+
+### Justificación:
+
+#### 1. Investigación y Experimentación (Evidencia en Actividad 2)  Nota: 5
+Pude compreder y explicar de buena manera los temás, puede que pudiera hacer mejor la interrelación de los temas, sin embargo el como lo hice es lo sufientemente bueno para completar el ejercicio de investigación a a perfección.
+
+#### 2. Intención y Diseño (Proceso de Actividad 3)  Nota: 5
+Logre transmitir mi intención de la mejor forma y logre que aunque fuera poco, que mi proseso fuera completamente relevante en mi producto final, el unico "problema" seria que me quede con mi primer concepto y no explore otros, sin embargo este concepto salio de muchas ideas que fui eliminando sistematicamente hasta encontrar una que se adaptara al sentimiento que quise transmitir.
+
+#### 3. Aplicación Técnica (Código de Actividad 3)  Nota: 5
+Logre inplementar cada una de las unidades y supe utilizar cada concepto, mi unico pecado es el desorden del codigo, sin embargo aun con eso no hay fallas y todavia es completamente legible y entendible, razón por la cual desidi ser codicioso y ponerme la nota maxima.
+
+#### 4. Calidad de la Obra Final (Artefacto Entregado)  Nota: 5
+Mi obra puede llegar a ser un poco simple en la parte visual, sin embargo logra perfectamente cumplir con mi idea de creación y transmite la tranquilidad que buscaba, por esta reazón considero que cumpli completamente ya que la obra logra reflejar todo mi trabajo.
