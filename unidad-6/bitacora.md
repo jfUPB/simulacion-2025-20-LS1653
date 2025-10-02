@@ -4,7 +4,7 @@
 
 ### Captura 1
 
-<img width="20" height="15" alt="image" src="https://github.com/user-attachments/assets/d6a3a156-2f8d-4625-a62e-d800247aa7a5" />
+<img width="200" height="150" alt="image" src="https://github.com/user-attachments/assets/d6a3a156-2f8d-4625-a62e-d800247aa7a5" />
 
 Unfenced Existence, 2018
 
@@ -14,7 +14,7 @@ Este trabajo me inspira a tratar de crear paisajes, esto debido a que al ver su 
 
 ### Captura 2
 
-<img width="20" height="20" alt="image" src="https://github.com/user-attachments/assets/851f7f26-069b-40b5-a731-7ccdae934e4c" />
+<img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/851f7f26-069b-40b5-a731-7ccdae934e4c" />
 
 pi/4
 
@@ -29,4 +29,5 @@ Al ver esta obra me trae a la mente de la pelicula matrix pues la obra se muestr
 ## Actividad 4
 
 ## Actividad 5
+
 
