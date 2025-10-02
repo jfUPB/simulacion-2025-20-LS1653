@@ -68,26 +68,108 @@ Permite la creación de movimientos más orgánicos y naturales, que se parecen 
 ### ¿Qué relación tiene la steering force con Craig Reynolds y su trabajo en simulación de comportamiento animal?
 La relación es directa, ya que la steering force fue el concepto clave introducido por Craig Reynolds en 1987 con su modelo de [Boids](https://en.wikipedia.org/wiki/Boids) (simulación de bandadas de pájaros). 
 
+Reynolds diseñó un sistema donde agentes simples (los boids) seguían tres reglas básicas: separación, alineamiento y cohesión. Para implementar estas reglas, necesitaba que los agentes se movieran hacia direcciones deseadas de manera realista. Allí surge la idea de la steering force.
 
+En lugar de teletransportar o cambiar instantáneamente la velocidad de un boid, Reynolds definió que cada comportamiento genera una fuerza de dirección, y la suma de todas esas fuerzas determina el movimiento final del agente.
 
-Reynolds diseñó un sistema donde agentes simples (los boids) seguían tres reglas básicas: separación, alineamiento y cohesión.
+Este enfoque fue revolucionario ya que dio origen a la simulación realista de enjambres, bandadas y cardúmenes e influyó en animación por computadora, videojuegos, robótica y realidad virtual. Basicamente se convirtió en la base para muchos algoritmos modernos de inteligencia artificial en entornos simulados.
 
-Para implementar estas reglas, necesitaba que los agentes se movieran hacia direcciones deseadas de manera realista. Allí surge la idea de la steering force.
-
-En lugar de teletransportar o cambiar instantáneamente la velocidad de un boid, Reynolds definió que cada comportamiento (seguir, huir, evitar obstáculos) genera una fuerza de dirección, y la suma de todas esas fuerzas determina el movimiento final del agente.
-
-Este enfoque fue revolucionario porque:
-
-Dio origen a la simulación realista de enjambres, bandadas y cardúmenes.
-
-Influyó en animación por computadora, videojuegos, robótica y realidad virtual.
-
-Se convirtió en la base para muchos algoritmos modernos de inteligencia artificial en entornos simulados.
 ## Actividad 3
+
+### Estructura del campo de flujo
+
+El campo de flujo está representado en la clase FlowField y se usa una matriz bidimensional (this.field) de vectores (p5.Vector):
+
+``` js
+this.field = new Array(this.cols);
+for (let i = 0; i < this.cols; i++) {
+  this.field[i] = new Array(this.rows);
+}
+```
+Cada celda de la matriz corresponde a una porción del canvas (un rectángulo definido por la resolución). En cada celda se almacena un vector de dirección que los agentes (vehicles) seguirán.
+
+ej: 
+
+<img width="1296" height="401" alt="image" src="https://github.com/user-attachments/assets/817865a4-cc87-4045-b13a-fce4c26f3b88" />
+
+#### Inicialización de vectores:
+En init(), los vectores se generan con Perlin noise para producir una textura suave de direcciones:
+
+``` js
+let angle = map(noise(xoff, yoff), 0, 1, 0, TWO_PI);
+this.field[i][j] = p5.Vector.fromAngle(angle);
+```
+
+### Comportamiento del agente (Vehicle.follow(flow))
+En la clase Vehicle, la función follow(flow) implementa el algoritmo de Reynolds de seguimiento de un campo:
+
+#### a) Identificar vector en su posición actual:
+El vehículo consulta el vector del campo en su ubicación:
+
+``` js
+let desired = flow.lookup(this.position);
+```
+lookup() convierte la posición en índices de la cuadrícula.
+Esto se hace con:
+
+``` js
+let column = constrain(floor(position.x / this.resolution), 0, this.cols - 1);
+let row = constrain(floor(position.y / this.resolution), 0, this.rows - 1);
+return this.field[column][row].copy();
+```
+
+#### b) Calcular velocidad deseada:
+Ese vector se escala a la velocidad máxima:
+
+
+``` js
+desired.mult(this.maxspeed);
+```
+
+#### c) Calcular steering force:
+El steering es la diferencia entre velocidad deseada y actual:
+
+``` js
+let steer = p5.Vector.sub(desired, this.velocity);
+steer.limit(this.maxforce);
+this.applyForce(steer);
+```
+Con esto, el vehículo ajusta su dirección hacia el vector del campo.
+
+### Parámetros clave
+
+#### Resolución del campo de flujo: this.resolution en FlowField (en este caso 20).
+Define el tamaño de cada celda de la cuadrícula, mientras menor la resolución, más detallado es el campo.
+
+#### Velocidad máxima: this.maxspeed en Vehicle (dada en el constructor con random(2,5)).
+Controla la rapidez máxima con la que se mueve cada agente.
+
+#### Fuerza máxima: this.maxforce en Vehicle (constructor con random(0.1,0.5)).
+Limita el giro brusco del agente, mientras menor sea el movimiento sera más suave.
+
+### Modificación realizada
+Mi modificación fue: alterar la resolución del campo de flujo para hacerlo mucho más fino
+
+Código modificado en setup():
+``` js
+flowfield = new FlowField(4);
+```
+
+Efecto observado:
+
+Con resolución 20, el campo tiene celdas grandes, los vehículos siguen vectores más generales, con trayectorias amplias y fluidas.
+
+Con resolución 4, el campo tiene muchas más celdas pequeñas, los vectores cambian más seguido, haciendo que los agentes zigzagueen más y sus trayectorias sean mucho más intrincadas.
+
+El movimiento colectivo se vuelve más detallado y turbulento, casi como un enjambre de insectos.
+<img width="801" height="300" alt="image" src="https://github.com/user-attachments/assets/3a4808b8-87fd-449d-9523-a3388945dff8" />
 
 ## Actividad 4
 
+
+
 ## Actividad 5
+
 
 
 
