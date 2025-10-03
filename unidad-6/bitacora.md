@@ -245,11 +245,29 @@ Tambian, la alineación hace que no sea completamente caótico, pero aún así s
 Musica: [Canción](https://www.youtube.com/watch?v=IhBrB5IMTf4)
 
 Diseños: 
-  Inicio: Queria mostrar las banderas de los dos paises implicados en la canción y que se fueran intercalando.
+Mi idea más fundamental era generar un caos en la vista del espectador para tratar de transmitir la sensación que debio dar esta guerra maritima.
+
+Inicio: Queria mostrar las banderas de los dos paises implicados en la canción y que se fueran intercalando.
 
   <img width="1458" height="277" alt="image" src="https://github.com/user-attachments/assets/b9557530-ad53-45ba-9b76-9e252fc8609f" />
 
-  Seegunda face: Queria mostrar una mini representación de lo que se cuenta en la canción y se me ocurrio tomar parte de mi idea de la entrega anterior.
+Segunda face: Queria mostrar una mini representación de lo que se cuenta en la canción y se me ocurrio tomar parte de mi idea de la entrega anterior.
+
+  <img width="945" height="675" alt="image" src="https://github.com/user-attachments/assets/e702400f-6697-4b39-b4be-8ad793e4f605" />
+
+  Obviamente modificada para uqe cumpliera con las caracteristicas de esta unidad y representara de mejor manera la canción.
+
+  <img width="838" height="225" alt="image" src="https://github.com/user-attachments/assets/e6187778-d2c0-4a55-a69f-309de9ebdf67" />
+
+Tercera face: Me parecio muy sosa mi obra, en el sentido de que la buscaba más caotica por lo que hice que una onda recorriera mi obra he interpretara el nivel de la musica.
+
+  <img width="367" height="247" alt="image" src="https://github.com/user-attachments/assets/2fdda135-eedb-4afb-8026-8ff26b9e10dc" />
+   
+  Los colores de dichas ondas buscan seguir representando a los dos paises del conflicto.
+
+Cuarta face: Ya para darle un broche final quise agregar ondas que representaran explosiones, pues me parecio más impactante a la vista del espectador.
+
+  <img width="360" height="247" alt="image" src="https://github.com/user-attachments/assets/7c925757-a694-4f8b-91c6-b922f5418513" />
 
 ### Codigo
 ``` js
@@ -586,6 +604,7 @@ class Onda {
 <img width="998" height="693" alt="image" src="https://github.com/user-attachments/assets/e343c097-3caa-40c1-959c-a88e9c78ae6f" />
 
 # Auto evaluación 
+
 
 
 
