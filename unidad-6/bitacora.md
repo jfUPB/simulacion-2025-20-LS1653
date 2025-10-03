@@ -235,9 +235,357 @@ Los boids evitan mucho más a sus vecinos, se dispersan y mantienen distancias g
 
 Tambian, la alineación hace que no sea completamente caótico, pero aún así se vera un "enjambre" mucho más suelto y esparcido.
 
+# Apply: Aplicación
+
 ## Actividad 5
 
+### Diseño
 
+#### Elecciones
+Musica: [Canción](https://www.youtube.com/watch?v=IhBrB5IMTf4)
+
+Diseños: 
+  Inicio: Queria mostrar las banderas de los dos paises implicados en la canción y que se fueran intercalando.
+
+  <img width="1458" height="277" alt="image" src="https://github.com/user-attachments/assets/b9557530-ad53-45ba-9b76-9e252fc8609f" />
+
+  Seegunda face: Queria mostrar una mini representación de lo que se cuenta en la canción y se me ocurrio tomar parte de mi idea de la entrega anterior.
+
+### Codigo
+``` js
+// === Sketch base ===
+// Inglaterra vs Alemania (fondo, buques, submarinos, explosiones, flow field musical + ondas visuales)
+
+let fondoInglaterra, fondoAlemania;
+let modoFondo = "uk";
+let objetos = [];
+
+// --- Ondas visuales ---
+let ondas = [];
+
+// --- Analizador de amplitud ---
+let amp;
+let fft;
+
+// --- Música ---
+let musicaFondo;
+
+// --- Flow Field ---
+let flowField;
+let cols, rows;
+let resolution = 40;
+
+function preload() {
+  fondoInglaterra = loadImage("assets/uk.png");
+  fondoAlemania = loadImage("assets/alemania.png");
+
+  soundFormats('mp3', 'wav');
+  musicaFondo = loadSound('assets/musica.mp3');
+}
+
+function setup() {
+  createCanvas(800, 600);
+
+  musicaFondo.loop();
+  amp = new p5.Amplitude();
+  fft = new p5.FFT();
+
+  cols = floor(width / resolution);
+  rows = floor(height / resolution);
+  flowField = new Array(cols * rows);
+
+  // Ondas de fondo (colores decorativos)
+  for (let i = 100; i < height; i += 100) {
+    ondas.push(new Onda(i, [0, 150, 255]));     // azul
+    ondas.push(new Onda(i + 50, [255, 0, 150])); // fucsia
+  }
+
+  // Submarinos iniciales
+  for (let i = 0; i < 15; i++) {
+    objetos.push(new Submarino(random(width), random(height)));
+  }
+}
+
+//  Nuevo: cada 3 segundos aparece un buque en una posición aleatoria
+  setInterval(() => {
+    objetos.push(new Buque(random(width), random(height), true));
+  }, 3000);
+
+function draw() {
+  background(0);
+  
+  // --- FFT solo para medir intensidad ---
+  let spectrum = fft.analyze();
+  let energy = fft.getEnergy("bass", "treble"); // mide energía general de la música
+
+  // Si la intensidad es alta -> cambiar fondo automáticamente
+  if (energy > 205) {
+    modoFondo = "de";
+  } else {
+    modoFondo = "uk";
+  }
+  
+  // --- Efecto de titileo según la música ---
+  let level = amp.getLevel(); 
+  let brillo = map(level, 0, 0.3, 60, 150); // brillo dinámico
+  brillo = constrain(brillo, 60, 150);
+  
+  // Fondo semitransparente con bandera que titila
+  push();
+  tint(255, brillo);
+  if (modoFondo === "uk") image(fondoInglaterra, 0, 0, width, height);
+  else image(fondoAlemania, 0, 0, width, height);
+  pop();
+
+  // --- Ondas decorativas coloridas ---
+  for (let onda of ondas) {
+    onda.update();
+    onda.show(level);
+  }
+
+  // --- Flow Field aplicado a buques ---
+  let t = millis() * 0.0005;
+  for (let obj of objetos) {
+    if (obj instanceof Buque) {
+      let n = noise(obj.pos.x * 0.002, obj.pos.y * 0.002, t);
+      let angle = n * TWO_PI * 2;
+      let musicAmp = map(level, 0, 0.3, 0, 1);
+      angle += musicAmp * sin(t * 5);
+      let flow = p5.Vector.fromAngle(angle);
+      flow.mult(0.1); 
+      obj.applyForce(flow);
+    }
+  }
+
+  // --- Actualizar/dibujar objetos ---
+  for (let obj of objetos) {
+    obj.update();
+    obj.show();
+  }
+
+  // --- Explosiones afectan submarinos ---
+  for (let obj of objetos) {
+    if (obj instanceof Explosion) {
+      for (let other of objetos) {
+        if (other instanceof Submarino) {
+          let d = dist(obj.pos.x, obj.pos.y, other.pos.x, other.pos.y);
+          if (d < obj.r && obj.life > 0) {
+            let force = p5.Vector.sub(other.pos, obj.pos);
+            let intensidad = map(obj.life, 60, 0, 1, 0);
+            intensidad *= map(d, 0, obj.r, 1, 0);
+            force.setMag(intensidad * 2);
+            other.applyForce(force);
+          }
+        }
+      }
+    }
+  }
+
+  // --- Submarinos buscan buques ---
+  for (let obj of objetos) {
+    if (obj instanceof Submarino) {
+      let closest = null;
+      let minDist = 120;
+      for (let other of objetos) {
+        if (other instanceof Buque) {
+          let d = dist(obj.pos.x, obj.pos.y, other.pos.x, other.pos.y);
+          if (d < minDist) {
+            minDist = d;
+            closest = other;
+          }
+        }
+      }
+
+      if (closest) {
+        obj.seek(closest.pos);
+        closest.checkSurrounded(obj);
+
+        //  Buques huyen de submarinos
+        let fleeForce = p5.Vector.sub(closest.pos, obj.pos);
+        fleeForce.setMag(-1.5); 
+        closest.applyForce(fleeForce);
+      }
+    }
+  }
+
+  // --- Eliminar explosiones muertas ---
+  objetos = objetos.filter(obj => !(obj instanceof Explosion && obj.life <= 0));
+}
+
+function mousePressed() {
+  if (mouseButton === LEFT) objetos.push(new Buque(mouseX, mouseY));
+  if (mouseButton === RIGHT) objetos.push(new Explosion(mouseX, mouseY));
+}
+
+function keyPressed() {
+  if (key === 'c' || key === 'C') {
+    modoFondo = (modoFondo === "uk") ? "alemania" : "uk";
+  }
+  if (key === 'r' || key === 'R') {
+    objetos = [];
+    for (let i = 0; i < 15; i++) {
+      objetos.push(new Submarino(random(width), random(height)));
+    }
+  }
+}
+
+// --- Clases ---
+class Buque {
+  constructor(x, y, spawned = false) {
+    this.pos = createVector(x, y);
+    this.vel = createVector(0, 0);
+    this.acc = createVector(0, 0);
+    this.maxSpeed = 1.2;
+    this.maxForce = 0.05;
+
+    this.surroundedTime = 0;
+    this.spawnTime = millis();
+    this.spawned = spawned;
+  }
+
+  applyForce(f) {
+    this.acc.add(f);
+  }
+
+  update() {
+    this.vel.add(this.acc);
+    this.vel.limit(this.maxSpeed);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+
+    if (this.pos.x < 0) this.pos.x = width;
+    if (this.pos.x > width) this.pos.x = 0;
+    if (this.pos.y < 0) this.pos.y = height;
+    if (this.pos.y > height) this.pos.y = 0;
+  }
+
+  show() {
+    let alpha = 255;
+    let size = 20;
+    if (this.spawned) {
+      let t = (millis() - this.spawnTime) / 1000;
+      if (t < 2) {
+        alpha = map(t, 0, 2, 0, 255);
+        size = map(sin(t * PI), 0, 1, 10, 20);
+      }
+    }
+    fill(0, 0, 200, alpha);
+    ellipse(this.pos.x, this.pos.y, size, size);
+  }
+
+  checkSurrounded(sub) {
+    let d = dist(this.pos.x, this.pos.y, sub.pos.x, sub.pos.y);
+    if (d < 30) {
+      this.surroundedTime++;
+      if (this.surroundedTime > 180) {
+        objetos.push(new Explosion(this.pos.x, this.pos.y));
+        objetos = objetos.filter(o => o !== this);
+      }
+    }
+  }
+}
+
+class Submarino {
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D();
+    this.acc = createVector(0, 0);
+    this.maxSpeed = 2;
+    this.maxForce = 0.05;
+  }
+
+  applyForce(force) {
+    this.acc.add(force);
+  }
+
+  seek(target) {
+    let desired = p5.Vector.sub(target, this.pos);
+    desired.setMag(this.maxSpeed);
+    let steer = p5.Vector.sub(desired, this.vel);
+    steer.limit(this.maxForce);
+    this.applyForce(steer);
+  }
+
+  update() {
+    let jitter = p5.Vector.random2D().mult(0.1);
+    this.applyForce(jitter);
+
+    this.vel.add(this.acc);
+    this.vel.limit(this.maxSpeed);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+
+    if (this.pos.x < 0) this.pos.x = width;
+    if (this.pos.x > width) this.pos.x = 0;
+    if (this.pos.y < 0) this.pos.y = height;
+    if (this.pos.y > height) this.pos.y = 0;
+  }
+
+  show() {
+    push();
+    translate(this.pos.x, this.pos.y);
+    rotate(this.vel.heading());
+    fill(200, 0, 0);
+    rectMode(CENTER);
+    rect(0, 0, 20, 8);
+    pop();
+  }
+}
+
+class Explosion {
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+    this.r = 10;
+    this.life = 60;
+  }
+  update() {
+    this.r += 5;
+    this.life--;
+  }
+  show() {
+    noFill();
+    stroke(255, 150, 0);
+    ellipse(this.pos.x, this.pos.y, this.r);
+  }
+}
+
+// --- Clase de ondas visuales decorativas ---
+class Onda {
+  constructor(yBase, colorOnda) {
+    this.yBase = yBase;
+    this.colorOnda = colorOnda;
+    this.offset = random(1000);
+  }
+
+  update() {
+    this.offset += 0.01;
+  }
+
+  show(level) {
+    noFill();
+    stroke(this.colorOnda[0], this.colorOnda[1], this.colorOnda[2], 80);
+    strokeWeight(2);
+
+    beginShape();
+    for (let x = 0; x <= width; x += 20) {
+      let ang = (x * 0.02) + this.offset;
+      let y = this.yBase + sin(ang) * 20 * (1 + level * 5);
+      vertex(x, y);
+    }
+    endShape();
+  }
+}
+```
+
+### Link
+
+[Mi obra](https://editor.p5js.org/estebanpuerta2006/sketches/GG3j7xH2a)
+
+### Captura
+
+<img width="998" height="693" alt="image" src="https://github.com/user-attachments/assets/e343c097-3caa-40c1-959c-a88e9c78ae6f" />
+
+# Auto evaluación 
 
 
 
