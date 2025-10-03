@@ -610,5 +610,10 @@ class Onda {
 ## Nota propuesta: 5.0
 
 ## Mi defensa:
+Yo logré completar todos los ejercicios propuestos y entendí los nuevos temas de la unidad. Aunque mi obra parece simple a primera vista, considero que logra transmitir fielmente mis sentimientos hacia la canción y esos mismos sentimientos llegan al observador. Para esto apliqué los elementos solicitados en la actividad (uso del algoritmo de flocking, visualización ligada a la música y la interacción con el usuario), cumpliendo con lo que pedía la guía.
+
+Además, agregué un componente artístico personal, relacionando los buques y submarinos con la tensión de la canción, lo cual convierte la pieza en una experiencia visual coherente y significativa. Entregué mi trabajo a tiempo y documenté mi proceso en la bitácora, incluyendo reflexiones y justificaciones de diseño.
+
+Por estas razones considero justa una autoevaluación de 5, ya que cumplí con los requisitos y al mismo tiempo exploré la parte creativa de manera consciente.
 
 
