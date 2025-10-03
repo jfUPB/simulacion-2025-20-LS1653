@@ -235,6 +235,8 @@ Los boids evitan mucho más a sus vecinos, se dispersan y mantienen distancias g
 
 Tambian, la alineación hace que no sea completamente caótico, pero aún así se vera un "enjambre" mucho más suelto y esparcido.
 
+<img width="662" height="297" alt="image" src="https://github.com/user-attachments/assets/35a5dded-cce7-447a-9325-1c401c07982b" />
+
 # Apply: Aplicación
 
 ## Actividad 5
@@ -265,7 +267,7 @@ Tercera face: Me parecio muy sosa mi obra, en el sentido de que la buscaba más 
    
   Los colores de dichas ondas buscan seguir representando a los dos paises del conflicto.
 
-Cuarta face: Ya para darle un broche final quise agregar ondas que representaran explosiones, pues me parecio más impactante a la vista del espectador.
+Cuarta y ultima face: Ya para darle un broche final quise agregar ondas que representaran explosiones, pues me parecio más impactante a la vista del espectador.
 
   <img width="360" height="247" alt="image" src="https://github.com/user-attachments/assets/7c925757-a694-4f8b-91c6-b922f5418513" />
 
@@ -605,6 +607,8 @@ class Onda {
 
 # Auto evaluación 
 
+## Nota propuesta: 5.0
 
+## Mi defensa:
 
 
