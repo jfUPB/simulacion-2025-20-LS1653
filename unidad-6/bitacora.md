@@ -166,9 +166,77 @@ El movimiento colectivo se vuelve más detallado y turbulento, casi como un enja
 
 ## Actividad 4
 
+### Análisis del algoritmo de Flocking
 
+En la clase Boid, cada regla devuelve un vector de steering force. Luego, estos vectores se combinan (con pesos distintos) para obtener la dirección final de cada agente.
+
+#### Separación:
+Objetivo: evitar choques o hacinamiento, manteniendo espacio entre los boids.
+
+Cálculo:
+Se busca a los vecinos dentro de un radio de separación pequeño y para cada vecino demasiado cercano, se calcula un vector que apunte lejos de él (posición propia – posición del vecino).
+
+Luego se promedian estos vectores y se limitan a maxforce y como resultado, los boids se “repelen” si están muy juntos.
+
+#### Alineación 
+Objetivo: moverse en la misma dirección promedio que los vecinos → comportamiento grupal coordinado.
+
+Cálculo:
+Se identifican los vecinos en un radio de percepción y se suman sus vectores de velocidad actual y se hace el promedio.
+
+Luego se ajusta este promedio a la maxspeed.
+
+El steering force es la diferencia entre ese vector deseado y la velocidad actual.
+
+Y ya como resultado, los boids terminan alineando su dirección con la del grupo.
+
+#### Cohesión
+Objetivo: moverse hacia el centro de masa del grupo → mantener la bandada unida.
+
+Cálculo:
+Se encuentran los vecinos dentro del radio de cohesión y se calcula la posición promedio de estos vecinos.
+
+Luego el boid genera una fuerza de seek hacia ese punto y como resultado: los boids tienden a reagruparse si están dispersos.
+
+### Parámetros clave
+En el código de flocking de Shiffman aparecen estas variables críticas:
+
+#### Radio de percepción: 
+Define qué tan lejos “ve” cada boid a sus vecinos (perceptionRadius). Puede ser distinto para separación, alineación y cohesión.
+
+#### Pesos de cada regla: 
+Constantes como separationWeight, alignmentWeight, cohesionWeight que escalan cada vector antes de sumarlos.
+
+#### Velocidad máxima y fuerza máxima: 
+igual que en flow fields, limitan la magnitud del movimiento y los giros.
+
+### Modificación realizada
+Aumentar drásticamente el peso de Separación y disminuir Cohesión a casi cero.
+
+``` js
+flock(boids) {
+  let sep = this.separate(boids); // Separation
+  let ali = this.align(boids);    // Alignment
+  let coh = this.cohere(boids);   // Cohesion
+
+  // Modificación de pesos
+  sep.mult(3.0);   // Mucha más separación
+  ali.mult(1.0);   // Alineación normal
+  coh.mult(0.1);   // Cohesión casi nula
+
+  // Aplicar fuerzas
+  this.applyForce(sep);
+  this.applyForce(ali);
+  this.applyForce(coh);
+}
+```
+
+Los boids evitan mucho más a sus vecinos, se dispersan y mantienen distancias grandes y como la cohesión es casi nula, no tienden a reagruparse.
+
+Tambian, la alineación hace que no sea completamente caótico, pero aún así se vera un "enjambre" mucho más suelto y esparcido.
 
 ## Actividad 5
+
 
 
 
