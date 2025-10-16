@@ -606,13 +606,44 @@ Revolución
 ### ¿Cómo la animación física representa el significado de la palabra?
 Lo que quiero hacer es que cada una de las letras en la palabra revolución sean ejecutadas con metodos antirevolucionarios, esto es en parte no tanto para representar la palabra sino para mostrar la consecuencia que puede traer esta misma.
 
+#### ¿Cómo representarás la palabra? ¿Usarás cuerpos de Matter.js para formar las letras?
+Etapa de ideación:
+Si usare cuerpos para formar la palabra, ya que cada letra debe ser de alguna manera afectada.
+
+Final del proceso:
+Lorem
+
+#### ¿Qué comportamiento físico (caída, flotación, colisión, elasticidad, ruptura, conexión) representará el significado?
+Etapa de ideación:
+Considero que tendra, caida, colisión, elasticidad, ruptura y conexión para tener una amplia varidad de ejecucuiones.
+
+Final del proceso:
+Lorem
+
+#### ¿Cómo configurarás el mundo de Matter.js (gravedad, límites) y las propiedades de los cuerpos (masa, fricción, restitución/elasticidad) para lograr ese comportamiento?
+Etapa de ideación:
+El mundo tendra gravedad normal y los limites seran los propios bordes del canva. Los cuerpos tendran masa y talvez un poco de elasticidad.
+
+Final del proceso:
+Lorem
+
+
+#### ¿Habrá alguna interacción del usuario (ej: click para iniciar la acción, mouse para perturbar)?
+Etapa de ideación:
+Pienzo que lo mejor es hacer que el usuario desida cual es la letra a la que le ocurrira la desgracia.
+
+Final del proceso:
+Lorem
+
 ###  ¿Cómo formaste las letras con Matter.js? ¿Qué propiedades físicas fueron importantes? ¿Usaste restricciones?
 
 ### Código
 
-### Captura
+### Captura y link
+[Proyecto](https://editor.p5js.org/estebanpuerta2006/sketches/Yxk-nI_AC)
 
 ## Auto evaluación
+
 
 
 
