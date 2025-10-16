@@ -42,9 +42,27 @@ Esta palabra se puede usar de forma que si se escribe en mayusculas hacer que la
 Idea 2: mouse
 
 Con esta palbra abria que diseñar mucho, pero la idea seria hacer que la "o" de un moemnto a otro le aparescan tres puntos dentro de ella haciendo referencia a los ojos y naris del ratón, al ladode dicha naris 3 palitos lado a lado representando los bigotes y despues que le aparesacan dos oregitas y una cola a la misma "o".
+
 Ejemplo visual:
 
 <img width="827" height="287" alt="image" src="https://github.com/user-attachments/assets/adaa8567-0964-4e76-b9b4-8c811057bb0e" />
 
+## Actividad 2:
+
+### Experimentos:
+
+
+
+### Capturas:
+
+### Explicación:
+
+<img width="1080" height="550" alt="image" src="https://github.com/user-attachments/assets/d710e4b5-ff1d-4333-8f46-f69a77a8254d" />
+
+<img width="1080" height="550" alt="image" src="https://github.com/user-attachments/assets/c81e5fc0-0388-489b-80ed-ead37df861dc" />
+
+
+
+### Dificultades: 
 
 
