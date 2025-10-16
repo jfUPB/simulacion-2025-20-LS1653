@@ -51,18 +51,249 @@ Ejemplo visual:
 
 ### Experimentos:
 
+Experimento 1: (con el video de Patt Vira)
+``` js
+const {Engine, Body, Bodies, Composite, Render, Runner} = Matter;
 
+let engine;
+let boxes = []; let circle; let polygon;
+let ground;
+
+function setup() {
+  createCanvas(400, 400);
+  engine = Engine.create() ;
+ 
+    
+    
+  //box = new Rect(100,100 ,50 ,50);
+  ground = new Ground(200,300 ,400 ,10);
+  
+  
+  //ground = Bodies.rectangle(200, 300, 400, 10, {isStatic: true} );
+  
+  
+}
+
+function draw() {
+  background(220);
+  Engine.update(engine);
+  //box.display();
+  for(let i = 0; i<boxes.length; i++){
+    boxes[i].display();
+  }
+  ground.display();
+  
+  
+  //push();
+  //rectMode(CENTER);
+  //let x = box.position.x;
+  //let y = box.position.y;
+  //let angle = box.angle;
+  
+  //translate(x, y);
+  //rotate(angle);
+  //rect(0, 0 , 50, 50);
+  //pop();
+  
+  //let gp1 = ground.bounds.min.x;
+  //let gp2 = ground.bounds.min.y;
+  //let gp3 = ground.bounds.max.x;
+  //let gp4 = ground.bounds.max.y;
+  
+  //rectMode(CORNERS);
+  //rect(gp1,gp2,gp3,gp4);
+}
+
+function mousePressed(){
+  boxes.push(new Rect(mouseX,mouseY ,20 ,20));
+}
+
+class Rect{
+  constructor(x, y, w, h){
+    this.w = w;
+    this.h = h;
+    
+    this.body = Bodies.rectangle(x, y, this.w, this.h);
+    Body.setAngularVelocity(this.body,3);
+    Composite.add(engine.world, this.body);
+  }
+  
+  display(){
+    push();
+  rectMode(CENTER);
+  let x = this.body.position.x;
+  let y = this.body.position.y;
+  let angle = this.body.angle;
+  
+  translate(x, y);
+  rotate(angle);
+  rect(0, 0 , this.w, this.h);
+  pop();
+  }
+}
+
+
+class Ground{
+   constructor(x, y, w, h){
+     this.w = w;
+    this.h = h;
+     
+     this.ground = Bodies.rectangle(x, y, this.w, this.h, {isStatic: true} );
+     Composite.add(engine.world, this.ground);  
+   }
+  
+  display(){
+    push();
+  rectMode(CENTER);
+  let x = this.ground.position.x;
+  let y = this.ground.position.y;
+  
+  
+  translate(x, y);
+  
+  rect(0, 0 , this.w, this.h);
+  pop();
+  }
+}
+```
+
+Experimento 2: (colisiones y lanzamiento)
+``` js
+// Alias de Matter.js
+const { Engine, Bodies, Body, Composite, Constraint } = Matter;
+
+let engine;
+let base;
+let plank;
+let pivot;
+let smallBox;
+let heavyBoxes = [];
+let walls = [];
+
+function setup() {
+  createCanvas(600, 400);
+  engine = Engine.create();
+
+  //  Base triangular
+  base = Bodies.polygon(300, 300, 3, 50, { isStatic: true });
+
+  //  Tabla (catapulta)
+  plank = Bodies.rectangle(300, 260, 180, 20, {
+    restitution: 0.2,
+    density: 0.002
+  });
+
+  // 🔗 Pivote central
+  pivot = Constraint.create({
+    pointA: { x: 300, y: 260 },
+    bodyB: plank,
+    pointB: { x: 0, y: 0 },
+    stiffness: 1
+  });
+
+  //  Primer cuadrado liviano
+  smallBox = Bodies.rectangle(370, 220, 30, 30, {
+    restitution: 0.6,
+    density: 0.001
+  });
+
+  //  Agregamos todo al mundo
+  Composite.add(engine.world, [base, plank, smallBox, pivot]);
+
+  //  Bordes del canvas (muros sólidos)
+  let thickness = 40;
+  let options = { isStatic: true };
+
+  let floor = Bodies.rectangle(width / 2, height + thickness / 2, width, thickness, options);
+  let ceiling = Bodies.rectangle(width / 2, -thickness / 2, width, thickness, options);
+  let leftWall = Bodies.rectangle(-thickness / 2, height / 2, thickness, height, options);
+  let rightWall = Bodies.rectangle(width + thickness / 2, height / 2, thickness, height, options);
+
+  walls = [floor, ceiling, leftWall, rightWall];
+  Composite.add(engine.world, walls);
+}
+
+function draw() {
+  background(230);
+  Engine.update(engine);
+
+  // Dibujar todo
+  drawBody(base);
+  drawBody(plank);
+  drawBody(smallBox);
+  for (let box of heavyBoxes) drawBody(box);
+  for (let wall of walls) drawBody(wall);
+
+  fill(0);
+  textAlign(CENTER);
+  text("Haz clic para reiniciar la catapulta", width / 2, 30);
+}
+
+function mousePressed() {
+  //  Reiniciar la catapulta
+  // Reposicionamos el plank al centro
+  Body.setPosition(plank, { x: 300, y: 260 });
+  Body.setAngle(plank, 0);
+  Body.setAngularVelocity(plank, 0);
+  Body.setVelocity(plank, { x: 0, y: 0 });
+
+  //  Nuevo cuadrado liviano (el proyectil)
+  smallBox = Bodies.rectangle(370, 220, 30, 30, {
+    restitution: 0.6,
+    density: 0.001
+  });
+  Composite.add(engine.world, smallBox);
+
+  //  Nuevo cuadrado pesado que cae en el otro extremo
+  let heavyBox = Bodies.rectangle(230, 150, 40, 40, {
+    restitution: 0.2,
+    density: 0.01
+  });
+  heavyBoxes.push(heavyBox);
+  Composite.add(engine.world, heavyBox);
+}
+
+//  Dibuja cualquier cuerpo de Matter.js
+function drawBody(body) {
+  const vertices = body.vertices;
+  beginShape();
+  for (let i = 0; i < vertices.length; i++) {
+    vertex(vertices[i].x, vertices[i].y);
+  }
+  endShape(CLOSE);
+}
+```
 
 ### Capturas:
 
+Experimento 1: (con el video de Patt Vira)
+
+<img width="473" height="306" alt="image" src="https://github.com/user-attachments/assets/8439aa9b-12d8-479a-a933-afb277ccae71" />
+
+Experimento 2: (colisiones y lanzamiento)
+
+<img width="748" height="492" alt="image" src="https://github.com/user-attachments/assets/20f3d609-1dc8-4e9d-8654-1186a2f82f61" />
+
+
 ### Explicación:
+Capturas para mi repaso rapido:
 
 <img width="1080" height="550" alt="image" src="https://github.com/user-attachments/assets/d710e4b5-ff1d-4333-8f46-f69a77a8254d" />
 
 <img width="1080" height="550" alt="image" src="https://github.com/user-attachments/assets/c81e5fc0-0388-489b-80ed-ead37df861dc" />
 
+Engine: Diria que es la parte más esencial de matter ya que su trabajo es calcular la fisica, posiciones, velocidades, colisiones, gravedad, etc.
+Se puede resumir en que este decide el como se mueven y reaccionan los cuerpos.
 
+World: Es literalmente el mundo en el que se encuentran los objetos que creamos.
+
+Bodies: Son objetos que tienen forma, masa y comportamiento, estos mismos pueden tomar cualquier forma y se les puede dar caracteristicas, como color y propiedades, como que rebote mas o se quede inmovil en el mundo.
+
+Constraint: Es algo que conecta dos cuerpos la cual limita o convina el movimiento de dischos cuerpos.
+
+MouseConstraint: Este permite la interacción de los objetos con el mouse.
 
 ### Dificultades: 
+
 
 
