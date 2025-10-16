@@ -264,6 +264,300 @@ function drawBody(body) {
 }
 ```
 
+Experimento 3: (Fusión y división de cuerpos)
+
+``` js
+// --- Configuración de Matter.js ---
+const { Engine, World, Bodies, Body, Events } = Matter;
+
+let engine, world;
+let squares = [];
+let walls = [];
+
+// --- Clase Square ---
+class Square {
+  constructor(x, y, size, fusionCount = 0) {
+    this.size = size;
+    this.fusionCount = fusionCount;
+    this.lastCollision = millis();
+    this.isRed = false;
+    this.redSince = null;
+
+    // Color inicial: más fusiones => más azul
+    const blueValue = map(this.fusionCount, 0, 10, 200, 255, true);
+    const whiteValue = map(this.fusionCount, 0, 10, 255, 100, true);
+    this.color = color(whiteValue - 30, whiteValue - 30, blueValue);
+
+    this.body = Bodies.rectangle(x, y, size, size, {
+      restitution: 0.4,
+      friction: 0.3,
+      label: "square"
+    });
+
+    World.add(world, this.body);
+  }
+
+  show() {
+    const pos = this.body.position;
+    const angle = this.body.angle;
+    push();
+    translate(pos.x, pos.y);
+    rotate(angle);
+    rectMode(CENTER);
+    fill(this.color);
+    stroke(255);
+    rect(0, 0, this.size, this.size);
+    pop();
+  }
+
+  update() {
+    // Si pasaron más de 3 s sin colisiones => se parte
+    if (millis() - this.lastCollision > 3000 && this.size > 15) {
+      this.split();
+    }
+
+    // Si el cuadrado está rojo y han pasado 3 s desde que se volvió rojo => explota
+    if (this.isRed && this.redSince && millis() - this.redSince > 3000) {
+      explodeSquare(this);
+    }
+  }
+
+  split() {
+    const pos = this.body.position;
+    World.remove(world, this.body);
+    squares = squares.filter(s => s !== this);
+
+    const newSize = this.size / 1.4;
+    const s1 = new Square(pos.x - newSize / 2, pos.y, newSize);
+    const s2 = new Square(pos.x + newSize / 2, pos.y, newSize);
+    squares.push(s1, s2);
+  }
+
+  markCollision() {
+    this.lastCollision = millis();
+  }
+}
+
+// --- Función de fusión ---
+function mergeSquares(s1, s2) {
+  const p1 = s1.body.position;
+  const p2 = s2.body.position;
+
+  // Nuevo tamaño (crece moderadamente)
+  const newSize = sqrt(sq(s1.size) + sq(s2.size)) * 0.9;
+  const newX = (p1.x + p2.x) / 2;
+  const newY = (p1.y + p2.y) / 2;
+
+  // Eliminar los viejos
+  World.remove(world, [s1.body, s2.body]);
+  squares = squares.filter(s => s !== s1 && s !== s2);
+
+  // Nueva cantidad de fusiones acumuladas
+  const newFusionCount = s1.fusionCount + s2.fusionCount + 1;
+
+  // Crear nuevo cuadrado fusionado
+  const merged = new Square(newX, newY, newSize, newFusionCount);
+
+  // --- Lógica de color ---
+  const blueValue = map(newFusionCount, 0, 10, 200, 255, true);
+
+  if (blueValue >= 255) {
+    merged.color = color(255, 0, 0);
+    merged.isRed = true;
+    merged.redSince = millis(); // inicia el temporizador de explosión
+  } else {
+    const whiteValue = map(newFusionCount, 0, 10, 255, 100, true);
+    merged.color = color(whiteValue - 30, whiteValue - 30, blueValue);
+  }
+
+  squares.push(merged);
+}
+
+// --- Explosión ---
+function explodeSquare(sq) {
+  const pos = sq.body.position;
+  World.remove(world, sq.body);
+  squares = squares.filter(s => s !== sq);
+
+  // --- Muchísimos fragmentos ---
+  const numFragments = int(random(20, 40)); // entre 20 y 40 pedazos
+
+  for (let i = 0; i < numFragments; i++) {
+    const size = random(5, 15); // fragmentos pequeños
+    const s = new Square(pos.x, pos.y, size);
+    squares.push(s);
+
+    // --- Impulso aleatorio ---
+    const angle = random(TWO_PI);
+    const force = random(0.02, 0.08); // más fuerza para dispersarse más
+    Body.applyForce(s.body, s.body.position, {
+      x: cos(angle) * force,
+      y: sin(angle) * force * -1 // un poco más de impulso hacia arriba
+    });
+  }
+
+  // --- Efecto visual de explosión ---
+  push();
+  noStroke();
+  for (let i = 0; i < 10; i++) {
+    fill(255, random(100, 200), 0, random(80, 180));
+    ellipse(pos.x, pos.y, sq.size * random(1.5, 3));
+  }
+  pop();
+}
+
+// --- Setup ---
+function setup() {
+  createCanvas(800, 600);
+  engine = Engine.create();
+  world = engine.world;
+
+  // Muros del canvas
+  const options = { isStatic: true };
+  walls = [
+    Bodies.rectangle(width / 2, height + 25, width, 50, options),
+    Bodies.rectangle(width / 2, -25, width, 50, options),
+    Bodies.rectangle(-25, height / 2, 50, height, options),
+    Bodies.rectangle(width + 25, height / 2, 50, height, options)
+  ];
+  World.add(world, walls);
+
+  // Cuadrados iniciales
+  for (let i = 0; i < 6; i++) {
+    squares.push(new Square(random(200, 600), random(50, 250), random(30, 50)));
+  }
+
+  // Detectar colisiones
+  Events.on(engine, "collisionStart", event => {
+    for (let pair of event.pairs) {
+      const a = pair.bodyA;
+      const b = pair.bodyB;
+
+      if (a.label === "square" && b.label === "square") {
+        const s1 = squares.find(s => s.body === a);
+        const s2 = squares.find(s => s.body === b);
+        if (s1 && s2) {
+          s1.markCollision();
+          s2.markCollision();
+
+          // Fusionar si aún existen ambos
+          mergeSquares(s1, s2);
+        }
+      }
+    }
+  });
+}
+
+// --- Draw ---
+function draw() {
+  background(20);
+  Engine.update(engine);
+
+  for (let s of squares) {
+    s.update();
+    s.show();
+  }
+
+  fill(200);
+  noStroke();
+  textAlign(CENTER);
+  text("Haz clic para crear un cuadrado nuevo", width / 2, 30);
+}
+
+// --- Clic: agrega un nuevo cuadrado ---
+function mousePressed() {
+  const s = new Square(mouseX, mouseY, random(25, 45));
+  squares.push(s);
+}
+
+
+
+// square.js
+// Definimos la clase Square. Usamos Matter.* explícitamente para evitar dependencias de scope.
+(function () {
+  const Bodies = Matter.Bodies;
+  const World = Matter.World;
+
+  class Square {
+    constructor(x, y, size, col) {
+      this.size = size;
+      this.color = col || color(255); // usa p5 color()
+      this.lastCollision = millis();
+      this.fusionCount = 0;
+      this.merged = false;
+      this.isRed = false;
+      this.baseRedSize = null;
+      this.isRed = false;
+      this.redSince = null; // tiempo en que se volvió rojo
+
+      // Cuerpo de Matter
+      this.body = Bodies.rectangle(x, y, this.size, this.size, {
+        restitution: 0.6,
+        friction: 0.3,
+        label: "square"
+      });
+
+      // Añadir al mundo (world debe existir en el momento de instanciar)
+      World.add(window.world || Matter.world || /*fallback*/ Matter.Composite.create(), this.body);
+      // Nota: en tu sketch, 'world' será definido como window.world = engine.world; (ver sketch.js)
+    }
+
+    show() {
+      fill(this.color);
+      stroke(255);
+      strokeWeight(1);
+      let pos = this.body.position;
+      let angle = this.body.angle;
+
+      push();
+      translate(pos.x, pos.y);
+      rotate(angle);
+      rectMode(CENTER);
+      rect(0, 0, this.size, this.size);
+      pop();
+    }
+
+    update() {
+      // placeholder para futuros comportamientos
+      // Si el cuadrado es rojo y han pasado 3 s desde que cambió de color => explota
+if (this.isRed && this.redSince && millis() - this.redSince > 3000) {
+  explodeSquare(this);
+}
+    }
+
+    touch() {
+      this.lastCollision = millis();
+    }
+
+    checkSplit() {
+      if (millis() - this.lastCollision > 3000 && this.size > 20) {
+        // divide en dos cuadrados más pequeños
+        let newSize = this.size / 1.4;
+        let pos = this.body.position;
+
+        // eliminar actual
+        Matter.World.remove(window.world, this.body);
+
+        // buscar y quitar de array 'squares' (sketch.js se encargará de esto si corresponde)
+        // Para evitar acoplamiento fuerte, el sketch.js hará la limpieza después de detectar el split.
+        // Pero aquí podemos crear dos nuevos cuerpos y devolverlos como sugerencia.
+        let a = new Square(pos.x - newSize / 2, pos.y, newSize);
+        let b = new Square(pos.x + newSize / 2, pos.y, newSize);
+        // Marcamos el actual para que el sketch lo reemplace (o el sketch puede filtrar por size/estado)
+        this._toRemove = true; // bandera que el sketch puede leer
+        // Añadimos los nuevos al arreglo global en sketch.js (si se desea)
+        if (window.squares && Array.isArray(window.squares)) {
+          window.squares.push(a, b);
+        }
+      }
+    }
+  }
+
+  // Exponer Square al scope global para que sketch.js pueda instanciarla
+  window.Square = Square;
+})();
+```
+
 ### Capturas:
 
 Experimento 1: (con el video de Patt Vira)
@@ -274,6 +568,14 @@ Experimento 2: (colisiones y lanzamiento)
 
 <img width="748" height="492" alt="image" src="https://github.com/user-attachments/assets/20f3d609-1dc8-4e9d-8654-1186a2f82f61" />
 
+Experimento 3: (Fusión y división de cuerpos)
+
+<img width="832" height="556" alt="image" src="https://github.com/user-attachments/assets/df9eb7b6-0234-4de1-b37a-5f51e24f7c7b" />
+
+
+<img width="838" height="245" alt="image" src="https://github.com/user-attachments/assets/6e82f694-1bcb-4c21-9e8d-067fc8e8d320" />
+
+<img width="826" height="272" alt="image" src="https://github.com/user-attachments/assets/89a0d96b-415e-4ba1-af96-fc36b240043e" />
 
 ### Explicación:
 Capturas para mi repaso rapido:
@@ -294,6 +596,7 @@ Constraint: Es algo que conecta dos cuerpos la cual limita o convina el movimien
 MouseConstraint: Este permite la interacción de los objetos con el mouse.
 
 ### Dificultades: 
+
 
 
 
