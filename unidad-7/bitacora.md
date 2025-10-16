@@ -1,6 +1,7 @@
 # Evidencias de la unidad 7
 
 ## Actividad 1
+### Punto a
 Ejemplo 1: Exit
 
 <img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/2da29fe0-d29d-475b-a16e-88dbb847d2e2" />
@@ -31,14 +32,19 @@ Ejemplo 4: Smile
 
 Esta es un poco simple de explicar, ya que se juega con el tamaño del palo de la "i" y tambien con su punto dando la sensación de un ojo abierto y otro guiñando, por otro lado se curba la "l" en busca de dar la sensación de una sonrisa lo cual al final logra. Por esa razón da el sentido de lo que dice la palabra con lo que muestra el diseño implisito en la misma.
 
+### Punto b
+Idea 1: Puente
 
-### ejemplo 1
+Esta palabra se puede usar de forma que si se escribe en mayusculas hacer que la "P" y la ultima "E" mantengan su tamaño mientras que las demás letras se hacen más pequeñas y se van subiendo un poco dando la forma de un arco, para dar la sensación de un puente, como en la siguiente imagen:
 
-### ejemplo 2
+<img width="225" height="225" alt="image" src="https://github.com/user-attachments/assets/0534bb25-6494-473d-8fbe-c07670ca38ac" />
 
-### ejemplo 3
+Idea 2: mouse
 
-### ejemplo 4
+Con esta palbra abria que diseñar mucho, pero la idea seria hacer que la "o" de un moemnto a otro le aparescan tres puntos dentro de ella haciendo referencia a los ojos y naris del ratón, al ladode dicha naris 3 palitos lado a lado representando los bigotes y despues que le aparesacan dos oregitas y una cola a la misma "o".
+Ejemplo visual:
+
+<img width="827" height="287" alt="image" src="https://github.com/user-attachments/assets/adaa8567-0964-4e76-b9b4-8c811057bb0e" />
 
 
 
