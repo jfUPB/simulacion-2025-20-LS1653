@@ -596,7 +596,18 @@ Constraint: Es algo que conecta dos cuerpos la cual limita o convina el movimien
 MouseConstraint: Este permite la interacción de los objetos con el mouse.
 
 ### Dificultades: 
+Mis mayores usando Matter, fue el aprenderme los llamados de los objetos y el utilizar fisicas ya integradas de forma creativa, pues en parte el chiste de las otras unidades al crear fisicas o intentar imitar la realidad hacia que pues salieran cosas locas y divertidas, pero ahora tengo que buscar formas de hacer algo demaciado realista de forma divertida de ver.
 
+## Actividad 3
 
+###  Palabra elegida: 
+Revolución
 
+### ¿Cómo la animación física representa el significado de la palabra?
+Lo que quiero hacer es que cada una de las letras en la palabra revolución sean ejecutadas con metodos antirevolucionarios, esto es en parte no tanto para representar la palabra sino para mostrar la consecuencia que puede traer esta misma.
 
+###  ¿Cómo formaste las letras con Matter.js? ¿Qué propiedades físicas fueron importantes? ¿Usaste restricciones?
+
+### Código
+
+### Captura
