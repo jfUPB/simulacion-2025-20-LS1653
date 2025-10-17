@@ -611,21 +611,37 @@ Etapa de ideación:
 Si usare cuerpos para formar la palabra, ya que cada letra debe ser de alguna manera afectada.
 
 Final del proceso:
-Lorem
+Cada letra de la palabra REVOLUCIÓN fue representada como un cuerpo rectangular de Matter.js, asignándole una letra visible en su interior.
+Esto permitió que todas reaccionaran a la física del mundo (gravedad, colisiones, fuerzas) y que cada una pudiera tener su propia animación simbólica, como la R suspendida por una cuerda o la E que se invierte tras un impacto.
+El uso de cuerpos físicos individuales facilitó tanto el control independiente de cada letra como su posterior eliminación o transformación durante las animaciones.
 
 #### ¿Qué comportamiento físico (caída, flotación, colisión, elasticidad, ruptura, conexión) representará el significado?
 Etapa de ideación:
 Considero que tendra, caida, colisión, elasticidad, ruptura y conexión para tener una amplia varidad de ejecucuiones.
 
 Final del proceso:
-Lorem
+El proyecto incluye múltiples comportamientos físicos:
+
+Caída de las letras cuando pierden soporte.
+
+Colisiones entre letras y el suelo, reforzando la sensación de peso.
+
+Elasticidad leve para simular rebotes naturales.
+
+Ruptura visual cuando una letra desaparece o se “rompe” (como la explosión de las últimas letras).
+
+Conexión representada en la R, sostenida por una cuerda simulada con un constraint que luego se libera.
+Estos comportamientos no solo aportan dinamismo, sino que reflejan simbólicamente procesos de tensión, resistencia y transformación.
 
 #### ¿Cómo configurarás el mundo de Matter.js (gravedad, límites) y las propiedades de los cuerpos (masa, fricción, restitución/elasticidad) para lograr ese comportamiento?
 Etapa de ideación:
 El mundo tendra gravedad normal y los limites seran los propios bordes del canva. Los cuerpos tendran masa y talvez un poco de elasticidad.
 
 Final del proceso:
-Lorem
+El mundo de Matter.js fue configurado con gravedad estándar (hacia abajo), sin modificar su intensidad, para mantener un movimiento natural.
+Los límites se establecieron mediante el suelo estático y los bordes del canvas actúan como contención visual.
+Cada letra posee masa, fricción y restitución moderada, lo que permite colisiones suaves y rebotes controlados.
+Algunas animaciones modifican temporalmente estas propiedades, como el aumento de frictionAir para frenar el movimiento del péndulo de la “R”.
 
 
 #### ¿Habrá alguna interacción del usuario (ej: click para iniciar la acción, mouse para perturbar)?
@@ -633,9 +649,20 @@ Etapa de ideación:
 Pienzo que lo mejor es hacer que el usuario desida cual es la letra a la que le ocurrira la desgracia.
 
 Final del proceso:
-Lorem
+El usuario interactúa directamente con las letras haciendo clic sobre ellas.
+Cada clic activa una secuencia animada específica: la cortina se cierra, la escena se prepara y la letra seleccionada sufre su destino (como ser colgada o apuñalada).
+Esta participación convierte al espectador en un ejecutor simbólico del cambio o la destrucción, reforzando el componente narrativo e interactivo del proyecto.
 
 ###  ¿Cómo formaste las letras con Matter.js? ¿Qué propiedades físicas fueron importantes? ¿Usaste restricciones?
+Las letras fueron creadas como cuerpos rectangulares con propiedades físicas personalizadas:
+
+Restitución (elasticidad) baja para evitar rebotes exagerados.
+
+Fricción moderada para que no se deslicen fácilmente.
+
+Densidad y masa equilibradas para mantener estabilidad.
+Algunas letras usan restricciones (constraints), como la cuerda de la R, que simula una conexión elástica.
+Estas restricciones son esenciales para generar interacciones más complejas, como suspensión o balanceo, y aportan realismo físico y expresividad simbólica al comportamiento de cada letra.
 
 ### Código
 
@@ -1533,6 +1560,7 @@ function resetAnimacionV(nuevoBody) {
 [Proyecto](https://editor.p5js.org/estebanpuerta2006/sketches/Yxk-nI_AC)
 
 ## Auto evaluación
+
 
 
 
