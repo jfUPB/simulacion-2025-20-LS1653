@@ -639,10 +639,901 @@ Lorem
 
 ### Código
 
+``` html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>REVOLUCIÓN - Animación Matter + p5</title>
+
+  <!-- Librerías base -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/p5.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/addons/p5.sound.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js"></script>
+
+  <!-- Animaciones individuales -->
+  <script src="animacionR.js"></script>
+  <script src="animacionE.js"></script>
+  <script src="animacionV.js"></script>
+  <script src="animacionO.js"></script>
+  <script src="animacionL.js"></script>
+  <script src="animacionU.js"></script>
+  <!-- (puedes agregar más animaciones aquí después) -->
+
+  <!-- Sketch principal -->
+  <script src="sketch.js"></script>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main></main>
+</body>
+</html>
+```
+
+``` js
+// --- Configuración de Matter.js ---
+const { Engine, World, Bodies, Constraint, Body } = Matter;
+let clickedUOnce = false;
+let engine, world;
+let letters = [];
+let curtainLeft, curtainRight;
+let curtainClosing = false;
+let curtainOpening = false;
+let selectedLetter = null;
+let showSingleLetter = false;
+let isAnimating = false; // true entre primer cierre y cuando programamos la segunda cerrada
+let restoring = false;   // true entre segundo cierre y la recreación de letras
+
+// Duraciones (ms)
+const T_WAIT_BEFORE_OPEN = 2000;   // espera tras primer cierre antes de abrir y mostrar letra
+const T_ANIMATION = 5000;          // tiempo aproximado que dura la animación de la letra
+const T_BEFORE_REOPEN = 200;       // pequeña pausa entre reset y reapertura
+
+function setup() {
+  createCanvas(900, 400);
+  engine = Engine.create();
+  world = engine.world;
+
+  // suelo (estático)
+  const ground = Bodies.rectangle(width / 2, height - 10, width, 20, { isStatic: true });
+  World.add(world, ground);
+
+  // preparamos cortina cerrada en inicio (mostramos apertura inicial)
+  curtainLeft  = { x: 0 };         // cerrado: izquierda en 0
+  curtainRight = { x: width / 2 }; // cerrado: derecha en width/2
+  curtainOpening = true;           // abrimos al inicio (presentación)
+
+  // crear letras por primera vez
+  createLetters();
+}
+
+function createLetters() {
+  // eliminar cuerpos previos si hubiera (seguro cuando reset)
+  if (letters.length) {
+    for (let b of letters) {
+      try { World.remove(world, b); } catch (e) {}
+    }
+    letters = [];
+  }
+
+  const word = "REVOLUCIÓN";
+  const startX = 120;
+  const colors = [
+    color(0, 0, 255), // R azul
+    color(0, 0, 255), // E azul
+    color(0, 0, 255), // V azul
+    color(0, 0, 255), // O (mitad)
+    color(255),       // L blanco
+    color(255),       // U blanco
+    color(255, 0, 0), // C (mitad)
+    color(255, 0, 0), // I roja
+    color(255, 0, 0), // Ó roja
+    color(255, 0, 0)  // N roja
+  ];
+
+  let x = startX;
+  for (let i = 0; i < word.length; i++) {
+    const b = Bodies.rectangle(x, height / 2, 60, 60, {
+      restitution: 0.4,
+      friction: 0.3,
+      label: word[i]
+    });
+    b.letter = word[i];
+    b.displayColor = colors[i];
+    World.add(world, b);
+    letters.push(b);
+    x += 75;
+  }
+}
+
+function draw() {
+  background(220);
+  Engine.update(engine);
+
+  // Dibujar letras (si showSingleLetter true => solo selectedLetter)
+  for (let b of letters) {
+    if (!showSingleLetter || b === selectedLetter) {
+      const pos = b.position;
+      const angle = b.angle;
+      push();
+      translate(pos.x, pos.y);
+      rotate(angle);
+      rectMode(CENTER);
+
+      // O y C tienen mitades de color
+      if (b.letter === "O") {
+        noStroke();
+        fill(0, 0, 255);
+        rect(-15, 0, 30, 60);
+        fill(255);
+        rect(15, 0, 30, 60);
+      } else if (b.letter === "C") {
+        noStroke();
+        fill(255);
+        rect(-15, 0, 30, 60);
+        fill(255, 0, 0);
+        rect(15, 0, 30, 60);
+      } else {
+        fill(b.displayColor);
+        stroke(0);
+        rect(0, 0, 60, 60);
+      }
+
+      // Letra encima
+      fill(0);
+      noStroke();
+      textAlign(CENTER, CENTER);
+      textSize(28);
+      text(b.letter, 0, 0);
+      pop();
+    }
+  }
+
+  // --- 🔪 actualización y dibujo de animaciones ---
+  updateAnimacionE();
+  drawAnimacionE();
+  updateAnimacionV();
+  drawAnimacionV();
+  updateAnimacionO();
+  drawAnimacionO();
+  updateAnimacionL();
+  drawAnimacionL();
+  // ------------------------------------------------
+
+  // Dibujar cortina (dos paneles)
+  fill(0);
+  rect(curtainLeft.x, 0, width / 2, height);
+  rect(curtainRight.x, 0, width / 2, height);
+
+  // Animar cortina: apertura / cierre
+  if (curtainClosing) {
+    curtainLeft.x = lerp(curtainLeft.x, 0, 0.2);
+    curtainRight.x = lerp(curtainRight.x, width / 2, 0.2);
+
+    if (abs(curtainLeft.x) < 1 && abs(curtainRight.x - width/2) < 1) {
+      curtainClosing = false;
+      onCurtainClosed();
+    }
+  }
+
+  if (curtainOpening) {
+    curtainLeft.x = lerp(curtainLeft.x, -width / 2, 0.12);
+    curtainRight.x = lerp(curtainRight.x, width, 0.12);
+
+    if (curtainLeft.x < -width/2 + 1 && curtainRight.x > width - 1) {
+      curtainOpening = false;
+    }
+  }
+  
+  // --- Dibujar cuerda y anclaje de la R si existen ---
+  if (cuerdaR && letraR) {
+    stroke(200, 200, 255);
+    strokeWeight(4);
+    line(cuerdaR.pointA.x, cuerdaR.pointA.y, letraR.position.x, letraR.position.y);
+
+    noStroke();
+    fill(255, 0, 0);
+    ellipse(cuerdaR.pointA.x, cuerdaR.pointA.y, 10);
+  }
+}
+
+// --- mouse ---
+function mousePressed() {
+  // bloquea selección si estamos en animación o cortina moviéndose o restaurando
+  if (curtainClosing || curtainOpening || isAnimating || restoring) return;
+
+  let clickedU = false;
+
+  for (let b of letters) {
+    const pos = b.position;
+    if (dist(mouseX, mouseY, pos.x, pos.y) < 40) {
+
+      // Caso especial: letra U
+      if (b.letter === "U") {
+        console.log("La U ha sido seleccionada, desaparece sin animación.");
+        try { World.remove(world, b); } catch (e) {}
+        letters = letters.filter(l => l !== b); // quitarla del array
+        clickedU = true;
+        clickedUOnce = true; // ✅ marcamos que fue la U
+        break;
+      }
+
+      // Para todas las demás letras, sigue el proceso normal
+      selectedLetter = b;
+      isAnimating = true;
+      closeCurtain();
+      break;
+    }
+  }
+
+  // Si fue la U, cerramos y reabrimos sin resetear
+  if (clickedU) {
+    closeCurtain();
+    setTimeout(openCurtain, 1500);
+  }
+}
+
+function closeCurtain() {
+  curtainClosing = true;
+  curtainOpening = false;
+}
+
+// central: cuando la cortina termina de cerrarse
+function onCurtainClosed() {
+  //  Si se hizo clic en la U, solo reabrimos el telón sin resetear
+  if (clickedUOnce) {
+    clickedUOnce = false; // limpiamos la bandera
+    setTimeout(openCurtain, 300);
+    return;
+  }
+  // Si isAnimating true y showSingleLetter aún false => primer cierre tras selección
+  if (isAnimating && !showSingleLetter) {
+    showSingleLetter = true;
+
+    // Esperamos antes de abrir (para simular el cierre completo)
+    setTimeout(() => {
+      openCurtain();
+
+      // Lanzamos la animación de la letra un poco después de que empiece a abrir
+      setTimeout(() => {
+        triggerLetterAnimation(selectedLetter);
+      }, 500);
+
+      // Programamos el cierre final tras terminar la animación
+      setTimeout(() => {
+        restoring = true;
+        isAnimating = false;
+        closeCurtain();
+      }, T_ANIMATION);
+
+    }, T_WAIT_BEFORE_OPEN);
+
+    return;
+  }
+
+  // Si restoring true => esta es la segunda vez que la cortina se cierra (post-animación)
+  if (restoring) {
+  resetLetters();
+  restoring = false;
+  setTimeout(() => {
+    showSingleLetter = false;
+    selectedLetter = null;
+    openCurtain();
+
+    // 💥 Explosión después de 1.5 segundos de abrir el telón
+    setTimeout(() => explodeLastLetters(), 1500);
+  }, T_BEFORE_REOPEN);
+  return;
+}
+
+  // Comportamiento por defecto
+  openCurtain();
+}
+
+function openCurtain() {
+  curtainOpening = true;
+  curtainClosing = false;
+}
+
+function resetLetters() {
+  // eliminar cuerpos anteriores
+  for (let b of letters) {
+    try { World.remove(world, b); } catch (e) {}
+  }
+  letters = [];
+  // recrear letras
+  createLetters();
+}
+
+// --- Dispatcher de animaciones (placeholder) ---
+function triggerLetterAnimation(body) {
+  if (!body) return;
+  switch (body.letter) {
+    case "R": animateR(body); break;
+    case "E": animateE(body); break;
+    case "V": animateV(body); break;
+    case "O": animateO(body); break;
+    case "L": animateL(body); break;
+    case "U": animateU(body); break;
+    
+    default: break;
+  }
+  
+  if (selectedLetter === 'E') {
+    animateE(body);
+  }
+}
+
+// 💥 --- Explosión de las últimas letras ---
+function explodeLastLetters() {
+  console.log("💥 Las últimas cuatro letras explotan!");
+
+  const count = 4;
+  const total = letters.length;
+
+  if (total < count) return; // si hay menos de 4 letras, salir
+
+  const lastFour = letters.slice(-count);
+
+  for (let b of lastFour) {
+    // Aplicar fuerza aleatoria
+    const force = Matter.Vector.create(
+      (Math.random() - 0.5) * 0.2,
+      (Math.random() - 0.5) * -0.3
+    );
+    Matter.Body.applyForce(b, b.position, force);
+
+    // Hacer que desaparezcan luego de 1 segundo
+    setTimeout(() => {
+      try { World.remove(world, b); } catch (e) {}
+      letters = letters.filter(l => l !== b);
+    }, 1000);
+  }
+}
+
+function restartSketch() {
+  try { limpiarAnimacionR(); } catch (e) {}
+  try { limpiarAnimacionV(); } catch (e) {}
+  try { limpiarAnimacionE(); } catch (e) {}
+  try { limpiarAnimacionO(); } catch (e) {}
+  try { limpiarAnimacionL(); } catch (e) {}
+
+  World.clear(world, false);
+  Engine.clear(engine);
+
+  letters = [];
+  selectedLetter = null;
+  showSingleLetter = false;
+  isAnimating = false;
+  restoring = false;
+  curtainClosing = false;
+  curtainOpening = true;
+  curtainLeft = { x: 0 };
+  curtainRight = { x: width / 2 };
+
+  createLetters();
+  Engine.run(engine);
+}
+
+
+
+
+// --- animacionE.js ---
+// Cuchillo cae y apuñala la letra E, sin rotaciones ni cambio de fondo.
+
+let cuchillo = null;
+let cuchilloGolpeo = false;
+let bodyE = null;
+
+function animateE(body) {
+  if (!body) return;
+  limpiarAnimacionE();
+  bodyE = body;
+
+  // Crear el cuchillo justo arriba de la letra E
+  const startX = body.position.x;
+  const startY = body.position.y - 250;
+
+  cuchillo = Matter.Bodies.rectangle(startX, startY, 20, 80, {
+    restitution: 0.1,
+    frictionAir: 0.002,
+    label: "cuchillo",
+  });
+
+  Matter.World.add(world, cuchillo);
+
+  // Aplicar una fuerza inicial hacia abajo
+  Matter.Body.applyForce(cuchillo, cuchillo.position, { x: 0, y: 0.03 });
+}
+
+function updateAnimacionE() {
+  if (!cuchillo || !bodyE || cuchilloGolpeo) return;
+
+  // Detección simple de impacto
+  const dx = cuchillo.position.x - bodyE.position.x;
+  const dy = cuchillo.position.y - bodyE.position.y;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+
+  // Si está lo suficientemente cerca, detener ambos
+  if (dist < 60) {
+    cuchilloGolpeo = true;
+    Matter.Body.setStatic(cuchillo, true);
+    Matter.Body.setStatic(bodyE, true);
+
+    // Simula impacto hundiendo la E un poco
+    Matter.Body.translate(bodyE, { x: 0, y: 10 });
+
+    // Desaparece después de un momento
+    setTimeout(() => {
+      limpiarAnimacionE();
+      if (typeof closeCurtain === "function") closeCurtain();
+    }, 1000);
+  }
+}
+
+function drawAnimacionE() {
+  if (!cuchillo) return;
+  push();
+  fill(200);
+  rectMode(CENTER);
+  rect(cuchillo.position.x, cuchillo.position.y, 20, 80);
+  pop();
+}
+
+function limpiarAnimacionE() {
+  if (cuchillo) {
+    try {
+      Matter.World.remove(world, cuchillo);
+    } catch (e) {}
+    cuchillo = null;
+  }
+  bodyE = null;
+  cuchilloGolpeo = false;
+}
+
+
+
+
+// === ANIMACIÓN L ===
+let letraL = null;
+let plataformaL = null;
+let cuerdaL = null;
+let animandoL = false;
+let tiempoInicioL = 0;
+
+function animateL(body) {
+  if (animandoL) return; // evitar reinicio
+  animandoL = true;
+  letraL = body;
+  tiempoInicioL = millis();
+
+  // ⚙️ Crear cuerda y plataforma temporal
+  const puntoAnclaje = { x: body.position.x, y: body.position.y + 100 };
+  plataformaL = Bodies.rectangle(puntoAnclaje.x, puntoAnclaje.y + 20, 100, 10, {
+    isStatic: true,
+    label: "plataformaL",
+    render: { fillStyle: "#999" }
+  });
+  World.add(world, plataformaL);
+
+  cuerdaL = Constraint.create({
+    bodyA: body,
+    pointB: puntoAnclaje,
+    stiffness: 0.02,
+    length: 100
+  });
+  World.add(world, cuerdaL);
+
+  // Simular ligera tensión inicial
+  Body.applyForce(body, body.position, { x: 0, y: -0.005 });
+
+  // ⏳ Después de 2.5 s: eliminar la plataforma y desactivar colisión
+  setTimeout(() => {
+    try {
+      World.remove(world, plataformaL);
+      plataformaL = null;
+      // quitar colisión → que caiga al vacío
+      body.collisionFilter.mask = 0;
+      // darle impulso hacia abajo para que caiga rápido
+      Body.applyForce(body, body.position, { x: 0, y: 0.05 });
+    } catch (e) {}
+  }, 2500);
+
+  // ⏳ Después de 4 s: eliminar cuerda
+  setTimeout(() => {
+    try {
+      World.remove(world, cuerdaL);
+      cuerdaL = null;
+    } catch (e) {}
+  }, 4000);
+}
+
+function updateAnimacionL() {
+  // nada físico continuo aquí por ahora
+}
+
+function drawAnimacionL() {
+  if (!animandoL || !letraL) return;
+
+  // dibujar cuerda
+  if (cuerdaL) {
+    stroke(180);
+    strokeWeight(3);
+    line(
+      cuerdaL.pointB.x,
+      cuerdaL.pointB.y,
+      letraL.position.x,
+      letraL.position.y
+    );
+  }
+
+  // dibujar plataforma
+  if (plataformaL) {
+    push();
+    fill(150);
+    noStroke();
+    rectMode(CENTER);
+    rect(plataformaL.position.x, plataformaL.position.y, 100, 10);
+    pop();
+  }
+
+  // si ya cayó muy abajo, limpiamos todo
+  if (letraL.position.y > height + 100) {
+    limpiarAnimacionL();
+  }
+}
+
+function limpiarAnimacionL() {
+  if (cuerdaL) {
+    try { World.remove(world, cuerdaL); } catch (e) {}
+    cuerdaL = null;
+  }
+  if (plataformaL) {
+    try { World.remove(world, plataformaL); } catch (e) {}
+    plataformaL = null;
+  }
+  letraL = null;
+  animandoL = false;
+}
+
+
+
+
+// === animacionO.js ===
+
+// Variables internas para controlar animación de la O
+let animO_activa = false;
+let animO_body = null;
+let animO_rect = null;
+let animO_inicioElevacion = 0;
+let animO_fase = 0; // 0 = elevando, 1 = empalando, 2 = final
+let animO_alturaMax = 80;
+
+function animateO(body) {
+  if (!body) return;
+  animO_activa = true;
+  animO_body = body;
+  animO_inicioElevacion = millis();
+  animO_fase = 0;
+
+  // quitar gravedad momentáneamente
+  Body.setStatic(body, true);
+}
+
+// Se llama en draw() desde sketch.js
+function updateAnimacionO() {
+  if (!animO_activa || !animO_body) return;
+
+  if (animO_fase === 0) {
+    // elevar poco a poco
+    Body.translate(animO_body, { x: 0, y: -1 });
+    if (millis() - animO_inicioElevacion > 1000) {
+      animO_fase = 1;
+      // crear rectángulo detrás de la O
+      animO_rect = {
+        x: animO_body.position.x,
+        y: animO_body.position.y + 60,
+        w: 15,
+        h: 140,
+        color: color(100)
+      };
+    }
+  } else if (animO_fase === 1) {
+    // empalamiento: el rectángulo sube detrás
+    if (animO_rect.y > animO_body.position.y) {
+      animO_rect.y -= 2;
+    } else {
+      animO_fase = 2;
+      // dejar la O fija empalada
+      Body.setStatic(animO_body, true);
+    }
+  }
+}
+
+function drawAnimacionO() {
+  if (!animO_activa || !animO_body) return;
+
+  // Dibujar el rectángulo (detrás de la O)
+  if (animO_rect) {
+    push();
+    fill(animO_rect.color);
+    noStroke();
+    rectMode(CENTER);
+    rect(animO_rect.x, animO_rect.y, animO_rect.w, animO_rect.h);
+    pop();
+  }
+}
+
+function limpiarAnimacionO() {
+  animO_activa = false;
+  animO_body = null;
+  animO_rect = null;
+  animO_fase = 0;
+}
+
+
+
+
+// --- animacionR.js ---
+// Esta función se llama desde triggerLetterAnimation(selectedLetter)
+
+let cuerdaR = null;
+let anchorR = null;
+let letraR = null;
+
+function animateR(body) {
+  letraR = body; // guardamos referencia global
+
+  // Punto de anclaje inicial, un poco arriba del cuerpo
+  anchorR = { x: body.position.x, y: body.position.y - 200 };
+
+  // Crear la cuerda que lo sujeta
+  cuerdaR = Matter.Constraint.create({
+    pointA: anchorR,
+    bodyB: body,
+    length: 200,
+    stiffness: 0.02
+  });
+
+  Matter.World.add(world, cuerdaR);
+
+  // Variables locales de animación
+  let tiempoSubida = 0;
+  let subiendo = true;
+
+  // Subida progresiva (la cuerda se acorta poco a poco)
+  const intervaloSubida = setInterval(() => {
+    if (subiendo) {
+      tiempoSubida++;
+      // mover el punto de anclaje hacia arriba
+      cuerdaR.pointA.y -= 0.8;
+
+      if (tiempoSubida > 200) {
+        subiendo = false;
+        Matter.Body.applyForce(body, body.position, { x: 0.05, y: -0.02 });
+        body.frictionAir = 0.02;
+      }
+    }
+  }, 16);
+
+  // Al terminar la animación: limpiar y después de 1s iniciar cierre del telón
+  setTimeout(() => {
+    clearInterval(intervaloSubida);
+
+    // Desaparecer la cuerda cuando termine la animación
+    limpiarAnimacionR();
+
+    // Espera 1 segundo para "respirar" y luego pedir al sketch que cierre el telón
+    setTimeout(() => {
+      // closeCurtain() debe existir en el scope global (sketch.js)
+      if (typeof closeCurtain === "function") {
+        closeCurtain();
+      } else {
+        console.warn("closeCurtain() no encontrada: asegúrate de que exista en tu sketch principal.");
+      }
+    }, 1000);
+
+  }, 6000);
+}
+
+function limpiarAnimacionR() {
+  if (cuerdaR) {
+    try { Matter.World.remove(world, cuerdaR); } catch (e) {}
+    cuerdaR = null;
+  }
+  letraR = null;
+  anchorR = null;
+}
+
+
+
+// === ANIMACIÓN U ===
+let letraU = null;
+let animandoU = false;
+
+function animateU(body) {
+  if (animandoU) return;
+  animandoU = true;
+  letraU = body;
+
+  // 🔮 "Desaparecer" la letra: se quita del mundo y no se dibuja
+  try {
+    World.remove(world, letraU);
+  } catch (e) {}
+
+  // la ocultamos durante toda la animación (T_ANIMATION controlado desde sketch.js)
+  setTimeout(() => {
+    limpiarAnimacionU();
+  }, 4000); // se restaura después del cierre del telón
+}
+
+function updateAnimacionU() {
+  // nada aquí
+}
+
+function drawAnimacionU() {
+  // tampoco se dibuja nada, está "desaparecida"
+}
+
+function limpiarAnimacionU() {
+  letraU = null;
+  animandoU = false;
+}
+
+
+
+
+// --- animacionV.js ---
+// La "V" tiembla y luego se parte en dos mitades que caen.
+
+let vTemblando = false;
+let vPartida = false;
+let bodyV = null;
+let mitadIzq = null;
+let mitadDer = null;
+let tiempoInicioTemblor = 0;
+const DURACION_TEMBLOR = 1000; // 1 segundo
+
+function animateV(body) {
+  if (!body) return;
+  limpiarAnimacionV();
+  bodyV = body;
+
+  // Fase 1: empezar el temblor
+  vTemblando = true;
+  tiempoInicioTemblor = millis();
+}
+
+function updateAnimacionV() {
+  // --- Fase 1: Temblor ---
+  if (vTemblando && !vPartida && bodyV) {
+    const tiempo = millis() - tiempoInicioTemblor;
+
+    // Movimiento oscilante pequeño (temblor)
+    const offsetX = sin(frameCount * 20) * 3;
+    const offsetY = cos(frameCount * 20) * 2;
+    Matter.Body.setPosition(bodyV, {
+      x: bodyV.position.x + offsetX * 0.1,
+      y: bodyV.position.y + offsetY * 0.1,
+    });
+
+    // Si ya pasó el tiempo, partir la letra
+    if (tiempo > DURACION_TEMBLOR) {
+      partirV();
+    }
+  }
+}
+
+function drawAnimacionV() {
+  // 🔒 Evitar dibujar si no hay animación activa o el mundo fue reiniciado
+  if (!world || (!vTemblando && !vPartida)) return;
+
+  // Si está temblando y no se ha partido
+  if (vTemblando && !vPartida && bodyV) {
+    const pos = bodyV.position;
+    push();
+    fill(0, 0, 255);
+    rectMode(CENTER);
+    rect(pos.x, pos.y, 60, 60);
+    fill(0);
+    noStroke();
+    textAlign(CENTER, CENTER);
+    textSize(28);
+    text("V", pos.x, pos.y);
+    pop();
+  }
+
+  // Si ya se partió, dibujamos las dos mitades
+  if (vPartida) {
+    if (mitadIzq) {
+      const p = mitadIzq.position;
+      push();
+      fill(0, 0, 255);
+      rectMode(CENTER);
+      rect(p.x, p.y, 30, 60);
+      pop();
+    }
+    if (mitadDer) {
+      const p = mitadDer.position;
+      push();
+      fill(0, 0, 255);
+      rectMode(CENTER);
+      rect(p.x, p.y, 30, 60);
+      pop();
+    }
+  }
+}
+
+// --- Función auxiliar para partir la letra ---
+function partirV() {
+  if (!bodyV || vPartida) return;
+
+  vPartida = true;
+  vTemblando = false;
+
+  const x = bodyV.position.x;
+  const y = bodyV.position.y;
+
+  // Eliminar cuerpo original (desaparece la V original)
+  try {
+    Matter.World.remove(world, bodyV);
+  } catch (e) {}
+  bodyV = null;
+
+  // Crear las dos mitades
+  mitadIzq = Matter.Bodies.rectangle(x - 15, y, 30, 60, {
+    restitution: 0.4,
+    friction: 0.3,
+  });
+  mitadDer = Matter.Bodies.rectangle(x + 15, y, 30, 60, {
+    restitution: 0.4,
+    friction: 0.3,
+  });
+
+  // Pequeñas fuerzas hacia los lados para separarlas
+  Matter.Body.applyForce(mitadIzq, mitadIzq.position, { x: -0.02, y: -0.02 });
+  Matter.Body.applyForce(mitadDer, mitadDer.position, { x: 0.02, y: -0.02 });
+
+  Matter.World.add(world, [mitadIzq, mitadDer]);
+}
+
+// --- Limpieza total ---
+function limpiarAnimacionV() {
+  if (bodyV) {
+    try { Matter.World.remove(world, bodyV); } catch (e) {}
+    bodyV = null;
+  }
+  if (mitadIzq) {
+    try { Matter.World.remove(world, mitadIzq); } catch (e) {}
+    mitadIzq = null;
+  }
+  if (mitadDer) {
+    try { Matter.World.remove(world, mitadDer); } catch (e) {}
+    mitadDer = null;
+  }
+
+  //  Reinicia todos los estados
+  vTemblando = false;
+  vPartida = false;
+  tiempoInicioTemblor = 0;
+}
+
+// --- Reinicio cuando se cierra el telón ---
+function resetAnimacionV(nuevoBody) {
+  limpiarAnimacionV();
+  bodyV = nuevoBody;
+  vTemblando = false;
+  vPartida = false;
+}
+```
+
 ### Captura y link
 [Proyecto](https://editor.p5js.org/estebanpuerta2006/sketches/Yxk-nI_AC)
 
 ## Auto evaluación
+
 
 
 
