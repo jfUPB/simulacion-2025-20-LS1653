@@ -1573,6 +1573,9 @@ function resetAnimacionV(nuevoBody) {
 ### Nota: 5.0
 
 ### Defensa 
+Luego del arduo proceso para realizar esta unidad, considero que mi esfuerzo fue bastante alto, debido a que me enfoqué tanto en la parte creativa como en la técnica y de programación. Mis ejercicios anteriores a la fase de aplicación los pensé para apoyarme en ellos al crear varios de los elementos usados en mi obra. Gracias a dichos experimentos pude armar mi trabajo, el cual es bastante extenso, pues a cada letra de mi palabra le apliqué un efecto diferente con Matter.js.
+Por estas razones considero haber dominado de buena manera el tema y el uso de Matter.js, y creo haber hecho un trabajo lo suficientemente decente y entretenido para el observador.
+
 
 
 
