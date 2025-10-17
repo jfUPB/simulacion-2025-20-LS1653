@@ -1559,7 +1559,20 @@ function resetAnimacionV(nuevoBody) {
 ### Captura y link
 [Proyecto](https://editor.p5js.org/estebanpuerta2006/sketches/Yxk-nI_AC)
 
+<img width="1112" height="495" alt="image" src="https://github.com/user-attachments/assets/c64519f8-4e82-4fb5-9ad3-f62e729fbd58" />
+
+### Gif 1
+![Grabación-gif1](https://github.com/user-attachments/assets/2e1f8f0f-d397-46a1-9086-0dc0587486e1)
+
+
+### Gif 2
+![Grabación-gif2](https://github.com/user-attachments/assets/07ae3d94-b6e1-4afe-a1d2-3792e5a501b1)
+
 ## Auto evaluación
+
+### Nota: 5.0
+
+### Defensa 
 
 
 
