@@ -58,9 +58,9 @@ Los inputs que se usare para interpretar la música en tiempo real serán:
 | **Input**                              | **Descripción**                                    | **Efecto visual asociado**                                         |
 |----------------------------------------|----------------------------------------------------|--------------------------------------------------------------------|
 | Amplitud general (nivel de volumen)    | Captura la energía global de la canción.           | Cambia el brillo y saturación del fondo, genera pulsaciones de luz.|
-| Frecuencias graves (bajos)             | Detectadas con FFT.                                | Aumentan el tamaño o explosividad de las partículas; simulan las                                                                                                    ondas de impacto.                                                  |
-| Frecuencias medias-altas (instrumentos y voz) | Responden a los detalles melódicos.         | Activan deformaciones de malla, colores cambiantes y                                                                                                                movimientos de los “rayos” visuales.                               |
-| Intensidad rítmica (beat o picos)      | Picos detectados por variaciones rápidas de energía.| Cambia la imagen o tono de fondo automáticamente, simulando                                                                                                         cambios de atmósfera.                                             |
+| Frecuencias graves (bajos)             | Detectadas con FFT.                                | Aumentan el tamaño o explosividad de las partículas; simulan las ondas de impacto.|
+| Frecuencias medias-altas (instrumentos y voz) | Responden a los detalles melódicos.         | Activan deformaciones de malla, colores cambiantes y movimientos de los “rayos” visuales.|
+| Intensidad rítmica (beat o picos)      | Picos detectados por variaciones rápidas de energía.| Cambia la imagen o tono de fondo automáticamente, simulando cambios de atmósfera.|
 ```
 
 ### Algoritmos y técnicas 
@@ -99,4 +99,5 @@ Cada vez que la música alcanza un punto máximo, una supernova visual inunda la
 ### Boceto inspiracional generado a mi petición por chatgpt
 
 <img width="246" height="207" alt="image" src="https://github.com/user-attachments/assets/a7c02eec-0ef4-421d-a226-4ac1553dc357" />
+
 
