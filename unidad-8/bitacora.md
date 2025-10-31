@@ -103,13 +103,301 @@ Cada vez que la música alcanza un punto máximo, una supernova visual inunda la
 
 ## Actividad 03
 ``` js
+let musicaFondo, amplitude, fft;
+let fondos = [];
+let fondoActual;
+let cambioFondoTimer = 0;
 
+let ondas = [];
+let particulas = [];
+let orbes = [];
+let explosiones = [];
+let ondasExpansivas = [];
+let estrellas = [];
+let pinceles = [];
+
+const N_ONDAS = 8;
+const N_START_PARTICLES = 40;
+const N_ESTRELLAS = 60;
+const N_PINCELES = 5;
+const CAMBIO_FONDO_INTERVALO = 5000;
+
+// --- PRELOAD ---
+function preload() {
+  soundFormats('mp3', 'wav');
+  musicaFondo = loadSound('assets/hija.mp3');
+  for (let i = 1; i <= 4; i++) fondos.push(loadImage(`assets/fondo${i}.jpg`));
+}
+
+// --- SETUP ---
+function setup() {
+  createCanvas(1000, 700);
+  noStroke();
+  musicaFondo.loop();
+
+  amplitude = new p5.Amplitude();
+  fft = new p5.FFT(0.8, 64);
+  fondoActual = random(fondos);
+
+  for (let i = 0; i < N_ONDAS; i++) ondas.push(new Onda(random(height), random(0.5, 2)));
+  for (let i = 0; i < N_START_PARTICLES; i++) particulas.push(new Particula(random(width), random(height)));
+  for (let i = 0; i < N_ESTRELLAS; i++) estrellas.push(new Estrella());
+  for (let i = 0; i < N_PINCELES; i++) pinceles.push(new PincelNoise());
+}
+
+// --- DRAW ---
+function draw() {
+  let nivel = amplitude.getLevel();
+
+  // Fondo con leve transparencia (permite fundido de los trazos)
+  fill(0, 30);
+  rect(0, 0, width, height);
+
+  // Fondo musical cada 5s
+  if (millis() - cambioFondoTimer > CAMBIO_FONDO_INTERVALO) {
+    fondoActual = random(fondos);
+    cambioFondoTimer = millis();
+  }
+
+  // Imagen de fondo atenuada
+  tint(255, 80);
+  image(fondoActual, 0, 0, width, height);
+  noTint();
+
+  // Ondas
+  for (let onda of ondas) {
+    onda.actualizar(nivel);
+    onda.mostrar();
+  }
+
+  // Partículas
+  for (let p of particulas) {
+    p.actualizar(nivel);
+    p.mostrar();
+  }
+
+  // Estrellas tipo flocking
+  for (let e of estrellas) {
+    e.actualizar(nivel);
+    e.mostrar();
+  }
+
+  // Orbes
+  for (let o of orbes) {
+    o.actualizar(nivel);
+    o.mostrar();
+  }
+
+  // Explosiones
+  for (let e of explosiones) {
+    e.actualizar();
+    e.mostrar();
+  }
+
+  // Ondas expansivas
+  for (let o of ondasExpansivas) {
+    o.actualizar(nivel);
+    o.mostrar();
+  }
+
+  // Pinceles “vivos”
+  for (let p of pinceles) {
+    p.actualizar(nivel);
+    p.mostrar();
+  }
+
+  explosiones = explosiones.filter(e => !e.fin);
+  ondasExpansivas = ondasExpansivas.filter(o => !o.fin);
+
+  // Click genera un orbe
+  if (mouseIsPressed) {
+    let c = color(random(100,255), random(100,255), random(255));
+    orbes.push(new Orbe(mouseX, mouseY, c));
+  }
+}
+
+// --- CLASES ---
+
+class Onda {
+  constructor(y, v) {
+    this.y = y;
+    this.velocidad = v;
+    this.offset = random(1000);
+    this.colorBase = color(random(100,255), random(100,255), random(255));
+  }
+  actualizar(n) { this.offset += 0.02; this.n = n; }
+  mostrar() {
+    noFill();
+    strokeWeight(2);
+    let c = lerpColor(this.colorBase, color(255), this.n * 3);
+    stroke(c);
+    beginShape();
+    for (let x = 0; x < width; x += 10) {
+      let y = this.y + sin(x * 0.02 + this.offset) * (this.n * 400);
+      vertex(x, y);
+    }
+    endShape();
+  }
+}
+
+class Particula {
+  constructor(x, y) {
+    this.base = createVector(x, y);
+    this.pos = this.base.copy();
+    this.angulo = random(TWO_PI);
+    this.radio = random(50, 250);
+    this.velAngulo = random(0.001, 0.005);
+    this.colorBase = color(random(180, 255), random(180, 255), random(255), 180);
+  }
+  actualizar(n) {
+    this.angulo += this.velAngulo;
+    let exp = map(n, 0, 0.4, 0.8, 2.5);
+    this.pos.x = this.base.x + cos(this.angulo) * this.radio * exp;
+    this.pos.y = this.base.y + sin(this.angulo) * this.radio * exp;
+  }
+  mostrar() { noStroke(); fill(this.colorBase); ellipse(this.pos.x, this.pos.y, 2.5); }
+}
+
+class Orbe {
+  constructor(x, y, c) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D().mult(random(1, 3));
+    this.tam = random(10, 25);
+    this.c = c;
+    this.explotado = false;
+    this.tiempoVida = random(300, 600);
+  }
+  actualizar(n) {
+    if (this.explotado) return;
+    this.pos.add(this.vel);
+    this.vel.add(p5.Vector.random2D().mult(0.05));
+    this.tam += sin(frameCount * 0.05) * 0.5;
+    this.tiempoVida--;
+    if ((n > 0.4 && random() < 0.05) || this.tiempoVida < 0) this.explotar(n);
+  }
+  explotar(n) {
+    this.explotado = true;
+    for (let i = 0; i < 15; i++) explosiones.push(new Explosion(this.pos.x, this.pos.y, this.c));
+    ondasExpansivas.push(new OndaExpansiva(this.pos.x, this.pos.y, this.c, n));
+  }
+  mostrar() {
+    if (!this.explotado) {
+      noStroke();
+      fill(this.c);
+      ellipse(this.pos.x, this.pos.y, this.tam);
+    }
+  }
+}
+
+class Explosion {
+  constructor(x, y, c) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D().mult(random(2, 6));
+    this.tam = random(2, 6);
+    this.c = c;
+    this.vida = 255;
+    this.fin = false;
+  }
+  actualizar() {
+    this.pos.add(this.vel);
+    this.vel.mult(0.95);
+    this.vida -= 5;
+    if (this.vida <= 0) this.fin = true;
+  }
+  mostrar() {
+    noStroke();
+    fill(red(this.c), green(this.c), blue(this.c), this.vida);
+    ellipse(this.pos.x, this.pos.y, this.tam);
+  }
+}
+
+class OndaExpansiva {
+  constructor(x, y, c, n) {
+    this.x = x;
+    this.y = y;
+    this.c = c;
+    this.t = 0;
+    this.maxT = 300;
+    this.vel = map(n, 0, 0.5, 2, 8);
+    this.fin = false;
+  }
+  actualizar(n) {
+    this.t += this.vel + n * 10;
+    if (this.t > this.maxT) this.fin = true;
+  }
+  mostrar() {
+    noFill();
+    stroke(red(this.c), green(this.c), blue(this.c), map(this.t, 0, this.maxT, 255, 0));
+    strokeWeight(2);
+    ellipse(this.x, this.y, this.t);
+  }
+}
+
+class Estrella {
+  constructor() {
+    this.pos = createVector(random(width), random(height));
+    this.vel = p5.Vector.random2D();
+    this.c = color(random(150,255), random(150,255), random(255));
+  }
+  actualizar(n) {
+    this.pos.add(this.vel);
+    if (random() < 0.02 + n * 0.5) this.vel = p5.Vector.random2D().mult(random(1, 3 + n * 10));
+    this.pos.x = (this.pos.x + width) % width;
+    this.pos.y = (this.pos.y + height) % height;
+  }
+  mostrar() {
+    noStroke();
+    fill(this.c);
+    ellipse(this.pos.x, this.pos.y, 3);
+  }
+}
+
+// --- NUEVA CLASE: PINCEL NOISE ---
+class PincelNoise {
+  constructor() {
+    this.pos = createVector(random(width), random(height));
+    this.angulo = random(TWO_PI);
+    this.c = color(random(100,255), random(100,255), random(255));
+    this.paso = random(1,3);
+  }
+  actualizar(n) {
+    // Movimiento basado en ruido y nivel de sonido
+    let ruido = noise(this.pos.x * 0.005, this.pos.y * 0.005, frameCount * 0.005);
+    this.angulo += map(ruido, 0, 1, -0.3, 0.3) + n * 2;
+    let dir = p5.Vector.fromAngle(this.angulo);
+    this.pos.add(dir.mult(this.paso + n * 20));
+
+    // Reaparece si sale de pantalla
+    if (this.pos.x < 0) this.pos.x = width;
+    if (this.pos.x > width) this.pos.x = 0;
+    if (this.pos.y < 0) this.pos.y = height;
+    if (this.pos.y > height) this.pos.y = 0;
+  }
+  mostrar() {
+    strokeWeight(random(1, 3));
+    let alpha = random(80, 150);
+    stroke(red(this.c), green(this.c), blue(this.c), alpha);
+    point(this.pos.x, this.pos.y);
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
 ```
 
 [Mi obra](https://editor.p5js.org/estebanpuerta2006/sketches/rpFwA0Byp)
 
+### Capturas
+
+<img width="1262" height="695" alt="image" src="https://github.com/user-attachments/assets/8344f0e6-0849-4e62-b3af-934dd83e8fcc" />
+
+<img width="1255" height="692" alt="image" src="https://github.com/user-attachments/assets/98247c89-12c4-4ce5-abaa-572eca7b4a8c" />
+
+
 ## Auto evaluación
-### Mi nota:
+### Mi nota: 5.0
 
 ### Mi defensa:
+Luego de todo un semestre haciendo trabajos considero que este ultimo demuestra mi dominio en todos los temas anteriores, a su vez considero que mi trabajo refleja el proceso que estube haciendo durante este semestre pues cada uno de mis trabajos fue inspirado de un trabajo de una unidad anterior escepto el de la unidad 1 ya que no habia unidad del cual apalancarme. Tambien resolvi cada parte de esta unidad y puedo decir que quede satisfecho con mi resultado.
 
