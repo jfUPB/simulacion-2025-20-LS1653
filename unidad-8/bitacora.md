@@ -101,3 +101,15 @@ Cada vez que la música alcanza un punto máximo, una supernova visual inunda la
 <img width="246" height="207" alt="image" src="https://github.com/user-attachments/assets/a7c02eec-0ef4-421d-a226-4ac1553dc357" />
 
 
+## Actividad 03
+``` js
+
+```
+
+[Mi obra](https://editor.p5js.org/estebanpuerta2006/sketches/rpFwA0Byp)
+
+## Auto evaluación
+### Mi nota:
+
+### Mi defensa:
+
